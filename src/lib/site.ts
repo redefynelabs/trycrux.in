@@ -5,6 +5,8 @@ export const SITE = {
   /** The public address. NEXT_PUBLIC_SITE_URL overrides it (a staging copy, or http://localhost:3000 in .env for development). */
   url: (process.env.NEXT_PUBLIC_SITE_URL || "https://trycrux.in").replace(/\/+$/, ""),
   email: "hello@trycrux.in",
+  /** Google Tag Manager container; NEXT_PUBLIC_GTM_ID overrides it and "off" disables it. Loaded only in production builds. */
+  gtmId: process.env.NEXT_PUBLIC_GTM_ID || "GTM-WPXKWW33",
   /** The product video shown on the home page: a file or embed URL. Empty shows a placeholder. */
   demoVideoUrl: process.env.NEXT_PUBLIC_DEMO_VIDEO_URL ?? "",
 } as const;
