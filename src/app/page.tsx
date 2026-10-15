@@ -36,7 +36,7 @@ export default function HomePage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(faqPage(FAQ_GROUPS.flatMap((g) => g.items))) }} />
-      <section className="relative isolate px-4 pt-24 text-center sm:px-6 sm:pt-32">
+      <section aria-label="hero" className="relative isolate px-4 pt-24 text-center sm:px-6 sm:pt-32">
         <HeroBackdrop />
         <Link href="#mei" className="group mx-auto inline-flex items-center gap-2.5 rounded-full bg-bg py-1 pr-3.5 pl-1 text-sm font-medium text-fg shadow-sm ring-1 ring-brand/20 transition-colors hover:bg-brand-soft">
           <span className="inline-flex items-center gap-1.5 rounded-full bg-brand px-2.5 py-1 text-xs font-semibold text-white"><SparkIcon className="size-3.5" /> AI</span>

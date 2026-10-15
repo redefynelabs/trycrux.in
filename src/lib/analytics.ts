@@ -1,6 +1,6 @@
 /**
- * Analytics events (see docs/analytics.md). Each one goes to Google Analytics 4 with gtag, and is also pushed to Google
- * Tag Manager's dataLayer so GTM tags can use it as a trigger. Names follow GA4's style; `generate_lead` is GA4's own
+ * Analytics events (see docs/analytics.md). Each one goes to Google Analytics 4 with gtag, marks the Microsoft Clarity
+ * session, and is pushed to Google Tag Manager's dataLayer so GTM tags can use it as a trigger. Names follow GA4's style; `generate_lead` is GA4's own
  * recommended event for a lead.
  *
  * Never put what a person typed (name, email, phone, message) into an event: only which form, which choice, which button.
@@ -35,6 +35,7 @@ declare global {
   interface Window {
     dataLayer?: unknown[];
     gtag?: (...args: unknown[]) => void;
+    clarity?: (...args: unknown[]) => void;
   }
 }
 
@@ -42,6 +43,8 @@ export function track(event: EventName, params: EventParams = {}): void {
   if (typeof window === "undefined") return;
   const clean = Object.fromEntries(Object.entries(params).filter(([, v]) => v !== undefined && v !== ""));
   window.gtag?.("event", event, clean);
+  // Microsoft Clarity (loaded by GTM) marks the session, so recordings can be filtered by what people did.
+  window.clarity?.("event", event);
   window.dataLayer = window.dataLayer || [];
   window.dataLayer.push({ event, ...clean });
 }

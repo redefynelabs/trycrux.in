@@ -6,7 +6,11 @@ The website loads Google Analytics 4 directly (web stream `G-4CVZYN65JJ`) and se
 send their own events. Every event is also pushed to Google Tag Manager's `dataLayer` (container `GTM-WPXKWW33`), so
 GTM can use it to trigger other tags (an ads conversion, a pixel).
 
-**Do not add a GA4 tag in GTM** (neither a Google tag for `G-4CVZYN65JJ` nor GA4 event tags): GA4 is already on the page,
+**Microsoft Clarity** (project `yy9kmhhvj5`) is installed through GTM (the "Microsoft Clarity - Official" tag on All
+Pages) and linked to GA4 in Clarity's settings. Every site event is also sent to Clarity (`clarity("event", name)`), so
+recordings and heatmaps can be filtered by it, for example sessions with `generate_lead` or `form_error`.
+
+**Do not add a GA4 tag in GTM** (the container should hold only Clarity and non-Google tags) (neither a Google tag for `G-4CVZYN65JJ` nor GA4 event tags): GA4 is already on the page,
 and a second copy would count every visit and event twice.
 
 No event ever carries what a person typed (name, email, phone, message): only which form, which button and which choice.

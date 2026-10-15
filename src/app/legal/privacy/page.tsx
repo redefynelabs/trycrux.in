@@ -17,7 +17,7 @@ export default function Privacy() {
       </ul>
 
       <h2>Cookies and browser storage</h2>
-      <p>We use Google Tag Manager to load Google&rsquo;s measurement tools, which set cookies to count visits and see which pages and campaigns bring people to us. Google processes that data under its own terms; you can block these cookies in your browser or with Google&rsquo;s opt-out add-on, and the site works the same without them. The site also keeps two small things in your browser: that you closed the announcement bar, and how you found us until you send a form or close the tab. The forms use Cloudflare Turnstile to tell people from bots, and it may set what it needs for that check.</p>
+      <p>We use Google Analytics, loaded with Google Tag Manager, to count visits and see which pages, buttons and campaigns bring people to us, and Microsoft Clarity to see how people use the site through heatmaps and recordings of page activity (clicks, scrolls and mouse movement). Clarity masks what you type into forms, and neither tool receives the details you enter. Both set cookies and process the data under their own terms; you can block them in your browser, and the site works the same without them. The site also keeps two small things in your browser: that you closed the announcement bar, and how you found us until you send a form or close the tab. The forms use Cloudflare Turnstile to tell people from bots, and it may set what it needs for that check.</p>
 
       <h2>Why we use it</h2>
       <ul>
@@ -38,7 +38,7 @@ export default function Privacy() {
       </ul>
 
       <h2>Who sees it</h2>
-      <p>Our sales and support team, and the providers that run our systems for us: hosting and backups, email delivery, website analytics (Google) and the bot check on our forms. They may use the data only to provide their service to us.</p>
+      <p>Our sales and support team, and the providers that run our systems for us: hosting and backups, email delivery, website analytics (Google Analytics and Microsoft Clarity) and the bot check on our forms. They may use the data only to provide their service to us.</p>
 
       <h2>How long we keep it</h2>
       <p>Enquiry details are kept while we are in touch with you and for up to two years after our last contact, then deleted. Demos are deleted when they expire. Customer data is kept for as long as your company uses Crux and is handed back or deleted when it leaves, as set out on the data ownership page.</p>
