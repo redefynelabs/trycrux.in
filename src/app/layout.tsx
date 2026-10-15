@@ -4,6 +4,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import localFont from "next/font/local";
 import Script from "next/script";
 import { AnalyticsListener } from "@/components/analytics-listener";
+import { ConsentBanner } from "@/components/consent-banner";
+import { CONSENT_BOOT } from "@/lib/consent";
 import { AnnouncementBar } from "@/components/announcement-bar";
 import { AttributionCapture } from "@/components/attribution-capture";
 import { PageBackdrop } from "@/components/page-backdrop";
@@ -63,6 +65,12 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             <iframe src={`https://www.googletagmanager.com/ns.html?id=${GTM}`} height="0" width="0" style={{ display: "none", visibility: "hidden" }} title="Google Tag Manager" />
           </noscript>
         )}
+        {/* Consent Mode defaults must be set before Google Analytics or GTM load (src/lib/consent.ts). */}
+        {(GA || GTM) && (
+          <Script id="consent-defaults" strategy="beforeInteractive">
+            {CONSENT_BOOT}
+          </Script>
+        )}
         {GA && (
           <>
             <Script id="ga4-src" src={`https://www.googletagmanager.com/gtag/js?id=${GA}`} strategy="afterInteractive" />
@@ -82,6 +90,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         </a>
         <AttributionCapture />
         <AnalyticsListener />
+        {(GA || GTM) && <ConsentBanner />}
         <AnnouncementBar />
         {/* A framed column: on wide screens the page sits between hatched gutters, as in the Magic UI templates. */}
         <div className="2xl:bg-[repeating-linear-gradient(135deg,var(--line)_0_1px,transparent_1px_9px)]">

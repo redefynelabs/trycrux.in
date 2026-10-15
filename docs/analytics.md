@@ -6,9 +6,11 @@ The website loads Google Analytics 4 directly (web stream `G-4CVZYN65JJ`) and se
 send their own events. Every event is also pushed to Google Tag Manager's `dataLayer` (container `GTM-WPXKWW33`), so
 GTM can use it to trigger other tags (an ads conversion, a pixel).
 
-**Microsoft Clarity** (project `yy9kmhhvj5`) is installed through GTM (the "Microsoft Clarity - Official" tag on All
-Pages) and linked to GA4 in Clarity's settings. Every site event is also sent to Clarity (`clarity("event", name)`), so
-recordings and heatmaps can be filtered by it, for example sessions with `generate_lead` or `form_error`.
+**Microsoft Clarity** (project `yy9kmhhvj5`) is loaded by the site itself (`src/components/consent-banner.tsx`), and only
+once session recordings are allowed. The "Microsoft Clarity - Official" tag in GTM is **paused** so it cannot record
+before consent; keep it paused. Clarity stays linked to GA4 in Clarity's settings. Every site event is also sent to
+Clarity (`clarity("event", name)`), so recordings and heatmaps can be filtered by it, for example sessions with
+`generate_lead` or `form_error`.
 
 **Do not add a GA4 tag in GTM** (the container should hold only Clarity and non-Google tags) (neither a Google tag for `G-4CVZYN65JJ` nor GA4 event tags): GA4 is already on the page,
 and a second copy would count every visit and event twice.
@@ -17,6 +19,20 @@ No event ever carries what a person typed (name, email, phone, message): only wh
 
 GA4 and GTM load only in production builds (`npm run build && npm start`, or Vercel). `NEXT_PUBLIC_GA_ID` and
 `NEXT_PUBLIC_GTM_ID` override the IDs, and `off` disables either.
+
+## Cookie consent
+
+`src/lib/consent.ts` and `src/components/consent-banner.tsx`. Two optional kinds: **Analytics** (GA4) and **Session
+recordings** (Clarity); the bot check and remembering the choice are strictly necessary.
+
+- **EU and EEA, UK, Switzerland** (`src/proxy.ts` reads Vercel's `x-vercel-ip-country` and sets `crux_region=strict`):
+  both are off until the visitor chooses in the banner (Accept all, Reject all, or Customize).
+- **Everywhere else:** both are on, with no banner; "Cookie settings" in the footer lets anyone change it.
+- **Google Consent Mode v2:** defaults are set before GA4 and GTM load. In the strict regions `analytics_storage` starts
+  `denied` (by our cookie and by Google's own region list, so it holds even without the cookie), and ads storage is always
+  denied. While denied, GA4 sends only cookieless pings, which GA4 uses for modelled data.
+- The choice is kept in `localStorage` (`crux-consent`) for six months, then asked again. Each choice sends a
+  `consent_update` event (`consent_analytics`, `consent_recordings`, `consent_method`).
 
 ## Set up GA4 (about 10 minutes, once)
 

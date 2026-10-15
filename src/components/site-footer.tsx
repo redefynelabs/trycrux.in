@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { AskAiButtons } from "@/components/ask-ai";
+import { CookieSettingsLink } from "@/components/consent-banner";
 import { Logo } from "@/components/logo";
 import { COMPANY } from "@/lib/seo";
 import { SITE } from "@/lib/site";
@@ -40,7 +41,10 @@ export function SiteFooter() {
       <div className="mx-auto max-w-[84rem] px-4 sm:px-6">
         <div className="flex flex-col gap-2 border-t border-line py-6 text-xs text-muted sm:flex-row sm:items-center sm:justify-between">
           <p>© {new Date().getFullYear()} {COMPANY}. All rights reserved.</p>
-          <p>{SITE.name} is a product of {COMPANY}.</p>
+          <p className="flex flex-wrap items-center gap-x-4 gap-y-1">
+            <CookieSettingsLink className="underline-offset-4 transition-colors hover:text-fg hover:underline" />
+            <span>{SITE.name} is a product of {COMPANY}.</span>
+          </p>
         </div>
       </div>
 

@@ -27,7 +27,8 @@ export type EventName =
   | "video_complete"
   | "video_pause"
   | "video_sound_on"
-  | "video_sound_off";
+  | "video_sound_off"
+  | "consent_update"; // a cookie choice was saved
 
 export type EventParams = Record<string, string | number | boolean | undefined>;
 

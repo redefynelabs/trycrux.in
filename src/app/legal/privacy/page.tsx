@@ -17,7 +17,9 @@ export default function Privacy() {
       </ul>
 
       <h2>Cookies and browser storage</h2>
-      <p>We use Google Analytics, loaded with Google Tag Manager, to count visits and see which pages, buttons and campaigns bring people to us, and Microsoft Clarity to see how people use the site through heatmaps and recordings of page activity (clicks, scrolls and mouse movement). Clarity masks what you type into forms, and neither tool receives the details you enter. Both set cookies and process the data under their own terms; you can block them in your browser, and the site works the same without them. The site also keeps two small things in your browser: that you closed the announcement bar, and how you found us until you send a form or close the tab. The forms use Cloudflare Turnstile to tell people from bots, and it may set what it needs for that check.</p>
+      <p>We use Google Analytics, loaded with Google Tag Manager, to count visits and see which pages, buttons and campaigns bring people to us, and Microsoft Clarity to see how people use the site through heatmaps and recordings of page activity (clicks, scrolls and mouse movement). Clarity masks what you type into forms, and neither tool receives the details you enter. Both set cookies and process the data under their own terms, and the site works the same without them. The site also keeps two small things in your browser: that you closed the announcement bar, and how you found us until you send a form or close the tab. The forms use Cloudflare Turnstile to tell people from bots, and it may set what it needs for that check.</p>
+
+      <p>You choose. In the EU and EEA, the UK and Switzerland both stay off until you allow them in the cookie banner; elsewhere they are on unless you turn them off. Either way, &ldquo;Cookie settings&rdquo; at the bottom of every page lets you accept, reject or pick each one and change your mind at any time. Your choice is kept in your browser for six months. While analytics is off, Google receives only cookieless signals that cannot identify you, and Clarity is not loaded until you allow recordings.</p>
 
       <h2>Why we use it</h2>
       <ul>

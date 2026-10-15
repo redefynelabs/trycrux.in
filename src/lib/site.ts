@@ -9,6 +9,8 @@ export const SITE = {
   gtmId: process.env.NEXT_PUBLIC_GTM_ID || "GTM-WPXKWW33",
   /** Google Analytics 4 web stream; NEXT_PUBLIC_GA_ID overrides it and "off" disables it. Loaded only in production builds. */
   gaId: process.env.NEXT_PUBLIC_GA_ID || "G-4CVZYN65JJ",
+  /** Microsoft Clarity project; NEXT_PUBLIC_CLARITY_ID overrides it and "off" disables it. Loaded only after consent. */
+  clarityId: process.env.NEXT_PUBLIC_CLARITY_ID || "yy9kmhhvj5",
   /** The product video shown on the home page: a file or embed URL. Empty shows a placeholder. */
   demoVideoUrl: process.env.NEXT_PUBLIC_DEMO_VIDEO_URL ?? "",
 } as const;
