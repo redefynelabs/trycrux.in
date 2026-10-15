@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { buttonClass } from "@/components/buttons";
 import { CheckIcon } from "@/components/icons";
 import { FOCUS, TEAM_SIZE_LABELS, TRY_FIRST } from "@/content/lead";
+import { track } from "@/lib/analytics";
 import { postJson, readAttribution } from "@/lib/client";
 import { FOCUSES, TEAM_SIZES, type FieldErrors } from "@/lib/schemas";
 import { cn } from "@/lib/utils";
@@ -101,7 +102,7 @@ function Result({ ready, focus }: { ready: Ready; focus: string }) {
       <div className="h-1 bg-line"><div className="h-full bg-ok transition-[width] duration-1000" style={{ width: `${Math.max(0, Math.min(100, (left / TOTAL_MS) * 100))}%` }} /></div>
 
       <div className="space-y-6 p-6 sm:p-8">
-        <a href={ready.url} target="_blank" rel="noopener noreferrer" className={buttonClass("brand", "lg", "w-full")}>
+        <a href={ready.url} target="_blank" rel="noopener noreferrer" data-track="demo_open" className={buttonClass("brand", "lg", "w-full")}>
           Open your demo
         </a>
 
@@ -165,6 +166,9 @@ export function DemoForm() {
   const [formError, setFormError] = useState("");
   const [busy, setBusy] = useState(false);
   const [ready, setReady] = useState<Ready | null>(null);
+  const [started, setStarted] = useState(false);
+  // Which choices were made, never what was typed.
+  const choices = { form_name: "demo", team_size: values.team_size, focus: values.focus };
 
   const set = (k: keyof typeof values) => (e: { target: { value: string } }) => setValues((v) => ({ ...v, [k]: e.target.value }));
 
@@ -174,16 +178,21 @@ export function DemoForm() {
     setErrors({});
     setFormError("");
     if (captchaEnabled && !token) {
+      track("form_error", { ...choices, error_fields: "captcha", error: "captcha" });
       setFormError("Please complete the check below first.");
       return;
     }
     setBusy(true);
+    track("form_submit", choices);
     const out = await postJson<Ready>("/api/demo", { ...values, captcha_token: token, attribution: readAttribution() });
     setBusy(false);
     if (out.ok) {
+      track("generate_lead", { ...choices, lead_type: "demo" });
+      track("demo_ready", choices);
       setReady(out.data);
       return;
     }
+    track("form_error", { ...choices, error_fields: Object.keys(out.fields).join(",") || "none", error: Object.keys(out.fields).length ? "invalid" : "server" });
     setErrors(out.fields);
     setFormError(Object.keys(out.fields).length ? "" : out.message);
     setToken("");
@@ -194,7 +203,17 @@ export function DemoForm() {
   if (busy) return <Building />;
 
   return (
-    <form onSubmit={(e) => void submit(e)} noValidate className="relative bg-bg ring-1 ring-line">
+    <form
+      onSubmit={(e) => void submit(e)}
+      onInput={() => {
+        if (!started) {
+          setStarted(true);
+          track("form_start", { form_name: "demo" });
+        }
+      }}
+      noValidate
+      className="relative bg-bg ring-1 ring-line"
+    >
       <div className="flex items-center justify-between gap-3 bg-brand px-6 py-3 text-sm font-semibold text-white sm:px-8">
         <span>Start your free demo</span>
         <span className="text-xs font-medium text-white/80">No card · 1 hour · Mei included</span>

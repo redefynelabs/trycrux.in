@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useReducedMotion } from "@/components/use-reduced-motion";
+import { track } from "@/lib/analytics";
 import { SITE } from "@/lib/site";
 
 const isFile = (u: string) => /\.(mp4|webm|ogg)(\?|$)/i.test(u);
@@ -34,6 +35,26 @@ function HeroVideo({ src }: { src: string }) {
   const reduced = useReducedMotion();
   const [playing, setPlaying] = useState(false);
   const [muted, setMuted] = useState(true);
+  // Progress marks already sent this page view; the video loops, so each is sent once.
+  const marks = useRef(new Set<number>());
+  // Whether the person has pressed play, pause or sound, to tell their plays from autoplay.
+  const acted = useRef(false);
+
+  const onTime = () => {
+    const v = ref.current;
+    if (!v || !v.duration) return;
+    const pct = (v.currentTime / v.duration) * 100;
+    for (const m of [25, 50, 75]) {
+      if (pct >= m && !marks.current.has(m)) {
+        marks.current.add(m);
+        track("video_progress", { video_title: "Crux hero", video_percent: m });
+      }
+    }
+    if (pct >= 97 && !marks.current.has(100)) {
+      marks.current.add(100);
+      track("video_complete", { video_title: "Crux hero" });
+    }
+  };
 
   useEffect(() => {
     const v = ref.current;
@@ -46,16 +67,22 @@ function HeroVideo({ src }: { src: string }) {
   const toggleSound = () => {
     const v = ref.current;
     if (!v) return;
+    acted.current = true;
     v.muted = !v.muted;
     setMuted(v.muted);
+    track(v.muted ? "video_sound_off" : "video_sound_on", { video_title: "Crux hero", video_percent: Math.round((v.currentTime / (v.duration || 1)) * 100) });
     if (!v.muted && v.paused) void v.play();
   };
 
   const toggle = () => {
     const v = ref.current;
     if (!v) return;
+    acted.current = true;
     if (v.paused) void v.play();
-    else v.pause();
+    else {
+      v.pause();
+      track("video_pause", { video_title: "Crux hero", video_percent: Math.round((v.currentTime / (v.duration || 1)) * 100) });
+    }
   };
 
   return (
@@ -67,7 +94,14 @@ function HeroVideo({ src }: { src: string }) {
         playsInline
         preload="metadata"
         poster={HERO.poster}
-        onPlay={() => setPlaying(true)}
+        onPlay={() => {
+          setPlaying(true);
+          if (!marks.current.has(0)) {
+            marks.current.add(0);
+            track("video_start", { video_title: "Crux hero", autoplay: !acted.current });
+          }
+        }}
+        onTimeUpdate={onTime}
         onPause={() => setPlaying(false)}
         aria-label="Crux product tour: the dashboard, people and attendance, quote to invoice, finance reports and Mei, the AI assistant"
         className="size-full object-cover"

@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { Geist, Geist_Mono } from "next/font/google";
 import localFont from "next/font/local";
 import Script from "next/script";
+import { AnalyticsListener } from "@/components/analytics-listener";
 import { AnnouncementBar } from "@/components/announcement-bar";
 import { AttributionCapture } from "@/components/attribution-capture";
 import { PageBackdrop } from "@/components/page-backdrop";
@@ -47,8 +48,11 @@ export const viewport: Viewport = {
   ],
 };
 
-// Google Tag Manager runs on the live site only, so development and preview visits do not count.
-const GTM = process.env.NODE_ENV === "production" && SITE.gtmId !== "off" ? SITE.gtmId : "";
+// Google Tag Manager and Google Analytics run on the live site only, so development visits do not count. GA4 is loaded
+// directly (not through GTM) and the site's events go to it with gtag (src/lib/analytics.ts); GTM is for other tags.
+const LIVE = process.env.NODE_ENV === "production";
+const GTM = LIVE && SITE.gtmId !== "off" ? SITE.gtmId : "";
+const GA = LIVE && SITE.gaId !== "off" ? SITE.gaId : "";
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
@@ -58,6 +62,14 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <noscript>
             <iframe src={`https://www.googletagmanager.com/ns.html?id=${GTM}`} height="0" width="0" style={{ display: "none", visibility: "hidden" }} title="Google Tag Manager" />
           </noscript>
+        )}
+        {GA && (
+          <>
+            <Script id="ga4-src" src={`https://www.googletagmanager.com/gtag/js?id=${GA}`} strategy="afterInteractive" />
+            <Script id="ga4" strategy="afterInteractive">
+              {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${GA}');`}
+            </Script>
+          </>
         )}
         {GTM && (
           <Script id="gtm" strategy="afterInteractive">
@@ -69,6 +81,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           Skip to content
         </a>
         <AttributionCapture />
+        <AnalyticsListener />
         <AnnouncementBar />
         {/* A framed column: on wide screens the page sits between hatched gutters, as in the Magic UI templates. */}
         <div className="2xl:bg-[repeating-linear-gradient(135deg,var(--line)_0_1px,transparent_1px_9px)]">

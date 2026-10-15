@@ -34,15 +34,17 @@ export function AnnouncementBar() {
   const closed = useSyncExternalStore(subscribe, closedNow, () => false);
   if (!ANNOUNCEMENT || closed) return null;
   return (
-    <div role="region" aria-label="Announcement" className="relative bg-fg px-10 py-2 text-center text-sm text-bg">
+    <div role="region" aria-label="Announcement" data-announcement className="relative bg-fg px-10 py-2 text-center text-sm text-bg">
       <p className="mx-auto max-w-4xl">
         {ANNOUNCEMENT.text}{" "}
-        <Link href={ANNOUNCEMENT.href} className="group inline-flex items-center gap-1 font-semibold underline underline-offset-4">
+        <Link href={ANNOUNCEMENT.href} data-track="announcement_click" data-track-announcement={ANNOUNCEMENT.id} className="group inline-flex items-center gap-1 font-semibold underline underline-offset-4">
           {ANNOUNCEMENT.cta}
           <ArrowRightIcon className="size-3.5 transition-transform group-hover:translate-x-0.5" />
         </Link>
       </p>
       <button
+        data-track="announcement_close"
+        data-track-announcement={ANNOUNCEMENT.id}
         type="button"
         aria-label="Close the announcement"
         onClick={() => {

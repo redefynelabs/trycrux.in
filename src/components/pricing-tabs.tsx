@@ -32,7 +32,7 @@ function Segmented<T extends string>({ value, onChange, options, label }: { valu
   return (
     <div role="radiogroup" aria-label={label} className="inline-flex rounded-full bg-soft p-1 ring-1 ring-line">
       {options.map((o) => (
-        <button key={o.id} type="button" role="radio" aria-checked={o.id === value} onClick={() => onChange(o.id)} className={cn("inline-flex items-center gap-2 rounded-full px-5 py-2 text-sm font-medium transition-colors", o.id === value ? "bg-accent text-white" : "text-muted hover:text-fg")}>
+        <button key={o.id} type="button" role="radio" aria-checked={o.id === value} onClick={() => onChange(o.id)} data-track="tab_select" data-track-tab-group={label} data-track-tab-name={o.label} className={cn("inline-flex items-center gap-2 rounded-full px-5 py-2 text-sm font-medium transition-colors", o.id === value ? "bg-accent text-white" : "text-muted hover:text-fg")}>
           {o.icon}
           {o.label}
           {o.badge && <span className={cn("rounded-full px-2 py-0.5 text-[11px] font-semibold", o.id === value ? "bg-white/20 text-white" : "bg-ok-soft text-ok")}>{o.badge}</span>}

@@ -29,7 +29,7 @@ export function FaqTabs({ groups }: { groups: FaqGroup[] }) {
     <div>
       <div role="tablist" aria-label="Question topics" className="mb-8 flex flex-wrap justify-center gap-2">
         {groups.map((g) => (
-          <button key={g.id} role="tab" aria-selected={g.id === id} onClick={() => setId(g.id)} className={cn("rounded-full px-4 py-1.5 text-sm font-medium transition-colors", g.id === id ? "bg-accent text-white" : "bg-soft text-muted ring-1 ring-line hover:text-fg")}>
+          <button key={g.id} role="tab" aria-selected={g.id === id} onClick={() => setId(g.id)} data-track="tab_select" data-track-tab-group="Question topics" data-track-tab-name={g.label} className={cn("rounded-full px-4 py-1.5 text-sm font-medium transition-colors", g.id === id ? "bg-accent text-white" : "bg-soft text-muted ring-1 ring-line hover:text-fg")}>
             {g.label}
           </button>
         ))}

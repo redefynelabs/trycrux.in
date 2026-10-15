@@ -40,6 +40,8 @@ export function AskAiButtons({ size = "md", align = "center", className }: { siz
             href={a.url(prompt)}
             target="_blank"
             rel="noopener noreferrer"
+            data-track="ask_ai_click"
+            data-track-assistant={a.name}
             onClick={"copies" in a ? () => void copy() : undefined}
             className={buttonClass("outline", size, align === "start" ? "justify-start" : "")}
           >

@@ -5,6 +5,7 @@ import { useState } from "react";
 import { buttonClass } from "@/components/buttons";
 import { CheckIcon, CloudIcon, ServerIcon, SparkIcon } from "@/components/icons";
 import { TEAM_SIZE_LABELS, TIMELINE_LABELS } from "@/content/lead";
+import { track } from "@/lib/analytics";
 import { postJson, readAttribution } from "@/lib/client";
 import { INTERESTS, TEAM_SIZES, TIMELINES, type FieldErrors } from "@/lib/schemas";
 import { ChoiceCards, Field, Honeypot, Pills, TextArea, TextInput } from "./field";
@@ -69,6 +70,9 @@ export function ContactForm({ defaultInterest = "cloud", defaultPlan = "" }: { d
   const [formError, setFormError] = useState("");
   const [busy, setBusy] = useState(false);
   const [sent, setSent] = useState(false);
+  const [started, setStarted] = useState(false);
+  // Which choices were made, never what was typed.
+  const choices = { form_name: "contact", interest: values.interest, plan: values.plan, team_size: values.team_size, timeline: values.timeline };
 
   const set = (k: keyof typeof values) => (e: { target: { value: string } }) => setValues((v) => ({ ...v, [k]: e.target.value }));
   const addStarter = (t: string) => setValues((v) => (v.message.includes(t) ? v : { ...v, message: v.message ? `${v.message.trimEnd()} ${t}` : t }));
@@ -79,16 +83,20 @@ export function ContactForm({ defaultInterest = "cloud", defaultPlan = "" }: { d
     setErrors({});
     setFormError("");
     if (captchaEnabled && !token) {
+      track("form_error", { ...choices, error_fields: "captcha", error: "captcha" });
       setFormError("Please complete the check below first.");
       return;
     }
     setBusy(true);
+    track("form_submit", choices);
     const out = await postJson<{ status: string }>("/api/contact", { ...values, captcha_token: token, attribution: readAttribution() });
     setBusy(false);
     if (out.ok) {
+      track("generate_lead", { ...choices, lead_type: "sales" });
       setSent(true);
       return;
     }
+    track("form_error", { ...choices, error_fields: Object.keys(out.fields).join(",") || "none", error: Object.keys(out.fields).length ? "invalid" : "server" });
     setErrors(out.fields);
     setFormError(Object.keys(out.fields).length ? "" : out.message);
     setToken("");
@@ -100,7 +108,17 @@ export function ContactForm({ defaultInterest = "cloud", defaultPlan = "" }: { d
   }
 
   return (
-    <form onSubmit={(e) => void submit(e)} noValidate className="relative bg-bg ring-1 ring-line">
+    <form
+      onSubmit={(e) => void submit(e)}
+      onInput={() => {
+        if (!started) {
+          setStarted(true);
+          track("form_start", { form_name: "contact" });
+        }
+      }}
+      noValidate
+      className="relative bg-bg ring-1 ring-line"
+    >
       <div className="flex items-center justify-between gap-3 bg-brand px-6 py-3 text-sm font-semibold text-white sm:px-8">
         <span>Tell us about your team</span>
         <span className="text-xs font-medium text-white/80">We reply within one working day</span>
