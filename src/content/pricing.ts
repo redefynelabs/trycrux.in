@@ -2,7 +2,7 @@
  * Pricing, in one place. Review every figure, every limit and the terms before launch.
  */
 
-export const CURRENCY = "₹";
+import { formatMoney, type CurrencyCode } from "@/lib/currency";
 
 export interface Plan {
   id: string;
@@ -117,6 +117,35 @@ export const AMC = {
   text: "Optional yearly support and updates for a lifetime licence: new releases, bug fixes and priority email support. Without it, your system keeps working; you just stop receiving new releases.",
 };
 
+/**
+ * List prices in each currency we show, before tax. INR is the source (the figures above, which the margin test checks);
+ * the others are set from it at about USD 1 = INR 98, GBP 1 = USD 1.33, EUR 1 = USD 1.16 and USD 1 = AED 3.67, then
+ * rounded to a clean price. They are set by hand, not converted live, so a price never changes with the exchange rate.
+ * Review them before launch; pricing.test.ts fails if one drifts more than 15% from the INR price.
+ */
+export const PRICES: Record<CurrencyCode, { cloud: Record<"small" | "business", number>; own: Record<"term1" | "term2" | "lifetime", number>; amc: number }> = {
+  INR: { cloud: { small: 2999, business: 6999 }, own: { term1: 99999, term2: 159999, lifetime: 299999 }, amc: 24999 },
+  USD: { cloud: { small: 29, business: 69 }, own: { term1: 999, term2: 1599, lifetime: 2999 }, amc: 249 },
+  GBP: { cloud: { small: 23, business: 52 }, own: { term1: 749, term2: 1199, lifetime: 2299 }, amc: 189 },
+  EUR: { cloud: { small: 26, business: 59 }, own: { term1: 899, term2: 1399, lifetime: 2599 }, amc: 219 },
+  AED: { cloud: { small: 109, business: 259 }, own: { term1: 3699, term2: 5899, lifetime: 10999 }, amc: 899 },
+};
+
+/** A cloud plan's monthly price in a currency; undefined for a plan quoted by sales. */
+export function cloudPrice(id: string, c: CurrencyCode): number | undefined {
+  return PRICES[c].cloud[id as keyof (typeof PRICES)[CurrencyCode]["cloud"]];
+}
+
+/** A licence's price in a currency. */
+export function licencePrice(id: string, c: CurrencyCode): number {
+  return PRICES[c].own[id as keyof (typeof PRICES)[CurrencyCode]["own"]];
+}
+
+/** A price with its currency, e.g. "₹2,999", "$29", "AED 109". */
+export function money(n: number, c: CurrencyCode): string {
+  return formatMoney(n, c);
+}
+
 export function inr(n: number): string {
-  return CURRENCY + n.toLocaleString("en-IN");
+  return money(n, "INR");
 }

@@ -1,5 +1,7 @@
 "use client";
 
+import { useRegion } from "@/components/currency-picker";
+import { CURRENCIES, formatMoney, fromInr } from "@/lib/currency";
 import { AnimatePresence, LayoutGroup, motion } from "motion/react";
 import { useEffect, useState, type ReactNode } from "react";
 import { Avatar } from "@/components/avatar";
@@ -21,14 +23,14 @@ function useTick(ms: number, calm: boolean, fn: () => void) {
 }
 
 /** A number that eases to its new value. */
-function Count({ value, prefix = "", className }: { value: number; prefix?: string; className?: string }) {
+function Count({ value, prefix = "", locale = "en-IN", className }: { value: number; prefix?: string; locale?: string; className?: string }) {
   const [shown, setShown] = useState(value);
   useEffect(() => {
     const from = shown;
     const t0 = performance.now();
     let raf = 0;
     const step = (t: number) => {
-      const k = Math.min(1, (t - t0) / 700);
+      const k = Math.min(1, Math.max(0, (t - t0) / 700));
       setShown(Math.round(from + (value - from) * (1 - (1 - k) ** 3)));
       if (k < 1) raf = requestAnimationFrame(step);
     };
@@ -37,7 +39,7 @@ function Count({ value, prefix = "", className }: { value: number; prefix?: stri
     // The animation starts from whatever is shown now.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value]);
-  return <span className={cn("tabular-nums", className)}>{prefix}{shown.toLocaleString("en-IN")}</span>;
+  return <span className={cn("tabular-nums", className)}>{prefix}{shown.toLocaleString(locale)}</span>;
 }
 
 // ---- People: a feed of what is happening, scrolling by like an audit log ----
@@ -189,17 +191,19 @@ function InvoiceFlow() {
     setState((s) => s.map((v, j) => (j === i ? (v + 1) % 3 : v)));
     setTurn((t) => t + 1);
   });
+  const region = useRegion();
+  const cur = CURRENCIES[region];
   const collected = INVOICES.reduce((sum, inv, i) => sum + (state[i] === 2 ? inv.amt : 0), 0);
   return (
     <div className="flex h-full flex-col justify-center gap-2.5 px-6 py-5">
       <div className="flex items-end justify-between rounded-2xl bg-soft px-4 py-3 ring-1 ring-line">
-        <div><p className="text-xs text-muted">Collected</p><Count prefix="₹" value={collected} className="text-2xl font-semibold" /></div>
+        <div><p className="text-xs text-muted">Collected</p><Count prefix={cur.symbol.length > 1 ? `${cur.symbol} ` : cur.symbol} locale={cur.locale} value={fromInr(collected, region)} className="text-2xl font-semibold" /></div>
         <p className="text-xs text-muted">{state.filter((v) => v === 2).length} of {INVOICES.length} paid</p>
       </div>
       {INVOICES.map((inv, i) => (
         <div key={inv.n} className="flex items-center gap-3 rounded-2xl bg-bg px-4 py-2.5 text-sm ring-1 ring-line">
           <div className="min-w-0 flex-1"><p className="font-medium">{inv.n}</p><p className="truncate text-xs text-muted">{inv.c}</p></div>
-          <span className="tabular-nums text-muted">₹{inv.amt.toLocaleString("en-IN")}</span>
+          <span className="tabular-nums text-muted">{formatMoney(fromInr(inv.amt, region), region)}</span>
           <motion.span key={state[i]} initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className={cn("w-16 rounded-full px-2.5 py-1 text-center text-xs font-semibold", TONE[FLOW[state[i]]])}>{FLOW[state[i]]}</motion.span>
         </div>
       ))}
@@ -219,22 +223,23 @@ const CARDS: { id: string; icon: typeof PeopleIcon; visual: ReactNode; span: str
 /** The four modules as a bento: a live picture of each working, its name, one line and the parts it is made of. */
 export function ModuleGrid() {
   return (
-    <div className="grid gap-px bg-line ring-1 ring-line lg:grid-cols-6">
+    <div className="grid grid-cols-2 gap-px bg-line ring-1 ring-line lg:grid-cols-6">
       {CARDS.map((c) => {
         const m = MODULES.find((x) => x.id === c.id)!;
         const Icon = c.icon;
         return (
           <article key={c.id} className={cn("flex flex-col bg-bg", c.span)}>
-            <div className="relative h-[24rem] overflow-hidden bg-gradient-to-b from-soft/50 to-bg" aria-hidden="true">
-              {c.visual}
+            <div className="relative h-44 overflow-hidden bg-gradient-to-b from-soft/50 to-bg sm:h-[24rem]" aria-hidden="true">
+              {/* Phones show the same live picture at half size, so two cards fit side by side. */}
+              <div className="h-[200%] w-[200%] origin-top-left scale-50 sm:h-full sm:w-full sm:scale-100">{c.visual}</div>
               {/* The live picture fades into the card instead of ending on a line. */}
               <div className="pointer-events-none absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-bg via-bg/60 to-transparent" />
             </div>
-            <div className="relative flex flex-1 flex-col px-8 pt-3 pb-8">
-              <span className="grid size-11 place-items-center rounded-2xl bg-brand-soft text-2xl text-brand"><Icon /></span>
-              <h3 className="mt-5 text-2xl font-semibold tracking-tight">{m.name}</h3>
-              <p className="mt-2 text-lg text-muted">{m.tagline}</p>
-              <ul className="mt-5 flex flex-wrap gap-2">
+            <div className="relative flex flex-1 flex-col px-4 pt-1 pb-5 sm:px-8 sm:pt-3 sm:pb-8">
+              <span className="grid size-9 place-items-center rounded-xl bg-brand-soft text-xl text-brand sm:size-11 sm:rounded-2xl sm:text-2xl"><Icon /></span>
+              <h3 className="mt-3 text-lg leading-tight font-semibold tracking-tight sm:mt-5 sm:text-2xl">{m.name}</h3>
+              <p className="mt-1.5 text-sm text-muted sm:mt-2 sm:text-lg">{m.tagline}</p>
+              <ul className="mt-5 hidden flex-wrap gap-2 sm:flex">
                 {m.features.slice(0, 4).map((f) => (
                   <li key={f.title} className="rounded-full bg-soft px-3 py-1 text-xs font-medium text-muted ring-1 ring-line">{f.title}</li>
                 ))}

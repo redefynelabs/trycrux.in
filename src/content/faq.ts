@@ -10,9 +10,9 @@ export interface FaqGroup {
 }
 
 export const PRODUCT_FAQ: QA[] = [
-  { q: "What is Crux?", a: "The AI-powered business operating system: the only software you need to run a company. People and HR, projects and timesheets, CRM and sales, and invoicing with GST, all on one set of records and one login. It also includes Mei, an AI assistant that answers from your own data." },
+  { q: "What is Crux?", a: "The AI-powered business operating system: the only software you need to run a company. People and HR, projects and timesheets, CRM and sales, and invoicing with taxes, all on one set of records and one login. It also includes Mei, an AI assistant that answers from your own data." },
   { q: "Which modules are included?", a: "All of them, in every plan: People & HR (records, documents, attendance, shifts, holidays, leave), Projects & Tasks (boards, timesheets), CRM & Sales (leads, clients, follow-ups, meetings, quotes, orders and a product catalog) and Finance & Billing (invoices, credit notes, recurring invoices, payments, expenses, banking and reports), plus Mei and the admin controls." },
-  { q: "Does it handle GST and other currencies?", a: "Yes. You can define named tax rates and turn on GST with CGST, SGST and IGST on every document, and you can bill in other currencies while the base-currency value is kept with the rate you used." },
+  { q: "Does it handle my taxes and other currencies?", a: "Yes. You can define named tax rates such as VAT or sales tax on every document (and GST with CGST, SGST and IGST for India), and you can bill in other currencies while the base-currency value is kept with the rate you used." },
   { q: "Do I have to use every module?", a: "No. HR, Projects, CRM and Finance each work on their own, and features inside them can be switched on or off. Use what your team needs today and turn on more later; the records are shared when you do." },
   { q: "How quickly can we start?", a: "Within 24 hours. Talk to us, and we set up your system with you, bring in your people and clients, and set roles, so your business runs on it the next day." },
   { q: "Can I bring in the data I already have?", a: "Leads can be imported from a spreadsheet: you check a preview, nothing is imported until you confirm. For other records, tell us what you have and we will advise on the quickest way in." },
@@ -22,7 +22,7 @@ export const PRODUCT_FAQ: QA[] = [
 export const PRICING_GROUP_FAQ: QA[] = [
   { q: "Is there a per-user price?", a: "No. Every plan includes every feature and unlimited users. On the cloud you pay one flat monthly price for the size of your system, so it follows the capacity you need, not the number of logins." },
   { q: "What do the sizes mean?", a: "Your company gets its own private copy of the system with its own database and file bucket. A bigger size reserves more processing power and memory for it, a larger file allowance and longer backups. There is no user limit at any size; the team size shown is only a guide, and you can change size later." },
-  { q: "Are there add-on modules or hidden costs?", a: "No add-on modules. The only other cost is your own AI provider's bill if you use Mei, because the AI is billed to you by that provider at their price. Prices exclude applicable taxes such as GST." },
+  { q: "Are there add-on modules or hidden costs?", a: "No add-on modules. The only other cost is your own AI provider's bill if you use Mei, because the AI is billed to you by that provider at their price. Prices exclude applicable taxes such as GST or VAT." },
   { q: "Do you charge for setup?", a: "Cloud setup is free, and your system is running within 24 hours. For your own server we install it with you; ask us for the current setup and training options." },
   { q: "What does a lifetime licence include?", a: "The right to run the software forever on your server, with updates for the first year. After that, updates are optional through the yearly support plan; the software never stops working." },
   { q: "What happens when a term licence ends?", a: "The term you bought is over. Renew it to keep using the software and to receive updates and support. Your data is always yours: we never delete, lock or encrypt it, and you can export it at any time." },
@@ -65,7 +65,8 @@ export const PRICING_FAQ: QA[] = [
   { q: "Who owns the data?", a: "You do. It sits in your database, on your server (or your own instance on our cloud), and you can export it whenever you like." },
   { q: "Do you charge for setup?", a: "Cloud setup is free, and your system is running within 24 hours. For your own server we install it with you; ask us for the current setup and training options." },
   { q: "Is the AI assistant included?", a: "Yes, Mei is part of every plan. You connect your own AI provider account, so the cost of the AI is billed to you by that provider, at their price." },
-  { q: "Is tax included?", a: "Prices exclude applicable taxes such as GST, which are added on the invoice." },
+  { q: "Is tax included?", a: "Prices exclude applicable taxes such as GST or VAT, which are added on the invoice." },
+  { q: "Which currencies can I pay in?", a: "Indian rupees, US dollars, British pounds, euros and UAE dirhams. The site shows prices in the currency for your country, and you can switch it above the plans. You are invoiced in the currency you choose, at the price shown." },
 ];
 
 export const RUNNING_FAQ: QA[] = [

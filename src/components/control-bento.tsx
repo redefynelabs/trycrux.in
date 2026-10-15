@@ -1,5 +1,6 @@
 "use client";
 
+import { Local } from "@/components/currency-picker";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState } from "react";
 import { Avatar } from "@/components/avatar";
@@ -93,7 +94,7 @@ function AuditFeed() {
           <div key={who + what} className="flex items-start gap-3 rounded-2xl bg-bg p-3.5 ring-1 ring-line">
             <Avatar name={who} />
             <div className="min-w-0 text-sm">
-              <p><span className="font-medium">{who}</span> <span className="text-muted">{what}</span></p>
+              <p><span className="font-medium">{who}</span> <span className="text-muted"><Local>{what}</Local></span></p>
               <p className="mt-0.5 text-xs text-muted">{when}</p>
             </div>
           </div>
@@ -127,7 +128,7 @@ function Approvals() {
                 {i === 0 && <span className="absolute inline-flex size-full animate-ping rounded-full bg-brand/30" />}
                 <span className="relative size-2 rounded-full bg-brand" />
               </span>
-              <div className="min-w-0 flex-1 text-sm"><p className="truncate font-medium">{r.t}</p><p className="truncate text-xs text-muted">{r.d}</p></div>
+              <div className="min-w-0 flex-1 text-sm"><p className="truncate font-medium">{r.t}</p><p className="truncate text-xs text-muted"><Local>{r.d}</Local></p></div>
               <span className="rounded-full bg-soft px-2.5 py-1 text-[11px] font-medium text-muted ring-1 ring-line">{i === 0 ? "Just now" : r.tag}</span>
             </motion.li>
           ))}
@@ -204,20 +205,20 @@ function MeiUsage() {
 
 export function ControlBento() {
   return (
-    <div className="grid gap-px bg-line ring-1 ring-line lg:grid-cols-3">
+    <div className="grid grid-cols-2 gap-px bg-line ring-1 ring-line lg:grid-cols-3">
       <BentoCard className="lg:col-span-2" title="Roles and permissions" text="Built-in roles you can change, and a permission for every action, so people see and do only what they should.">
         <RoleMatrix />
       </BentoCard>
-      <BentoCard title="An audit log of everything" text="Who changed what, and when, for the things that matter.">
+      <BentoCard half className="lg:col-span-1" title="An audit log of everything" text="Who changed what, and when, for the things that matter.">
         <AuditFeed />
       </BentoCard>
-      <BentoCard title="Approvals and reminders" text="Leave, expenses and corrections wait for the right person, with email and WhatsApp nudges.">
+      <BentoCard half className="lg:col-span-1" title="Approvals and reminders" text="Leave, expenses and corrections wait for the right person, with email and WhatsApp nudges.">
         <Approvals />
       </BentoCard>
-      <BentoCard title="Give Mei to the right people" text="Turn the AI assistant on for everyone, or only for chosen people, teams and departments.">
+      <BentoCard half className="lg:col-span-1" title="Give Mei to the right people" text="Turn the AI assistant on for everyone, or only for chosen people, teams and departments.">
         <MeiAccess />
       </BentoCard>
-      <BentoCard title="See who used the AI, and how much" text="Questions, people and tokens for any period, so the provider's bill is never a surprise.">
+      <BentoCard half className="lg:col-span-1" title="See who used the AI, and how much" text="Questions, people and tokens for any period, so the provider's bill is never a surprise.">
         <MeiUsage />
       </BentoCard>
     </div>

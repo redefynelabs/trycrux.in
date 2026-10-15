@@ -44,7 +44,7 @@ export function track(event: EventName, params: EventParams = {}): void {
   if (typeof window === "undefined") return;
   const clean = Object.fromEntries(Object.entries(params).filter(([, v]) => v !== undefined && v !== ""));
   window.gtag?.("event", event, clean);
-  // Microsoft Clarity (loaded by GTM) marks the session, so recordings can be filtered by what people did.
+  // Microsoft Clarity (loaded once recordings are allowed) marks the session, so recordings can be filtered by what people did.
   window.clarity?.("event", event);
   window.dataLayer = window.dataLayer || [];
   window.dataLayer.push({ event, ...clean });

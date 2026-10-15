@@ -7,7 +7,9 @@ import { OneSystem } from "./scenes/one-system";
 import { People } from "./scenes/people";
 import { Problem } from "./scenes/problem";
 import { Sales } from "./scenes/sales";
+import { RegionContext } from "./region";
 import { FPS } from "./theme";
+import type { CurrencyCode } from "../../src/lib/currency";
 import { Backdrop } from "./ui";
 
 /** The scenes in order, with how long each runs. Neighbours overlap by OVERLAP frames so one fades into the next. */
@@ -24,9 +26,11 @@ const SCENES = [
 const OVERLAP = 10;
 const TOTAL = SCENES.reduce((n, s) => n + s.frames, 0) - OVERLAP * (SCENES.length - 1);
 
-function Hero() {
+/** One cut per region: the money and tax in the scenes follow `region` (npm run render makes all of them). */
+function Hero({ region }: { region: CurrencyCode }) {
   let at = 0;
   return (
+    <RegionContext.Provider value={region}>
     <AbsoluteFill>
       <Backdrop />
       {/* Music and effects cued to the scenes: sound/make_soundtrack.py writes it. */}
@@ -41,9 +45,10 @@ function Hero() {
         );
       })}
     </AbsoluteFill>
+    </RegionContext.Provider>
   );
 }
 
 export function Root() {
-  return <Composition id="Hero" component={Hero} durationInFrames={TOTAL} fps={FPS} width={1920} height={1080} />;
+  return <Composition id="Hero" component={Hero} defaultProps={{ region: "INR" as CurrencyCode }} durationInFrames={TOTAL} fps={FPS} width={1920} height={1080} />;
 }

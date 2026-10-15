@@ -54,7 +54,7 @@ export const MODULES: Module[] = [
     tagline: "Quote to cash without leaving the system.",
     features: [
       { title: "Invoices & credit notes", text: "Numbered invoices with line items, discounts and taxes, ready as PDF and by email." },
-      { title: "GST and tax rates", text: "Named tax rates and optional GST with CGST/SGST/IGST components on every document." },
+      { title: "Tax rates", text: "Named tax rates on every document: VAT, sales tax, or GST with CGST, SGST and IGST components for India." },
       { title: "Multi-currency", text: "Bill in other currencies; the base-currency value is kept with the rate you used." },
       { title: "Recurring invoices", text: "Schedules that issue and email invoices on time, every time." },
       { title: "Payments & expenses", text: "Record payments against invoices, track expenses and employee expense claims with approvals." },

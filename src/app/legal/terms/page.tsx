@@ -20,7 +20,7 @@ export default function Terms() {
 
       <h2>Cloud plans</h2>
       <ul>
-        <li>You pay the price of your plan in advance, monthly or yearly. Prices exclude taxes such as GST.</li>
+        <li>You pay the price of your plan in advance, monthly or yearly. Prices are in the currency you choose (INR, USD, GBP, EUR or AED) and exclude taxes such as GST or VAT.</li>
         <li>We keep your instance running, apply updates and take daily backups for the period of your plan.</li>
         <li>You may change plan or cancel at the end of any billing period. Fees already paid are not refunded unless the law requires it.</li>
         <li>If a payment fails we tell you and give you reasonable time to pay before we suspend the instance. A suspended instance is unavailable, but we keep its data for at least 30 days and you can export it during that time.</li>

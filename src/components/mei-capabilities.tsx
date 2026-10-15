@@ -1,5 +1,7 @@
 "use client";
 
+import { useRegion } from "@/components/currency-picker";
+import { localize } from "@/lib/currency";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState, type ReactNode } from "react";
 import { Avatar } from "@/components/avatar";
@@ -33,7 +35,9 @@ function Typing() {
   const calm = useReducedMotion();
   const [q, setQ] = useState(0);
   const [n, setN] = useState(0); // characters typed, then answered
-  const [question, answer] = QA[q];
+  const region = useRegion();
+  const question = QA[q][0];
+  const answer = localize(QA[q][1], region);
   const asked = n >= question.length;
   const thinking = asked && n < question.length + 14;
   const said = Math.max(0, n - question.length - 14);
@@ -84,12 +88,13 @@ function Reports() {
 }
 
 function Confirm() {
+  const region = useRegion();
   const step = useCycle(3, 1700);
   return (
     <div className="flex h-full items-center justify-center px-6">
       <div className="w-full rounded-2xl bg-bg p-4 ring-1 ring-line">
         <p className="text-xs text-muted">Draft invoice</p>
-        <p className="mt-0.5 text-sm font-semibold">Anita Desai · ₹1,02,660</p>
+        <p className="mt-0.5 text-sm font-semibold">Anita Desai · {localize("₹1,02,660", region)}</p>
         <div className="mt-3 flex items-center gap-2">
           <AnimatePresence mode="wait" initial={false}>
             {step === 2 ? (
@@ -199,32 +204,33 @@ function Usage() {
   );
 }
 
-const VISUAL: Record<string, { node: ReactNode; span: string }> = {
-  "Ask in plain words": { node: <Typing />, span: "sm:col-span-2" },
-  "Reports on demand": { node: <Reports />, span: "" },
-  "Acts only with your OK": { node: <Confirm />, span: "" },
-  "You choose who gets it": { node: <Access />, span: "" },
-  "See who used it and how much": { node: <Usage />, span: "" },
-  "A tax pack with only what is needed": { node: <TaxPack />, span: "sm:col-span-2" },
+/** `half` cards sit two to a row on phones, their pictures at 60%; the others take the full width. */
+const VISUAL: Record<string, { node: ReactNode; span: string; half?: boolean }> = {
+  "Ask in plain words": { node: <Typing />, span: "col-span-2" },
+  "Reports on demand": { node: <Reports />, span: "sm:col-span-1", half: true },
+  "Acts only with your OK": { node: <Confirm />, span: "sm:col-span-1", half: true },
+  "You choose who gets it": { node: <Access />, span: "sm:col-span-1", half: true },
+  "See who used it and how much": { node: <Usage />, span: "sm:col-span-1", half: true },
+  "A tax pack with only what is needed": { node: <TaxPack />, span: "col-span-2" },
 };
 const ORDER = ["Ask in plain words", "Reports on demand", "Acts only with your OK", "You choose who gets it", "See who used it and how much", "A tax pack with only what is needed"];
 
 /** What Mei does, as six small live pictures in a bento. */
 export function MeiCapabilities() {
   return (
-    <div className="grid gap-px bg-line ring-1 ring-line sm:grid-cols-2 lg:grid-cols-4">
+    <div className="grid grid-cols-2 gap-px bg-line ring-1 ring-line lg:grid-cols-4">
       {ORDER.map((title) => {
         const c = CAPABILITIES.find((x) => x.title === title)!;
         const v = VISUAL[title];
         return (
-          <article key={title} className={cn("flex flex-col bg-bg", v.span)}>
-            <div aria-hidden="true" className="relative h-60 overflow-hidden bg-gradient-to-b from-soft/50 to-bg">
-              {v.node}
+          <article key={title} className={cn("flex min-w-0 flex-col bg-bg", v.span)}>
+            <div aria-hidden="true" className={cn("relative overflow-hidden bg-gradient-to-b from-soft/50 to-bg", v.half ? "h-40 sm:h-60" : "h-52 sm:h-60")}>
+              {v.half ? <div className="h-[166.667%] w-[166.667%] origin-top-left scale-[0.6] sm:h-full sm:w-full sm:scale-100">{v.node}</div> : v.node}
               <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-bg to-transparent" />
             </div>
-            <div className="px-7 pt-3 pb-7">
-              <h3 className="text-lg font-semibold tracking-tight">{c.title}</h3>
-              <p className="mt-2 text-muted">{c.text}</p>
+            <div className={cn("pt-3", v.half ? "px-4 pb-5 sm:px-7 sm:pb-7" : "px-5 pb-6 sm:px-7 sm:pb-7")}>
+              <h3 className={cn("font-semibold tracking-tight", v.half ? "text-base leading-tight sm:text-lg" : "text-lg")}>{c.title}</h3>
+              <p className={cn("mt-2 text-muted", v.half && "text-sm sm:text-base")}>{c.text}</p>
             </div>
           </article>
         );

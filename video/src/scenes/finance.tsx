@@ -1,5 +1,6 @@
 import { AbsoluteFill, useCurrentFrame } from "remotion";
-import { C, inr, pop, ramp } from "../theme";
+import { useRegion } from "../region";
+import { C, pop, ramp } from "../theme";
 import { Card, Headline, Kicker, Pill, Scene, useCount } from "../ui";
 
 const MONTHS = ["Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct"];
@@ -20,6 +21,7 @@ function Stat({ label, value, tone, delay }: { label: string; value: string; ton
 /** 25–30 s: the month closes itself: revenue, expenses and profit that already add up. */
 export function Finance() {
   const frame = useCurrentFrame();
+  const r = useRegion();
   const revenue = useCount(1240000, 18, 36);
   const expenses = useCount(710000, 24, 36);
   const profit = useCount(530000, 30, 36);
@@ -31,14 +33,14 @@ export function Finance() {
         <Headline text="Close the month with numbers that already add up." size={66} delay={4} />
         <div style={{ display: "flex", gap: 28, marginTop: 46, width: 1500 }}>
           <div style={{ display: "flex", flexDirection: "column", gap: 20, width: 470 }}>
-            <Stat label="Revenue this quarter" value={inr(revenue)} tone="ok" delay={14} />
-            <Stat label="Expenses" value={inr(expenses)} tone="bad" delay={20} />
-            <Stat label="Profit" value={inr(profit)} tone="ok" delay={26} />
+            <Stat label="Revenue this quarter" value={r.money(revenue)} tone="ok" delay={14} />
+            <Stat label="Expenses" value={r.money(expenses)} tone="bad" delay={20} />
+            <Stat label="Profit" value={r.money(profit)} tone="ok" delay={26} />
           </div>
           <Card style={{ flex: 1, padding: 34, display: "flex", flexDirection: "column" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <span style={{ fontSize: 26, fontWeight: 600 }}>Revenue by month</span>
-              <Pill tone="brand">GST included in every invoice</Pill>
+              <Pill tone="brand">{r.taxName} included in every invoice</Pill>
             </div>
             <div style={{ flex: 1, display: "flex", alignItems: "flex-end", gap: 18, marginTop: 30, borderBottom: `1px solid ${C.line}` }}>
               {REVENUE.map((r, i) => {

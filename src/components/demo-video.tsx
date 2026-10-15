@@ -1,14 +1,21 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useRegion } from "@/components/currency-picker";
 import { useReducedMotion } from "@/components/use-reduced-motion";
 import { track } from "@/lib/analytics";
 import { SITE } from "@/lib/site";
 
 const isFile = (u: string) => /\.(mp4|webm|ogg)(\?|$)/i.test(u);
 
-/** The hero video, made in /video with Remotion (npm run render there writes these files). */
-const HERO = { webm: "/video/crux-hero.webm", mp4: "/video/crux-hero.mp4", poster: "/video/crux-hero-poster.jpg" };
+/** The hero video, made in /video with Remotion: one cut per region, with that region's money and tax (npm run render there writes them). */
+/** Regions whose cut is rendered; any other region plays the US dollar cut. */
+const RENDERED = ["INR", "USD"];
+
+function heroFiles(region: string) {
+  const r = (RENDERED.includes(region) ? region : "USD").toLowerCase();
+  return { webm: `/video/crux-hero-${r}.webm`, mp4: `/video/crux-hero-${r}.mp4`, poster: `/video/crux-hero-${r}-poster.jpg` };
+}
 
 /**
  * The product video under the hero. It plays muted and loops, like a moving screenshot, with a button to pause it; for
@@ -33,6 +40,8 @@ export function DemoVideo() {
 function HeroVideo({ src }: { src: string }) {
   const ref = useRef<HTMLVideoElement>(null);
   const reduced = useReducedMotion();
+  const region = useRegion();
+  const HERO = heroFiles(region);
   const [playing, setPlaying] = useState(false);
   const [muted, setMuted] = useState(true);
   // Progress marks already sent this page view; the video loops, so each is sent once.
@@ -61,7 +70,7 @@ function HeroVideo({ src }: { src: string }) {
     if (!v) return;
     if (reduced) v.pause();
     else v.play().catch(() => setPlaying(false));
-  }, [reduced]);
+  }, [reduced, region]);
 
   // Browsers only autoplay muted video, so sound starts off; turning it on also plays the video.
   const toggleSound = () => {
@@ -87,7 +96,9 @@ function HeroVideo({ src }: { src: string }) {
 
   return (
     <>
+      {/* Keyed by region, so a change of region loads that cut. */}
       <video
+        key={region}
         ref={ref}
         muted
         loop

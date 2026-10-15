@@ -6,26 +6,32 @@ import { ENTRIES, longDay, sortedEntries } from "@/content/changelog";
 import { FAQ_GROUPS, PRICING_FAQ } from "@/content/faq";
 import { HIGHLIGHTS, MODULES } from "@/content/features";
 import { CAPABILITIES, TRUST } from "@/content/mei";
-import { AMC, CLOUD, ON_PREM, inr } from "@/content/pricing";
+import { AMC, CLOUD, ON_PREM, PRICES, cloudPrice, licencePrice, money } from "@/content/pricing";
+import { CURRENCY_CODES, type CurrencyCode } from "@/lib/currency";
 import { COMPANY, DESCRIPTION } from "@/lib/seo";
 import { SITE } from "@/lib/site";
+
+/** One price in every currency: "₹2,999 / $29 / £23 / €26 / AED 109". */
+function allCurrencies(price: (c: CurrencyCode) => number): string {
+  return CURRENCY_CODES.map((c) => money(price(c), c)).join(" / ");
+}
 
 const u = (path: string) => SITE.url + path;
 
 function pricing(): string {
-  const cloud = CLOUD.tiers.map((t) => `- ${t.name}: ${t.perMonth ? `${inr(t.perMonth)} a month` : "priced with you"}. ${t.for}; ${t.team.toLowerCase()}. Backups: ${t.backups.toLowerCase()}.`);
-  const own = ON_PREM.map((l) => `- ${l.name}: ${inr(l.price)} ${l.per}. ${l.note}`);
+  const cloud = CLOUD.tiers.map((t) => `- ${t.name}: ${t.perMonth ? `${allCurrencies((c) => cloudPrice(t.id, c)!)} a month` : "priced with you"}. ${t.for}; ${t.team.toLowerCase()}. Backups: ${t.backups.toLowerCase()}.`);
+  const own = ON_PREM.map((l) => `- ${l.name}: ${allCurrencies((c) => licencePrice(l.id, c))} ${l.per}. ${l.note}`);
   return [
     "## Pricing",
     "",
-    `One flat price by company size, never per user. Every plan includes every module, Mei the AI assistant and unlimited users. Prices are in Indian rupees and exclude taxes such as GST. Yearly cloud billing saves ${CLOUD.annualDiscountPct}%. AI usage is billed by the AI provider whose key the customer connects.`,
+    `One flat price by company size, never per user. Every plan includes every module, Mei the AI assistant and unlimited users. Prices are set in Indian rupees, US dollars, British pounds, euros and UAE dirhams (the site shows the one for the visitor's country) and exclude taxes such as GST or VAT. Yearly cloud billing saves ${CLOUD.annualDiscountPct}%. AI usage is billed by the AI provider whose key the customer connects.`,
     "",
     "Cloud (we host and run it; each company gets its own instance and database):",
     ...cloud,
     "",
     "Own server (installed on the customer's server; the customer owns the database):",
     ...own,
-    `- Optional yearly support for a lifetime licence: ${inr(AMC.perYear)} a year. ${AMC.text}`,
+    `- Optional yearly support for a lifetime licence: ${allCurrencies((c) => PRICES[c].amc)} a year. ${AMC.text}`,
     "",
     `Details: ${u("/pricing")}`,
   ].join("\n");

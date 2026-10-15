@@ -116,20 +116,35 @@ export function OneSystem() {
         </ul>
       </div>
 
-      {/* Small screens: the hub first, then the tools it replaces. */}
+      {/* Small screens: the pile of tools, folding down into the one system. */}
       <div className="mx-auto max-w-md lg:hidden">
-        <Hub />
-        <p className="mt-6 mb-3 text-center text-sm font-medium text-muted">Instead of</p>
-        <ul className="grid gap-2.5 sm:grid-cols-2">
-          {[...LEFT, ...RIGHT].map((t) => <li key={t.name}><ToolCard t={t} /></li>)}
+        <p className="mb-3 text-center text-xs font-semibold tracking-widest text-muted uppercase">Instead of</p>
+        <ul className="grid grid-cols-3 gap-px bg-line ring-1 ring-line sm:grid-cols-5">
+          {[...LEFT, ...RIGHT].map((t) => (
+            <li key={t.name} className="flex flex-col items-center gap-2 bg-bg px-2 py-4 text-center">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={t.src} alt="" width={28} height={28} className="h-7 w-9 object-contain" />
+              <span className="text-xs leading-tight font-medium">{t.name}</span>
+            </li>
+          ))}
+          {/* Fills the last row of three; five across (wider phones) needs no filler. */}
+          <li className="col-span-2 flex items-center justify-center bg-soft px-3 py-4 text-center text-xs leading-snug text-muted sm:hidden">
+            …and the email threads and spreadsheets between them
+          </li>
         </ul>
+        <div aria-hidden="true" className="relative mx-auto flex h-16 w-px flex-col items-center bg-gradient-to-b from-line to-brand">
+          <span className="absolute -bottom-1 size-2.5 rotate-45 border-r-2 border-b-2 border-brand" />
+        </div>
+        <div className="mt-2">
+          <Hub />
+        </div>
       </div>
 
-      <dl className="mx-auto mt-14 grid max-w-4xl divide-y divide-line ring-1 ring-line sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+      <dl className="mx-auto mt-10 grid max-w-4xl grid-cols-3 divide-x divide-line ring-1 ring-line sm:mt-14">
         {STATS.map(([n, t]) => (
-          <div key={t} className="bg-bg px-6 py-5 text-center">
-            <dt className="text-4xl font-semibold tracking-tight text-brand">{n}</dt>
-            <dd className="mt-1 text-sm text-muted">{t}</dd>
+          <div key={t} className="bg-bg px-2 py-4 text-center sm:px-6 sm:py-5">
+            <dt className="text-3xl font-semibold tracking-tight text-brand sm:text-4xl">{n}</dt>
+            <dd className="mt-1 text-xs text-muted sm:text-sm">{t}</dd>
           </div>
         ))}
       </dl>

@@ -18,7 +18,7 @@ const INSIDE = [
   { Icon: PeopleIcon, title: "People & HR", stat: "12 people", items: ["A month of attendance", "Shifts, holidays and leave", "Employee documents"] },
   { Icon: ProjectsIcon, title: "Projects & Tasks", stat: "4 projects", items: ["Task boards with owners", "Timesheets against tasks", "Files on each project"] },
   { Icon: CrmIcon, title: "CRM & Sales", stat: "10 leads, 8 clients", items: ["A pipeline in motion", "Follow-ups and meetings", "Leads that became clients"] },
-  { Icon: FinanceIcon, title: "Finance & Billing", stat: "14 invoices", items: ["Payments and overdue invoices", "GST on every document", "Expenses and bank accounts"] },
+  { Icon: FinanceIcon, title: "Finance & Billing", stat: "14 invoices", items: ["Payments and overdue invoices", "Tax on every document, including GST for India", "Expenses and bank accounts"] },
   { Icon: SparkIcon, title: "Mei AI Assistant", stat: "15 free questions", items: ["Reports from your own data", "Drafts you confirm or edit", "Answers in seconds"] },
 ] as const;
 

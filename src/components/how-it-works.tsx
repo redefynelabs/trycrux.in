@@ -1,5 +1,7 @@
 "use client";
 
+import { useRegion } from "@/components/currency-picker";
+import { CURRENCIES, fromInr } from "@/lib/currency";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState, type ReactNode } from "react";
 import { CheckIcon, CloudIcon, CrmIcon, FinanceIcon, PeopleIcon, ProjectsIcon, ServerIcon } from "@/components/icons";
@@ -182,14 +184,14 @@ const EVENTS = [
 const TAG_ICON = { People: PeopleIcon, Finance: FinanceIcon, CRM: CrmIcon, Projects: ProjectsIcon } as const;
 
 /** A number that eases to its new value. */
-function Count({ value, prefix = "", suffix = "" }: { value: number; prefix?: string; suffix?: string }) {
+function Count({ value, prefix = "", suffix = "", locale = "en-IN" }: { value: number; prefix?: string; suffix?: string; locale?: string }) {
   const [shown, setShown] = useState(value);
   useEffect(() => {
     const from = shown;
     const t0 = performance.now();
     let raf = 0;
     const step = (t: number) => {
-      const k = Math.min(1, (t - t0) / 600);
+      const k = Math.min(1, Math.max(0, (t - t0) / 600));
       setShown(Math.round(from + (value - from) * (1 - (1 - k) ** 3)));
       if (k < 1) raf = requestAnimationFrame(step);
     };
@@ -198,18 +200,20 @@ function Count({ value, prefix = "", suffix = "" }: { value: number; prefix?: st
     // The animation starts from whatever is shown now.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value]);
-  return <span className="tabular-nums">{prefix}{shown.toLocaleString("en-IN")}{suffix}</span>;
+  return <span className="tabular-nums">{prefix}{shown.toLocaleString(locale)}{suffix}</span>;
 }
 
 /** Step 4: the company running, as live numbers and a feed of what just happened. */
 function RunIt({ calm }: { calm: boolean }) {
   const tick = useStages(100000, 1500, calm);
   const present = Math.min(12, 9 + Math.floor(tick / 3));
+  const region = useRegion();
+  const cur = CURRENCIES[region];
   const tiles = [
     { name: "People", Icon: PeopleIcon, node: <><Count value={present} /><span className="text-base font-medium text-muted"> / 12</span></>, note: "present today" },
     { name: "Projects", Icon: ProjectsIcon, node: <Count value={8 + (tick % 4)} />, note: "open tasks" },
     { name: "CRM", Icon: CrmIcon, node: <Count value={26 + Math.floor(tick / 2)} />, note: "leads in the pipeline" },
-    { name: "Finance", Icon: FinanceIcon, node: <Count prefix="₹" value={240000 + tick * 8200} />, note: "collected this month" },
+    { name: "Finance", Icon: FinanceIcon, node: <Count prefix={cur.symbol.length > 1 ? `${cur.symbol} ` : cur.symbol} locale={cur.locale} value={fromInr(240000 + tick * 8200, region)} />, note: "collected this month" },
   ];
   const feed = [0, 1, 2].map((k) => EVENTS[(tick + 4 - k) % EVENTS.length]).map((e, k) => ({ e, id: tick - k }));
   return (
@@ -259,7 +263,26 @@ export function HowItWorks() {
   const Visual = VISUALS[active];
   return (
     <div className="grid items-center gap-10 lg:grid-cols-12 lg:gap-16" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)} onFocus={() => setPaused(true)} onBlur={() => setPaused(false)}>
-      <ol className="lg:col-span-5">
+      {/* Phones: the steps as a row of progress bars, the step's words, then its picture right below. */}
+      <div className="lg:hidden">
+        <div role="tablist" aria-label="Steps" className="grid grid-cols-4 gap-2">
+          {STEPS.map((s, i) => (
+            <button key={s.title} type="button" role="tab" aria-selected={i === active} aria-label={`Step ${i + 1}: ${s.title}`} onClick={() => setActive(i)} className="group py-2 text-left">
+              <span className={cn("text-xs font-semibold", i === active ? "text-brand" : "text-muted")}>{i + 1}</span>
+              <span className="mt-1.5 block h-1 overflow-hidden rounded-full bg-line">
+                <motion.span key={`${active}-${paused}-${i}`} className="block h-full bg-brand" initial={{ width: i < active ? "100%" : 0 }} animate={{ width: i < active || (i === active && (paused || reduced)) ? "100%" : i === active ? "100%" : 0 }} transition={{ duration: i === active && !paused && !reduced ? STEP_MS / 1000 : 0, ease: "linear" }} />
+              </span>
+            </button>
+          ))}
+        </div>
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.div key={active} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.2 }} className="mt-4 min-h-[6.5rem]">
+            <h3 className="text-xl font-semibold tracking-tight">{STEPS[active].title}</h3>
+            <p className="mt-1.5 text-[15px] leading-relaxed text-muted">{STEPS[active].text}</p>
+          </motion.div>
+        </AnimatePresence>
+      </div>
+      <ol className="hidden lg:col-span-5 lg:block">
         {STEPS.map((s, i) => {
           const on = i === active;
           const last = i === STEPS.length - 1;
@@ -289,7 +312,7 @@ export function HowItWorks() {
           );
         })}
       </ol>
-      <div className="relative h-[30rem] lg:col-span-7" aria-live="polite">
+      <div className="relative -mt-4 h-[26rem] sm:h-[30rem] lg:col-span-7 lg:mt-0" aria-live="polite">
         <AnimatePresence mode="wait">
           <motion.div key={active} initial={{ opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -24 }} transition={{ duration: 0.35, ease: "easeOut" }} className="h-full">
             <Visual calm={reduced} />

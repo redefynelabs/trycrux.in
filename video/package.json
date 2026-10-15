@@ -4,7 +4,7 @@
   "description": "The Crux hero product video, made with Remotion. Renders to ../public/video.",
   "scripts": {
     "studio": "remotion studio src/index.ts",
-    "render": "remotion render src/index.ts Hero ../public/video/crux-hero.mp4 --codec h264 --crf 20 && remotion render src/index.ts Hero ../public/video/crux-hero.webm --codec vp9 --crf 32 && remotion still src/index.ts Hero ../public/video/crux-hero-poster.jpg --frame 330",
+    "render": "./render.sh",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

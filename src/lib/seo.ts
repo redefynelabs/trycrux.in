@@ -5,7 +5,8 @@
  */
 import type { Metadata } from "next";
 import type { QA } from "@/content/faq";
-import { CLOUD, ON_PREM } from "@/content/pricing";
+import { CLOUD, ON_PREM, cloudPrice, licencePrice } from "@/content/pricing";
+import { CURRENCY_CODES } from "@/lib/currency";
 import { SITE } from "@/lib/site";
 
 /** The company behind the product, as it appears in structured data and the legal pages. */
@@ -13,7 +14,7 @@ export const COMPANY = "Redefyne";
 
 /** The words people search for; also the description every page starts from. */
 export const DESCRIPTION =
-  "Crux is the AI-powered business operating system: the only software your business needs. HR, attendance and leave, projects and timesheets, CRM and sales, invoicing with GST and finance reports in one system, with Mei, an AI assistant that answers and drafts from your own data. Live within 24 hours, every feature in every plan, no per-user price.";
+  "Crux is the AI-powered business operating system: the only software your business needs. HR, attendance and leave, projects and timesheets, CRM and sales, invoicing with GST or VAT and finance reports in one system, with Mei, an AI assistant that answers and drafts from your own data. Live within 24 hours, every feature in every plan, no per-user price.";
 
 export const KEYWORDS = [
   "Crux",
@@ -75,8 +76,10 @@ export function siteGraph() {
         publisher: { "@id": org["@id"] },
         featureList: ["People and HR", "Attendance, shifts and leave", "Projects, tasks and timesheets", "CRM, leads and follow-ups", "Quotes, sales orders and product catalog", "Invoicing with GST", "Payments, expenses and finance reports", "Mei AI assistant", "Roles, permissions and audit log"],
         offers: [
-          ...cloud.map((t) => ({ "@type": "Offer", name: `${t.name} cloud plan`, price: t.perMonth, priceCurrency: "INR", category: "subscription", description: `${t.for}. ${t.team}. Billed monthly, before tax.` })),
-          ...ON_PREM.map((l) => ({ "@type": "Offer", name: l.name, price: l.price, priceCurrency: "INR", description: `${l.note} Runs on your own server.` })),
+          ...CURRENCY_CODES.flatMap((c) => [
+            ...cloud.map((t) => ({ "@type": "Offer", name: `${t.name} cloud plan`, price: cloudPrice(t.id, c), priceCurrency: c, category: "subscription", description: `${t.for}. ${t.team}. Billed monthly, before tax.` })),
+            ...ON_PREM.map((l) => ({ "@type": "Offer", name: l.name, price: licencePrice(l.id, c), priceCurrency: c, description: `${l.note} Runs on your own server.` })),
+          ]),
         ],
       },
     ],

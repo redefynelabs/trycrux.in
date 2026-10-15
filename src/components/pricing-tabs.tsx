@@ -5,13 +5,21 @@ import { animate } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import { buttonClass } from "@/components/buttons";
 import { CheckIcon, CloudIcon, ServerIcon } from "@/components/icons";
-import { AMC, CLOUD, inr, ON_PREM } from "@/content/pricing";
+import { useCurrency } from "@/components/currency-picker";
+import { AMC, CLOUD, cloudPrice, licencePrice, money, ON_PREM, PRICES } from "@/content/pricing";
+import { CURRENCIES, type CurrencyCode } from "@/lib/currency";
 import { cn } from "@/lib/utils";
 
 type Mode = "cloud" | "own";
 
+/** The currency sign before a price, smaller than the figure. */
+function CurrencySign({ currency }: { currency: CurrencyCode }) {
+  const s = CURRENCIES[currency].symbol;
+  return <span className={cn("font-semibold text-muted", s.length > 1 ? "text-xl" : "text-3xl")}>{s}</span>;
+}
+
 /** A price that counts to its new value when the plan or billing period changes. It renders the real figure from the start. */
-function Price({ value }: { value: number }) {
+function Price({ value, currency }: { value: number; currency: CurrencyCode }) {
   const ref = useRef<HTMLSpanElement>(null);
   const prev = useRef(value);
   useEffect(() => {
@@ -19,13 +27,13 @@ function Price({ value }: { value: number }) {
       duration: 0.6,
       ease: "easeOut",
       onUpdate: (v) => {
-        if (ref.current) ref.current.textContent = Math.round(v).toLocaleString("en-IN");
+        if (ref.current) ref.current.textContent = Math.round(v).toLocaleString(CURRENCIES[currency].locale);
       },
     });
     prev.current = value;
     return () => controls.stop();
-  }, [value]);
-  return <span ref={ref} className="text-5xl font-semibold tracking-tighter text-fg tabular-nums">{value.toLocaleString("en-IN")}</span>;
+  }, [value, currency]);
+  return <span ref={ref} className="text-5xl font-semibold tracking-tighter text-fg tabular-nums">{value.toLocaleString(CURRENCIES[currency].locale)}</span>;
 }
 
 function Segmented<T extends string>({ value, onChange, options, label }: { value: T; onChange: (v: T) => void; options: { id: T; label: string; badge?: string; icon?: React.ReactNode }[]; label: string }) {
@@ -70,6 +78,7 @@ function Tick() {
 export function PricingTabs({ showExtras = true }: { showExtras?: boolean }) {
   const [mode, setMode] = useState<Mode>("cloud");
   const [yearly, setYearly] = useState(false);
+  const currency = useCurrency();
   const factor = yearly ? 1 - CLOUD.annualDiscountPct / 100 : 1;
 
   return (
@@ -94,7 +103,8 @@ export function PricingTabs({ showExtras = true }: { showExtras?: boolean }) {
       {mode === "cloud" ? (
         <div className="mt-12 grid gap-px bg-line ring-1 ring-line md:grid-cols-3">
           {CLOUD.tiers.map((t) => {
-            if (!t.perMonth) {
+            const perMonth = cloudPrice(t.id, currency);
+            if (!perMonth) {
               return (
                 <Plan key={t.id} band={t.for}>
                   <h3 className="text-2xl font-semibold tracking-tight">{t.name}</h3>
@@ -115,16 +125,16 @@ export function PricingTabs({ showExtras = true }: { showExtras?: boolean }) {
                 </Plan>
               );
             }
-            const monthly = Math.round(t.perMonth * factor);
+            const monthly = Math.round(perMonth * factor);
             return (
               <Plan key={t.id} popular={t.popular} band={t.popular ? `Most chosen · ${t.for}` : t.for}>
                 <h3 className="text-2xl font-semibold tracking-tight">{t.name}</h3>
                 <p className="mt-6 flex items-baseline gap-1.5 whitespace-nowrap">
-                  <span className="text-3xl font-semibold text-muted">₹</span>
-                  <Price value={monthly} />
+                  <CurrencySign currency={currency} />
+                  <Price key={currency} value={monthly} currency={currency} />
                   <span className="text-sm text-muted">/ month</span>
                 </p>
-                <p className="mt-2 text-xs text-muted">{yearly ? `Billed yearly, ${inr(monthly * 12)}. ` : ""}{t.team}. Unlimited users.</p>
+                <p className="mt-2 text-xs text-muted">{yearly ? `Billed yearly, ${money(monthly * 12, currency)}. ` : ""}{t.team}. Unlimited users.</p>
                 <dl className="mt-6 divide-y divide-line border-y border-line">
                   <SpecRow k="Dedicated capacity" v={`${t.vcpu} vCPU, ${t.ramGb} GB`} />
                   <SpecRow k="File storage" v={`${t.filesGb} GB`} />
@@ -147,8 +157,8 @@ export function PricingTabs({ showExtras = true }: { showExtras?: boolean }) {
             <Plan key={l.id} popular={l.popular} band={l.popular ? "Best value" : l.per}>
               <h3 className="text-2xl font-semibold tracking-tight">{l.name}</h3>
               <p className="mt-6 flex items-baseline gap-1.5 whitespace-nowrap">
-                <span className="text-3xl font-semibold text-muted">₹</span>
-                <Price value={l.price} />
+                <CurrencySign currency={currency} />
+                <Price key={currency} value={licencePrice(l.id, currency)} currency={currency} />
               </p>
               <p className="mt-2 text-xs text-muted">{l.per}. {l.note}</p>
               <ul className="mt-6 flex-1 space-y-3 border-t border-line pt-6 text-sm">
@@ -174,7 +184,7 @@ export function PricingTabs({ showExtras = true }: { showExtras?: boolean }) {
           </div>
           <div className="flex flex-col justify-between bg-blue-600 p-8 text-white">
             <div>
-              <h3 className="font-semibold tracking-tight">{mode === "cloud" ? "Not sure which size?" : `Support and updates: ${inr(AMC.perYear)} / year`}</h3>
+              <h3 className="font-semibold tracking-tight">{mode === "cloud" ? "Not sure which size?" : `Support and updates: ${money(PRICES[currency].amc, currency)} / year`}</h3>
               <p className="mt-2 text-sm text-white/80">{mode === "cloud" ? "Try the demo, then tell us about your team and we will recommend a plan." : AMC.text}</p>
             </div>
             <Link href={mode === "cloud" ? "/demo" : "/contact?interest=on_prem"} className={buttonClass("onDark", "md", "mt-6 w-fit text-blue-700")}>{mode === "cloud" ? "Start a demo" : "Ask about support"}</Link>

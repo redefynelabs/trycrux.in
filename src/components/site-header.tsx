@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import { buttonClass } from "@/components/buttons";
+import { CurrencyPicker, Local } from "@/components/currency-picker";
 import { ArrowRightIcon } from "@/components/icons";
 import { NavCrmIcon, NavFinanceIcon, NavPeopleIcon, NavProjectsIcon, NavSparkIcon } from "@/components/nav-icons";
 import { Logo } from "@/components/logo";
@@ -15,7 +16,7 @@ const MODULES = [
   { href: "/#features", label: "People & HR", text: "Attendance, leave, shifts", Icon: NavPeopleIcon },
   { href: "/#features", label: "Projects & Tasks", text: "Boards and timesheets", Icon: NavProjectsIcon },
   { href: "/#features", label: "CRM & Sales", text: "Leads and follow-ups", Icon: NavCrmIcon },
-  { href: "/#features", label: "Finance & Billing", text: "Invoices, GST, expenses", Icon: NavFinanceIcon },
+  { href: "/#features", label: "Finance & Billing", text: "Invoices, tax, expenses", Icon: NavFinanceIcon },
 ] as const;
 
 const MORE = [
@@ -74,7 +75,7 @@ function ProductMenu({ onNavigate }: { onNavigate: () => void }) {
         <span className="relative">
           <span className="flex items-center gap-2 text-sm font-semibold"><span className="grid size-7 place-items-center rounded-lg bg-brand text-base text-white"><NavSparkIcon /></span>Mei AI Assistant</span>
           <span className="mt-4 block rounded-lg bg-white/10 px-3 py-2 text-xs leading-5 text-white/90 ring-1 ring-white/10">Which invoices are overdue this month?</span>
-          <span className="mt-2 block rounded-lg bg-white/5 px-3 py-2 text-xs leading-5 text-white/70 ring-1 ring-white/10">7 invoices, 2.4 lakh outstanding. Draft reminders?</span>
+          <span className="mt-2 block rounded-lg bg-white/5 px-3 py-2 text-xs leading-5 text-white/70 ring-1 ring-white/10"><Local>7 invoices, ₹2.4 lakh outstanding. Draft reminders?</Local></span>
         </span>
         <span className="relative mt-5 inline-flex items-center gap-1.5 text-sm font-semibold">See Mei <ArrowRightIcon className="size-4 transition-transform group-hover:translate-x-1" /></span>
       </Link>
@@ -176,20 +177,24 @@ export function SiteHeader() {
           })}
         </nav>
 
-        <div className="hidden items-center gap-2 justify-self-end md:flex">
-          <Link href="/demo" className={buttonClass("primary", "sm", "h-9 gap-1.5 pr-3")}>
-            Try for free <ArrowRightIcon className="size-3.5" />
-          </Link>
-        </div>
-
-        <button type="button" aria-expanded={mobile} aria-controls="mobile-menu" onClick={() => setMobileAt(mobile ? null : path)} className={buttonClass("outline", "sm", "col-start-3 gap-2 justify-self-end md:hidden")}>
-          <span aria-hidden="true" className="relative block h-3 w-4 shrink-0">
-            <span className={cn("absolute left-0 h-0.5 w-4 bg-fg transition-all", mobile ? "top-1.5 rotate-45" : "top-0")} />
-            <span className={cn("absolute top-1.5 left-0 h-0.5 w-4 bg-fg transition-opacity", mobile && "opacity-0")} />
-            <span className={cn("absolute left-0 h-0.5 w-4 bg-fg transition-all", mobile ? "top-1.5 -rotate-45" : "top-3")} />
+        <div className="col-start-3 flex items-center gap-1 justify-self-end sm:gap-2">
+          <CurrencyPicker />
+          <span className="hidden md:block">
+            <Link href="/demo" className={buttonClass("primary", "sm", "h-9 gap-1.5 pr-3")}>
+              Try for free <ArrowRightIcon className="size-3.5" />
+            </Link>
           </span>
-          Menu
-        </button>
+          <span className="md:hidden">
+            <button type="button" aria-expanded={mobile} aria-controls="mobile-menu" onClick={() => setMobileAt(mobile ? null : path)} className={buttonClass("outline", "sm", "gap-2")}>
+              <span aria-hidden="true" className="relative block h-3 w-4 shrink-0">
+                <span className={cn("absolute left-0 h-0.5 w-4 bg-fg transition-all", mobile ? "top-1.5 rotate-45" : "top-0")} />
+                <span className={cn("absolute top-1.5 left-0 h-0.5 w-4 bg-fg transition-opacity", mobile && "opacity-0")} />
+                <span className={cn("absolute left-0 h-0.5 w-4 bg-fg transition-all", mobile ? "top-1.5 -rotate-45" : "top-3")} />
+              </span>
+              Menu
+            </button>
+          </span>
+        </div>
       </div>
 
       <AnimatePresence>

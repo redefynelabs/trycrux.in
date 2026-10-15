@@ -1,10 +1,12 @@
 "use client";
 
 import { AnimatePresence, motion } from "motion/react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useRegion } from "@/components/currency-picker";
 import { CheckIcon, SparkIcon } from "@/components/icons";
 import { useReducedMotion } from "@/components/use-reduced-motion";
 import { DEMO } from "@/content/mei";
+import { localize } from "@/lib/currency";
 import { cn } from "@/lib/utils";
 
 type Phase = "typing" | "reading" | "answer";
@@ -15,7 +17,13 @@ export function MeiDemo() {
   const [index, setIndex] = useState(0);
   const [phase, setPhase] = useState<Phase>("typing");
   const [typed, setTyped] = useState(0);
-  const scenario = DEMO[index];
+  const region = useRegion();
+  // The sample money and tax follow the visitor's region.
+  const scenario = useMemo(() => {
+    const d = DEMO[index];
+    const l = (t: string) => localize(t, region);
+    return { ...d, question: l(d.question), intro: l(d.intro), rows: d.rows.map((r) => r.map(l)), points: d.points.map(l), note: l(d.note) };
+  }, [index, region]);
 
   // With reduced motion, show a finished answer and let the visitor choose.
   const showPhase: Phase = calm ? "answer" : phase;

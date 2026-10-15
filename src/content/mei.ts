@@ -71,16 +71,16 @@ export const DEMO = [
   {
     id: "invoice",
     label: "Draft an invoice",
-    question: "Draft an invoice for Anita Desai: October retainer and 12 extra design hours, with GST",
+    question: "Draft an invoice for Anita Desai: October retainer and 12 extra design hours, with {tax}",
     reading: ["Clients", "Tax rates", "Last invoice"],
-    intro: "I have prepared a draft from her last invoice and your 18% GST rate. Check the lines, change anything you like, then confirm. Nothing is created until you do.",
+    intro: "I have prepared a draft from her last invoice and your {rate}% {tax} rate. Check the lines, change anything you like, then confirm. Nothing is created until you do.",
     head: [],
     rows: [
       ["Monthly retainer, October", "1", "₹45,000.00"],
       ["Extra design hours", "12", "₹42,000.00"],
-      ["GST at 18%", "", "₹15,660.00"],
+      ["{Tax} at {rate}%", "", "{tax:87000}"],
     ],
-    points: ["Total ₹1,02,660.00, due in 15 days, the same terms as her last invoice.", "The invoice stays a draft until you issue it."],
+    points: ["Total {total:87000}, due in 15 days, the same terms as her last invoice.", "The invoice stays a draft until you issue it."],
     note: "Before tax: ₹87,000.00",
   },
 ] as const;

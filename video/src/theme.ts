@@ -46,7 +46,3 @@ export function pop(frame: number, delay = 0, damping = 200): number {
   return spring({ frame: frame - delay, fps: FPS, config: { damping, mass: 0.6 } });
 }
 
-/** Rupees in the Indian grouping, e.g. 1,18,000. */
-export function inr(n: number): string {
-  return "₹" + Math.round(n).toLocaleString("en-IN");
-}

@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
-import { C, inr, pop, ramp } from "../theme";
+import { useRegion } from "../region";
+import { C, pop, ramp } from "../theme";
 import { Avatar, Card, Headline, Kicker, Pill, Scene } from "../ui";
 
 const Q1 = "Who were our top clients this quarter?";
@@ -49,6 +50,8 @@ function Thinking({ from, to }: { from: number; to: number }) {
 /** 30–38 s: Mei answers from the company's own data, then drafts an invoice that waits for a person to confirm. */
 export function Mei() {
   const frame = useCurrentFrame();
+  const r = useRegion();
+  const t = r.taxOn(100000);
   const max = TOP[0].value;
   // The first exchange slides up out of view to make room for the second.
   const scroll = interpolate(frame, [128, 150], [0, -300], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: (t) => t * t * (3 - 2 * t) });
@@ -79,7 +82,7 @@ export function Mei() {
                         <div style={{ flex: 1, height: 14, borderRadius: 99, background: C.soft }}>
                           <div style={{ width: `${(c.value / max) * 100 * w}%`, height: "100%", borderRadius: 99, background: C.brand }} />
                         </div>
-                        <span style={{ width: 150, textAlign: "right", fontSize: 22, fontVariantNumeric: "tabular-nums" }}>{inr(c.value * w)}</span>
+                        <span style={{ width: 150, textAlign: "right", fontSize: 22, fontVariantNumeric: "tabular-nums" }}>{r.money(c.value * w)}</span>
                       </div>
                     );
                   })}
@@ -93,7 +96,7 @@ export function Mei() {
                   <div style={{ flex: 1 }}>
                     <div style={{ fontSize: 19, color: C.muted }}>Invoice draft</div>
                     <div style={{ fontSize: 26, fontWeight: 600, marginTop: 4 }}>Acme Builders · October services</div>
-                    <div style={{ fontSize: 21, color: C.muted, marginTop: 4 }}>{`${inr(100000)} + GST 18% = ${inr(118000)}`}</div>
+                    <div style={{ fontSize: 21, color: C.muted, marginTop: 4 }}>{`${t.base} + ${r.taxName} ${r.rate}% = ${t.total}`}</div>
                   </div>
                   <div style={{ padding: "14px 26px", borderRadius: 999, border: `1px solid ${C.line}`, fontSize: 21, fontWeight: 600, color: C.muted }}>Edit</div>
                   <div style={{ padding: "14px 30px", borderRadius: 999, fontSize: 21, fontWeight: 600, color: "#fff", background: confirm ? C.ok : C.brand, transform: `scale(${interpolate(frame, [208, 212, 218], [1, 0.94, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" })})` }}>{confirm ? "Draft created ✓" : "Confirm"}</div>

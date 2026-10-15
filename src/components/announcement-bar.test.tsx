@@ -9,7 +9,8 @@ beforeEach(() => localStorage.clear());
 describe("announcement bar", () => {
   it("shows the message with its link", () => {
     render(<AnnouncementBar />);
-    expect(screen.getByText(new RegExp(ANNOUNCEMENT!.text.slice(0, 20)))).toBeInTheDocument();
+    // Twice on phones (it scrolls in a loop); the second copy is hidden from assistive tech.
+    expect(screen.getAllByText(new RegExp(ANNOUNCEMENT!.text.slice(0, 20)))[0]).toBeInTheDocument();
     expect(screen.getByRole("link", { name: ANNOUNCEMENT!.cta })).toHaveAttribute("href", ANNOUNCEMENT!.href);
   });
 

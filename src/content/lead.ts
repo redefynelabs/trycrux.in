@@ -10,7 +10,7 @@ export const FOCUS = [
   { value: "people", label: "People & HR", text: "Attendance, leave, shifts", Icon: PeopleIcon },
   { value: "projects", label: "Projects", text: "Tasks and timesheets", Icon: ProjectsIcon },
   { value: "crm", label: "CRM & Sales", text: "Leads and follow-ups", Icon: CrmIcon },
-  { value: "finance", label: "Finance", text: "Invoices, GST, expenses", Icon: FinanceIcon },
+  { value: "finance", label: "Finance", text: "Invoices, tax, expenses", Icon: FinanceIcon },
   { value: "mei", label: "Mei AI", text: "Ask your data anything", Icon: SparkIcon },
 ] as const;
 

@@ -8,7 +8,8 @@ built to loop.
 npm install
 npm run studio   # preview and scrub in the browser
 python3 sound/make_soundtrack.py   # music and effects -> public/soundtrack.wav (needs numpy, scipy)
-npm run render   # writes ../public/video/crux-hero.mp4, .webm and -poster.jpg, with the soundtrack
+npm run render   # every region: ../public/video/crux-hero-<inr|usd|gbp|eur|aed>.mp4, .webm and -poster.jpg
+./render.sh usd  # only some regions
 ```
 
 Scenes (`src/scenes`, order and lengths in `src/Root.tsx`):
@@ -19,10 +20,14 @@ Scenes (`src/scenes`, order and lengths in `src/Root.tsx`):
 | 4–9 s | problem | Six separate tools pulled into one mark |
 | 9–13 s | one-system | The dashboard with the four modules |
 | 13–18 s | people | Today's roster checking in, a leave request approved |
-| 18–24 s | sales | Quote accepted → order fulfilled → invoice draft with GST |
+| 18–24 s | sales | Quote accepted → order fulfilled → invoice draft with the region's tax |
 | 24–28 s | finance | Revenue, expenses and profit counting up, revenue by month |
 | 28–36 s | mei | Mei answers "top clients this quarter" and drafts an invoice to confirm |
 | 36–41 s | close | "The only software your business needs.", three points, trycrux.in |
 
 The colours and type match the website (`src/theme.ts`): Punta for headlines (copied into `public/`), Geist for the
-interface. All names and figures are invented sample data. Re-render after changing any scene, the logo or the font.
+interface. All names and figures are invented sample data.
+
+One cut per website region (`src/region.ts`, using the site's `src/lib/currency.ts`): the sample amounts are written
+in rupees and shown in the region's money, and the tax is the region's (CGST + SGST in India, VAT, US sales tax). The
+site plays the cut for the visitor's region. Re-render after changing any scene, the logo or the font.

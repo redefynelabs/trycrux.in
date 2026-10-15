@@ -3,11 +3,12 @@ import { faqPage, jsonLd, pageMeta } from "@/lib/seo";
 import { Cta } from "@/components/cta";
 import { FaqTabs } from "@/components/faq";
 import { CheckIcon } from "@/components/icons";
+import { TaxNote } from "@/components/currency-picker";
 import { PricingTabs } from "@/components/pricing-tabs";
 import { Reveal } from "@/components/reveal";
 import { PRICING_PAGE_FAQ } from "@/content/faq";
 
-export const metadata: Metadata = pageMeta("/pricing", "Pricing: one flat price, never per user", "Crux pricing: one flat monthly price by company size, never per user. Every module, Mei the AI assistant and unlimited users in every plan, on our cloud or as a licence for your own server. Prices in INR, before GST.");
+export const metadata: Metadata = pageMeta("/pricing", "Pricing: one flat price, never per user", "Crux pricing: one flat monthly price by company size, never per user. Every module, Mei the AI assistant and unlimited users in every plan, on our cloud or as a licence for your own server. Prices in INR, USD, GBP, EUR and AED, before tax.");
 
 
 const COMPARE = [
@@ -56,7 +57,7 @@ export default function PricingPage() {
         <div aria-hidden="true" className="hero-glow pointer-events-none absolute inset-x-0 top-0 -z-10 h-96" />
         <p className="text-sm font-semibold tracking-wide text-brand uppercase">Pricing</p>
         <h1 className="mx-auto mt-3 max-w-3xl text-4xl font-semibold tracking-tighter sm:text-6xl">One price for your whole team. Never per user.</h1>
-        <p className="mx-auto mt-5 max-w-2xl text-lg text-muted">Every plan is all of Crux: every module, Mei the AI assistant, and as many people as you have. You only choose the size. Prices exclude taxes such as GST, and AI usage is billed by the provider whose key you connect.</p>
+        <p className="mx-auto mt-5 max-w-2xl text-lg text-muted">Every plan is all of Crux: every module, Mei the AI assistant, and as many people as you have. You only choose the size. <TaxNote /> AI usage is billed by the provider whose key you connect.</p>
       </section>
 
       <section className="mx-auto mt-14 max-w-[84rem] px-4 sm:px-6" aria-label="Plans">

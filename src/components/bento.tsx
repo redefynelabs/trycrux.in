@@ -4,17 +4,20 @@ import Image from "next/image";
 import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
-/** A card of the bento grid: a visual on top, a title and a line of text below. */
-export function BentoCard({ title, text, className, children }: { title: string; text: string; className?: string; children: ReactNode }) {
+/**
+ * A card of the bento grid: a visual on top, a title and a line of text below. A `half` card sits two to a row on phones,
+ * with its picture at 60% so it still shows whole.
+ */
+export function BentoCard({ title, text, className, half, children }: { title: string; text: string; className?: string; half?: boolean; children: ReactNode }) {
   return (
-    <div className={cn("group relative flex flex-col overflow-hidden bg-bg", className)}>
-      <div className="relative min-h-64 flex-1 overflow-hidden">
-        {children}
+    <div className={cn("group relative flex min-w-0 flex-col overflow-hidden bg-bg", half ? "col-span-1" : "col-span-2", className)}>
+      <div className={cn("relative flex-1 overflow-hidden", half ? "h-44 flex-none sm:h-auto sm:min-h-64 sm:flex-1" : "min-h-64")}>
+        {half ? <div className="absolute inset-0 h-[166.667%] w-[166.667%] origin-top-left scale-[0.6] sm:static sm:contents">{children}</div> : children}
         {/* The picture fades into the card instead of ending on an edge. */}
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-bg to-transparent" />
       </div>
-      <div className="px-7 pt-3 pb-7">
-        <h3 className="text-lg font-semibold tracking-tight">{title}</h3>
+      <div className={cn("pt-3", half ? "px-4 pb-5 sm:px-7 sm:pb-7" : "px-5 pb-6 sm:px-7 sm:pb-7")}>
+        <h3 className={cn("font-semibold tracking-tight", half ? "text-base leading-tight sm:text-lg" : "text-lg")}>{title}</h3>
         <p className="mt-1.5 text-sm text-muted">{text}</p>
       </div>
     </div>
