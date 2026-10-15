@@ -9,8 +9,8 @@ import { SITE } from "@/lib/site";
 const isFile = (u: string) => /\.(mp4|webm|ogg)(\?|$)/i.test(u);
 
 /** The hero video, made in /video with Remotion: one cut per region, with that region's money and tax (npm run render there writes them). */
-/** Regions whose cut is rendered; any other region plays the US dollar cut. */
-const RENDERED = ["INR", "USD"];
+/** Regions whose cut is rendered; any other region (and a missing one) plays the US dollar cut. */
+const RENDERED = ["INR", "USD", "GBP", "EUR", "AED"];
 
 function heroFiles(region: string) {
   const r = (RENDERED.includes(region) ? region : "USD").toLowerCase();
