@@ -4,7 +4,6 @@ export const SITE = {
   tagline: "The AI-powered business operating system",
   /** The public address. NEXT_PUBLIC_SITE_URL overrides it (a staging copy, or http://localhost:3000 in .env for development). */
   url: (process.env.NEXT_PUBLIC_SITE_URL || "https://trycrux.in").replace(/\/+$/, ""),
-  loginUrl: process.env.NEXT_PUBLIC_APP_LOGIN_URL ?? "",
   email: "hello@trycrux.in",
   /** The product video shown on the home page: a file or embed URL. Empty shows a placeholder. */
   demoVideoUrl: process.env.NEXT_PUBLIC_DEMO_VIDEO_URL ?? "",

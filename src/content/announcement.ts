@@ -10,8 +10,8 @@ export interface Announcement {
 }
 
 export const ANNOUNCEMENT: Announcement | null = {
-  id: "2026-10-crm-sales",
-  text: "New in CRM: quotes, orders, a product catalog and invoices that write themselves. Plus, use only the modules you need.",
-  href: "/changelog",
-  cta: "See what's new",
+  id: "2026-10-mei",
+  text: "Meet Mei, the AI inside Crux: ask your business anything and get answers, reports and drafts from your own data.",
+  href: "/#mei",
+  cta: "Meet Mei",
 };
