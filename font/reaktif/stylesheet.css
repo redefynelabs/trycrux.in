@@ -1,0 +1,312 @@
+@font-face {
+    font-family: 'Reaktif';
+    src: url('Reaktif-BlackItalic.eot');
+    src: local('Reaktif Black Italic'), local('Reaktif-BlackItalic'),
+        url('Reaktif-BlackItalic.eot?#iefix') format('embedded-opentype'),
+        url('Reaktif-BlackItalic.woff2') format('woff2'),
+        url('Reaktif-BlackItalic.woff') format('woff'),
+        url('Reaktif-BlackItalic.ttf') format('truetype');
+    font-weight: 900;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Reaktif';
+    src: url('Reaktif-Black.eot');
+    src: local('Reaktif Black'), local('Reaktif-Black'),
+        url('Reaktif-Black.eot?#iefix') format('embedded-opentype'),
+        url('Reaktif-Black.woff2') format('woff2'),
+        url('Reaktif-Black.woff') format('woff'),
+        url('Reaktif-Black.ttf') format('truetype');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Reaktif';
+    src: url('Reaktif-BoldItalic.eot');
+    src: local('Reaktif Bold Italic'), local('Reaktif-BoldItalic'),
+        url('Reaktif-BoldItalic.eot?#iefix') format('embedded-opentype'),
+        url('Reaktif-BoldItalic.woff2') format('woff2'),
+        url('Reaktif-BoldItalic.woff') format('woff'),
+        url('Reaktif-BoldItalic.ttf') format('truetype');
+    font-weight: bold;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Reaktif';
+    src: url('Reaktif-Medium.eot');
+    src: local('Reaktif Medium'), local('Reaktif-Medium'),
+        url('Reaktif-Medium.eot?#iefix') format('embedded-opentype'),
+        url('Reaktif-Medium.woff2') format('woff2'),
+        url('Reaktif-Medium.woff') format('woff'),
+        url('Reaktif-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Reaktif Extra';
+    src: url('Reaktif-ExtraBoldItalic.eot');
+    src: local('Reaktif Extra Bold Italic'), local('Reaktif-ExtraBoldItalic'),
+        url('Reaktif-ExtraBoldItalic.eot?#iefix') format('embedded-opentype'),
+        url('Reaktif-ExtraBoldItalic.woff2') format('woff2'),
+        url('Reaktif-ExtraBoldItalic.woff') format('woff'),
+        url('Reaktif-ExtraBoldItalic.ttf') format('truetype');
+    font-weight: bold;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Reaktif';
+    src: url('Reaktif-RegularItalic.eot');
+    src: local('Reaktif Italic'), local('Reaktif-RegularItalic'),
+        url('Reaktif-RegularItalic.eot?#iefix') format('embedded-opentype'),
+        url('Reaktif-RegularItalic.woff2') format('woff2'),
+        url('Reaktif-RegularItalic.woff') format('woff'),
+        url('Reaktif-RegularItalic.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Reaktif';
+    src: url('Reaktif-HeavyItalic.eot');
+    src: local('Reaktif Heavy Italic'), local('Reaktif-HeavyItalic'),
+        url('Reaktif-HeavyItalic.eot?#iefix') format('embedded-opentype'),
+        url('Reaktif-HeavyItalic.woff2') format('woff2'),
+        url('Reaktif-HeavyItalic.woff') format('woff'),
+        url('Reaktif-HeavyItalic.ttf') format('truetype');
+    font-weight: 900;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Reaktif';
+    src: url('Reaktif-Light.eot');
+    src: local('Reaktif Light'), local('Reaktif-Light'),
+        url('Reaktif-Light.eot?#iefix') format('embedded-opentype'),
+        url('Reaktif-Light.woff2') format('woff2'),
+        url('Reaktif-Light.woff') format('woff'),
+        url('Reaktif-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Reaktif Extra';
+    src: url('Reaktif-ExtraBold.eot');
+    src: local('Reaktif Extra Bold'), local('Reaktif-ExtraBold'),
+        url('Reaktif-ExtraBold.eot?#iefix') format('embedded-opentype'),
+        url('Reaktif-ExtraBold.woff2') format('woff2'),
+        url('Reaktif-ExtraBold.woff') format('woff'),
+        url('Reaktif-ExtraBold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Reaktif Extra';
+    src: url('Reaktif-ExtraBlack.eot');
+    src: local('Reaktif Extra Black'), local('Reaktif-ExtraBlack'),
+        url('Reaktif-ExtraBlack.eot?#iefix') format('embedded-opentype'),
+        url('Reaktif-ExtraBlack.woff2') format('woff2'),
+        url('Reaktif-ExtraBlack.woff') format('woff'),
+        url('Reaktif-ExtraBlack.ttf') format('truetype');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Reaktif';
+    src: url('Reaktif-Heavy.eot');
+    src: local('Reaktif Heavy'), local('Reaktif-Heavy'),
+        url('Reaktif-Heavy.eot?#iefix') format('embedded-opentype'),
+        url('Reaktif-Heavy.woff2') format('woff2'),
+        url('Reaktif-Heavy.woff') format('woff'),
+        url('Reaktif-Heavy.ttf') format('truetype');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Reaktif News';
+    src: url('Reaktif-NewsItalic.eot');
+    src: local('Reaktif News Italic'), local('Reaktif-NewsItalic'),
+        url('Reaktif-NewsItalic.eot?#iefix') format('embedded-opentype'),
+        url('Reaktif-NewsItalic.woff2') format('woff2'),
+        url('Reaktif-NewsItalic.woff') format('woff'),
+        url('Reaktif-NewsItalic.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Reaktif';
+    src: url('Reaktif-Regular.eot');
+    src: local('Reaktif'), local('Reaktif-Regular'),
+        url('Reaktif-Regular.eot?#iefix') format('embedded-opentype'),
+        url('Reaktif-Regular.woff2') format('woff2'),
+        url('Reaktif-Regular.woff') format('woff'),
+        url('Reaktif-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Reaktif Book';
+    src: url('Reaktif-BookItalic.eot');
+    src: local('Reaktif Book Italic'), local('Reaktif-BookItalic'),
+        url('Reaktif-BookItalic.eot?#iefix') format('embedded-opentype'),
+        url('Reaktif-BookItalic.woff2') format('woff2'),
+        url('Reaktif-BookItalic.woff') format('woff'),
+        url('Reaktif-BookItalic.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Reaktif Extra';
+    src: url('Reaktif-ExtraLight.eot');
+    src: local('Reaktif Extra Light'), local('Reaktif-ExtraLight'),
+        url('Reaktif-ExtraLight.eot?#iefix') format('embedded-opentype'),
+        url('Reaktif-ExtraLight.woff2') format('woff2'),
+        url('Reaktif-ExtraLight.woff') format('woff'),
+        url('Reaktif-ExtraLight.ttf') format('truetype');
+    font-weight: 200;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Reaktif Book';
+    src: url('Reaktif-Book.eot');
+    src: local('Reaktif Book'), local('Reaktif-Book'),
+        url('Reaktif-Book.eot?#iefix') format('embedded-opentype'),
+        url('Reaktif-Book.woff2') format('woff2'),
+        url('Reaktif-Book.woff') format('woff'),
+        url('Reaktif-Book.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Reaktif Semi';
+    src: url('Reaktif-SemiBoldItalic.eot');
+    src: local('Reaktif Semi Bold Italic'), local('Reaktif-SemiBoldItalic'),
+        url('Reaktif-SemiBoldItalic.eot?#iefix') format('embedded-opentype'),
+        url('Reaktif-SemiBoldItalic.woff2') format('woff2'),
+        url('Reaktif-SemiBoldItalic.woff') format('woff'),
+        url('Reaktif-SemiBoldItalic.ttf') format('truetype');
+    font-weight: 600;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Reaktif News';
+    src: url('Reaktif-News.eot');
+    src: local('Reaktif News'), local('Reaktif-News'),
+        url('Reaktif-News.eot?#iefix') format('embedded-opentype'),
+        url('Reaktif-News.woff2') format('woff2'),
+        url('Reaktif-News.woff') format('woff'),
+        url('Reaktif-News.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Reaktif';
+    src: url('Reaktif-MediumItalic.eot');
+    src: local('Reaktif Medium Italic'), local('Reaktif-MediumItalic'),
+        url('Reaktif-MediumItalic.eot?#iefix') format('embedded-opentype'),
+        url('Reaktif-MediumItalic.woff2') format('woff2'),
+        url('Reaktif-MediumItalic.woff') format('woff'),
+        url('Reaktif-MediumItalic.ttf') format('truetype');
+    font-weight: 500;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Reaktif';
+    src: url('Reaktif-LightItalic.eot');
+    src: local('Reaktif Light Italic'), local('Reaktif-LightItalic'),
+        url('Reaktif-LightItalic.eot?#iefix') format('embedded-opentype'),
+        url('Reaktif-LightItalic.woff2') format('woff2'),
+        url('Reaktif-LightItalic.woff') format('woff'),
+        url('Reaktif-LightItalic.ttf') format('truetype');
+    font-weight: 300;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Reaktif Semi';
+    src: url('Reaktif-SemiBold.eot');
+    src: local('Reaktif Semi Bold'), local('Reaktif-SemiBold'),
+        url('Reaktif-SemiBold.eot?#iefix') format('embedded-opentype'),
+        url('Reaktif-SemiBold.woff2') format('woff2'),
+        url('Reaktif-SemiBold.woff') format('woff'),
+        url('Reaktif-SemiBold.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Reaktif Extra';
+    src: url('Reaktif-ExtraBlackItalic.eot');
+    src: local('Reaktif Extra Black Italic'), local('Reaktif-ExtraBlackItalic'),
+        url('Reaktif-ExtraBlackItalic.eot?#iefix') format('embedded-opentype'),
+        url('Reaktif-ExtraBlackItalic.woff2') format('woff2'),
+        url('Reaktif-ExtraBlackItalic.woff') format('woff'),
+        url('Reaktif-ExtraBlackItalic.ttf') format('truetype');
+    font-weight: 900;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Reaktif';
+    src: url('Reaktif-Bold.eot');
+    src: local('Reaktif Bold'), local('Reaktif-Bold'),
+        url('Reaktif-Bold.eot?#iefix') format('embedded-opentype'),
+        url('Reaktif-Bold.woff2') format('woff2'),
+        url('Reaktif-Bold.woff') format('woff'),
+        url('Reaktif-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Reaktif Extra';
+    src: url('Reaktif-ExtraLightItalic.eot');
+    src: local('Reaktif Extra Light Italic'), local('Reaktif-ExtraLightItalic'),
+        url('Reaktif-ExtraLightItalic.eot?#iefix') format('embedded-opentype'),
+        url('Reaktif-ExtraLightItalic.woff2') format('woff2'),
+        url('Reaktif-ExtraLightItalic.woff') format('woff'),
+        url('Reaktif-ExtraLightItalic.ttf') format('truetype');
+    font-weight: 200;
+    font-style: italic;
+    font-display: swap;
+}
+

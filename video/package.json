@@ -1,0 +1,21 @@
+{
+  "name": "crux-hero-video",
+  "private": true,
+  "description": "The Crux hero product video, made with Remotion. Renders to ../public/video.",
+  "scripts": {
+    "studio": "remotion studio src/index.ts",
+    "render": "remotion render src/index.ts Hero ../public/video/crux-hero.mp4 --codec h264 --crf 20 && remotion render src/index.ts Hero ../public/video/crux-hero.webm --codec vp9 --crf 32 && remotion still src/index.ts Hero ../public/video/crux-hero-poster.jpg --frame 330",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.532",
+    "@remotion/google-fonts": "4.0.532",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "remotion": "4.0.532"
+  },
+  "devDependencies": {
+    "@types/react": "19.2.2",
+    "typescript": "5.9.3"
+  }
+}
