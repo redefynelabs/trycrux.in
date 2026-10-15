@@ -28,6 +28,8 @@ export type EventName =
   | "video_pause"
   | "video_sound_on"
   | "video_sound_off"
+  | "book_call_click" // the link to book a call with sales
+  | "whatsapp_click" // the WhatsApp chat button
   | "consent_update"; // a cookie choice was saved
 
 export type EventParams = Record<string, string | number | boolean | undefined>;

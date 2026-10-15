@@ -11,6 +11,10 @@ export const SITE = {
   gaId: process.env.NEXT_PUBLIC_GA_ID || "G-4CVZYN65JJ",
   /** Microsoft Clarity project; NEXT_PUBLIC_CLARITY_ID overrides it and "off" disables it. Loaded only after consent. */
   clarityId: process.env.NEXT_PUBLIC_CLARITY_ID || "yy9kmhhvj5",
+  /** Where people book a call with sales; NEXT_PUBLIC_CAL_URL overrides it. */
+  calUrl: process.env.NEXT_PUBLIC_CAL_URL || "https://cal.com/manojkumar20/crux-product-demonstration",
+  /** The sales WhatsApp number, digits with the country code; NEXT_PUBLIC_WHATSAPP_NUMBER overrides it and "off" hides every WhatsApp button. */
+  whatsapp: (process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "919597028220").replace(/\D/g, ""),
   /** The product video shown on the home page: a file or embed URL. Empty shows a placeholder. */
   demoVideoUrl: process.env.NEXT_PUBLIC_DEMO_VIDEO_URL ?? "",
 } as const;

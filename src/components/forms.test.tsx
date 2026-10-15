@@ -86,7 +86,10 @@ describe("the contact form", () => {
     await user.type(screen.getByLabelText("Phone number"), "+91 98765 43210");
     await user.type(screen.getByLabelText("Your message"), "Price for 80 people?");
     await user.click(screen.getByRole("button", { name: "Send message" }));
-    expect(await screen.findByText(/we have your message/i)).toBeInTheDocument();
+    expect(await screen.findByText(/thank you, ravi\. we have your message/i)).toBeInTheDocument();
+    // What happens next, and a way to book the call straight away.
+    expect(screen.getByText(/we reply to ravi@kumar\.example/i)).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /book a time now/i })).toHaveAttribute("href", expect.stringContaining("cal.com"));
   });
 
   it("sends the team size and timeline the visitor chose, and fills the message from a starter", async () => {

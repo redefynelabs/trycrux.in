@@ -3,7 +3,9 @@ import { pageMeta } from "@/lib/seo";
 import { DemoForm } from "@/components/demo-form";
 import { Faq } from "@/components/faq";
 import { CheckIcon, CrmIcon, FinanceIcon, PeopleIcon, ProjectsIcon, SparkIcon } from "@/components/icons";
+import { Proof } from "@/components/proof";
 import { Reveal } from "@/components/reveal";
+import { TalkOptions } from "@/components/talk-options";
 import { GENERAL_FAQ } from "@/content/faq";
 
 export const metadata: Metadata = pageMeta("/demo", "Try Crux free", "Your own private copy of Crux with a sample company, ready in seconds: HR, projects, CRM, sales and finance with real-looking data, and Mei the AI assistant. No card, no installation.");
@@ -54,6 +56,8 @@ export default function DemoPage() {
 
         <div className="lg:col-span-6">
           <DemoForm />
+          <p className="mt-6 mb-3 text-sm font-medium text-muted">Prefer a guided tour with our team?</p>
+          <TalkOptions />
         </div>
       </div>
 
@@ -80,6 +84,8 @@ export default function DemoPage() {
           </div>
         </Reveal>
       </section>
+
+      <Proof className="mt-28" />
 
       <section className="mx-auto mt-28 max-w-3xl pb-8" aria-labelledby="faq">
         <h2 id="faq" className="mb-6 text-center text-3xl font-semibold tracking-tight">Good to know</h2>

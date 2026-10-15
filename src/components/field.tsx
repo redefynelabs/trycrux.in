@@ -72,17 +72,18 @@ export function Pills<T extends string>({ label, value, onChange, options, clear
 }
 
 /** Square cards, one of which can be chosen. */
-export function ChoiceCards<T extends string>({ label, value, onChange, options, columns = "sm:grid-cols-3", clearable = false }: { label: string; value: T | ""; onChange: (v: T | "") => void; options: { value: T; label: string; text: string; icon?: ReactNode }[]; columns?: string; clearable?: boolean }) {
+/** `dense` puts the cards side by side on phones too, as an icon and a name, with the line of text from sm up. */
+export function ChoiceCards<T extends string>({ label, value, onChange, options, columns = "sm:grid-cols-3", clearable = false, dense = false }: { label: string; value: T | ""; onChange: (v: T | "") => void; options: { value: T; label: string; text: string; icon?: ReactNode }[]; columns?: string; clearable?: boolean; dense?: boolean }) {
   return (
     <div role="radiogroup" aria-label={label} className={cn("grid gap-2", columns)}>
       {options.map((o) => {
         const on = o.value === value;
         return (
-          <button key={o.value} type="button" role="radio" aria-checked={on} onClick={() => onChange(on && clearable ? "" : o.value)} className={cn("flex items-start gap-3 p-3.5 text-left ring-1 transition-colors", on ? "bg-brand-soft ring-2 ring-brand" : "bg-bg ring-line hover:bg-soft")}>
+          <button key={o.value} type="button" role="radio" aria-checked={on} onClick={() => onChange(on && clearable ? "" : o.value)} className={cn("flex items-start gap-3 p-3.5 text-left ring-1 transition-colors", dense && "max-sm:flex-col max-sm:items-center max-sm:gap-2 max-sm:p-3 max-sm:text-center", on ? "bg-brand-soft ring-2 ring-brand" : "bg-bg ring-line hover:bg-soft")}>
             {o.icon && <span className={cn("grid size-9 shrink-0 place-items-center text-lg", on ? "bg-brand text-white" : "bg-soft text-brand")}>{o.icon}</span>}
             <span className="min-w-0">
               <span className="block text-sm font-semibold">{o.label}</span>
-              <span className="block text-xs text-muted">{o.text}</span>
+              <span className={cn("block text-xs text-muted", dense && "max-sm:hidden")}>{o.text}</span>
             </span>
           </button>
         );
