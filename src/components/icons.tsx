@@ -17,6 +17,8 @@ export const PeopleIcon = (p: P) => <Icon {...p} d={["M16 20v-1a4 4 0 0 0-4-4H7a
 export const ProjectsIcon = (p: P) => <Icon {...p} d={["M4 5h16v14H4z", "M9 5v14", "M14 5v14", "M4 10h16"]} />;
 export const CrmIcon = (p: P) => <Icon {...p} d={["M3 17l6-6 4 4 8-8", "M15 7h6v6"]} />;
 export const FinanceIcon = (p: P) => <Icon {...p} d={["M6 3h12v18l-3-2-3 2-3-2-3 2z", "M9 8h6", "M9 12h6"]} />;
+export const InventoryIcon = (p: P) => <Icon {...p} d={["M3 8l9-5 9 5v9l-9 5-9-5z", "M3 8l9 5 9-5", "M12 13v9"]} />;
+export const PayrollIcon = (p: P) => <Icon {...p} d={["M4 7h16v12H4z", "M4 7l2-3h12l2 3", "M12 10v6", "M14.5 11.2c-.4-.5-1.3-.8-2.5-.8-1.4 0-2.3.6-2.3 1.5s.9 1.3 2.3 1.5c1.4.2 2.3.6 2.3 1.5s-.9 1.5-2.3 1.5c-1.2 0-2.1-.3-2.5-.8"]} />;
 export const CalendarIcon = (p: P) => <Icon {...p} d={["M4 6h16v14H4z", "M4 10h16", "M8 3v4", "M16 3v4", "M8 14h3"]} />;
 export const ClockIcon = (p: P) => <Icon {...p} d={["M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z", "M12 7v5l3 2"]} />;
 export const DatabaseIcon = (p: P) => <Icon {...p} d={["M4 6c0-1.7 3.6-3 8-3s8 1.3 8 3-3.6 3-8 3-8-1.3-8-3z", "M4 6v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6", "M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"]} />;

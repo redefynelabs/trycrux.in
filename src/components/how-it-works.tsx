@@ -86,24 +86,25 @@ function DemoLaunch({ calm }: { calm: boolean }) {
   );
 }
 
-/** Step 2: a cursor moves between cloud and your own server and picks one. */
+/** Step 2: a cursor moves between the licence terms and picks one. */
 function ChooseHosting({ calm }: { calm: boolean }) {
-  const [own, setOwn] = useState(false);
+  const [at, setAt] = useState(2);
   useEffect(() => {
     if (calm) return;
-    const id = setInterval(() => setOwn((v) => !v), 2600);
+    const id = setInterval(() => setAt((v) => (v + 1) % 3), 2600);
     return () => clearInterval(id);
   }, [calm]);
   const options = [
-    { id: false, name: "Cloud", text: "We run it, update it and back it up.", Icon: CloudIcon, facts: ["Live within 24 hours", "Daily backups", "Updates included"] },
-    { id: true, name: "Your own server", text: "Buy a licence. The data never leaves you.", Icon: ServerIcon, facts: ["Installed with you", "Your hardware", "You hold the data"] },
+    { name: "1 year", text: "Use it for a year, updates included.", Icon: CloudIcon, facts: ["Cheapest to start", "Updates for the year", "Renew when it ends"] },
+    { name: "2 years", text: "Two years at a lower yearly cost.", Icon: ServerIcon, facts: ["Lower yearly cost", "Updates for both years", "Renew when it ends"] },
+    { name: "Lifetime", text: "Pay once, keep it. The data never leaves you.", Icon: ServerIcon, facts: ["Pay once", "Runs on your server", "One year of updates"] },
   ];
   return (
-    <Window title="How do you want to run it?" step={2}>
+    <Window title="Choose your licence" step={2}>
       <div className="relative">
-        <div className="grid gap-4 sm:grid-cols-2">
-          {options.map(({ id, name, text, Icon }) => {
-            const on = own === id;
+        <div className="grid gap-4 sm:grid-cols-3">
+          {options.map(({ name, text, Icon }, i) => {
+            const on = at === i;
             return (
               <div key={name} className={cn("relative p-5 ring-1 transition-all duration-500", on ? "bg-bg ring-2 ring-brand" : "bg-soft/60 opacity-60 ring-line")}>
                 <span className="grid size-10 place-items-center bg-brand-soft text-lg text-brand"><Icon /></span>
@@ -115,20 +116,19 @@ function ChooseHosting({ calm }: { calm: boolean }) {
           })}
         </div>
         {!calm && (
-          <motion.div aria-hidden="true" className="pointer-events-none absolute z-10" animate={{ left: own ? "74%" : "24%", top: "66%" }} transition={{ type: "spring", stiffness: 70, damping: 16 }}>
+          <motion.div aria-hidden="true" className="pointer-events-none absolute z-10" animate={{ left: `${16 + at * 33}%`, top: "66%" }} transition={{ type: "spring", stiffness: 120, damping: 18 }}>
             <svg viewBox="0 0 24 24" className="size-6 drop-shadow" fill="#0f172a" stroke="#fff" strokeWidth="1.5"><path d="M5 3l14 7-6 2-2 6z" /></svg>
-            <motion.span key={String(own)} className="absolute -top-2 -left-2 size-10 border-2 border-brand" initial={{ scale: 0.3, opacity: 0 }} animate={{ scale: [0.3, 1.2], opacity: [0.9, 0] }} transition={{ delay: 1.1, duration: 0.7 }} />
+            <motion.span key={at} className="absolute -top-2 -left-2 size-10 border-2 border-brand" initial={{ scale: 0.3, opacity: 0 }} animate={{ scale: [0.3, 1.2], opacity: [0.8, 0] }} transition={{ duration: 0.7, delay: 0.5 }} />
           </motion.div>
         )}
       </div>
       <div className="mt-6 flex flex-wrap items-center gap-2 border-t border-line pt-5">
         <AnimatePresence mode="wait" initial={false}>
-          <motion.ul key={String(own)} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.25 }} className="flex flex-wrap gap-2">
-            {options.find((o) => o.id === own)!.facts.map((f) => <li key={f} className="flex items-center gap-1.5 bg-soft px-3 py-1.5 text-xs font-medium ring-1 ring-line"><CheckIcon className="size-3 text-ok" />{f}</li>)}
+          <motion.ul key={at} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.25 }} className="flex flex-wrap gap-2">
+            {options[at].facts.map((f) => <li key={f} className="flex items-center gap-1.5 bg-soft px-3 py-1.5 text-xs font-medium ring-1 ring-line"><CheckIcon className="size-3 text-ok" />{f}</li>)}
           </motion.ul>
         </AnimatePresence>
       </div>
-      <p className="mt-4 text-sm text-muted">The same software either way, so you can move later.</p>
     </Window>
   );
 }

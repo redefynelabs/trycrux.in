@@ -32,6 +32,6 @@ export const FACTS = [
 export const TRUST = [
   { icon: "database", title: "Your own private database", text: "Every company runs on its own instance and database, never shared tables." },
   { icon: "lock", title: "Roles, permissions and an audit log", text: "People see only what their role allows, and every change is recorded." },
-  { icon: "clock", title: "Daily backups", text: "Kept 14 or 30 days on cloud plans, so a mistake is never final." },
+  { icon: "clock", title: "Daily backups", text: "Built in on your own server and kept 30 days, so a mistake is never final." },
   { icon: "download", title: "No lock-in", text: "Export everything any time, or move to your own server later." },
 ] as const;

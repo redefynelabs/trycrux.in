@@ -1,4 +1,4 @@
-import { CrmIcon, FinanceIcon, PeopleIcon, ProjectsIcon, SparkIcon } from "@/components/icons";
+import { CrmIcon, FinanceIcon, InventoryIcon, PayrollIcon, PeopleIcon, ProjectsIcon, SparkIcon } from "@/components/icons";
 
 /** The choices on the demo and contact forms, and what each means. */
 
@@ -10,12 +10,14 @@ export const FOCUS = [
   { value: "people", label: "People & HR", text: "Attendance, leave, shifts", Icon: PeopleIcon },
   { value: "projects", label: "Projects", text: "Tasks and timesheets", Icon: ProjectsIcon },
   { value: "crm", label: "CRM & Sales", text: "Leads and follow-ups", Icon: CrmIcon },
-  { value: "finance", label: "Finance", text: "Invoices, tax, expenses", Icon: FinanceIcon },
+  { value: "finance", label: "Finance", text: "Invoices, receipts, expenses", Icon: FinanceIcon },
+  { value: "payroll", label: "Payroll", text: "Pay runs and payslips", Icon: PayrollIcon },
+  { value: "inventory", label: "Inventory", text: "Stock and purchase orders", Icon: InventoryIcon },
   { value: "mei", label: "Mei AI", text: "Ask your data anything", Icon: SparkIcon },
 ] as const;
 
 /** What to try first, by what the visitor said they want to see. */
-export const TRY_FIRST: Record<string, { title: string; steps: string[]; mei: string[] }> = {
+export const TRY_FIRST: Record<string, { title: string; steps: string[]; mei: string[]; note?: string }> = {
   people: {
     title: "People & HR",
     steps: ["Open Attendance and look at this month", "Request a leave as Sam, then approve it as the administrator", "Open an employee and see their documents and shift"],
@@ -35,6 +37,18 @@ export const TRY_FIRST: Record<string, { title: string; steps: string[]; mei: st
     title: "Finance",
     steps: ["Open Invoices and look at what is overdue", "Record a payment against an invoice", "Open Reports and look at profit and loss"],
     mei: ["Which invoices are overdue and who owes the most?", "Draft an invoice for Anita Desai: a monthly retainer and 12 extra hours"],
+  },
+  payroll: {
+    title: "Payroll & Payslips",
+    steps: ["Open Payroll runs and look at last month's paid run", "Open a payslip and download it as a PDF", "Open Salary structures and see a person's pay as dated versions"],
+    mei: [],
+    note: "Pay and payslips are private: only people with payroll access see them, and Mei never reads them.",
+  },
+  inventory: {
+    title: "Inventory & Purchasing",
+    steps: ["Open Stock and look at levels by warehouse", "Open the purchase order and receive the goods", "Adjust a count and see the movement it leaves behind"],
+    mei: [],
+    note: "Everything here is sample data, so receive, adjust and transfer as much as you like.",
   },
   mei: {
     title: "Mei AI",

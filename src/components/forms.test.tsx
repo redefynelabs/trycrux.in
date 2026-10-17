@@ -22,19 +22,49 @@ describe("the demo form", () => {
     expect(screen.getByText(/ends in about/)).toBeInTheDocument();
   });
 
-  it("sends the team size and what to see first", async () => {
+  it("asks for just a name, an email and a phone number", async () => {
+    const user = userEvent.setup();
+    const spy = reply(201, { data: { url: "https://a.b", login_email: "e", login_password: "p", expires_at: new Date(Date.now() + 3600_000).toISOString() } });
+    render(<DemoForm />);
+    expect(screen.queryByRole("radio")).toBeNull();
+    await user.type(screen.getByLabelText("Your name"), "Asha");
+    await user.type(screen.getByLabelText("Work email"), "asha@rao.example");
+    await user.type(screen.getByLabelText("Phone number"), "+91 98765 43210");
+    await user.click(screen.getByRole("button", { name: "Start my demo" }));
+    await waitFor(() => expect(spy).toHaveBeenCalled());
+    expect(JSON.parse(spy.mock.calls[0][1]?.body as string)).toMatchObject({ name: "Asha", email: "asha@rao.example", modules: ["sales", "finance"] });
+    expect(await screen.findByText("Try these first")).toBeInTheDocument();
+  });
+
+  it("sends the apps the visitor picked, with payroll bringing People & HR", async () => {
     const user = userEvent.setup();
     const spy = reply(201, { data: { url: "https://a.b", login_email: "e", login_password: "p", expires_at: new Date(Date.now() + 3600_000).toISOString() } });
     render(<DemoForm />);
     await user.type(screen.getByLabelText("Your name"), "Asha");
     await user.type(screen.getByLabelText("Work email"), "asha@rao.example");
     await user.type(screen.getByLabelText("Phone number"), "+91 98765 43210");
-    await user.click(screen.getByRole("radio", { name: "11 to 25" }));
-    await user.click(screen.getByRole("radio", { name: /Finance/ }));
+    await user.click(screen.getByRole("button", { name: "People and payroll" }));
     await user.click(screen.getByRole("button", { name: "Start my demo" }));
     await waitFor(() => expect(spy).toHaveBeenCalled());
-    expect(JSON.parse(spy.mock.calls[0][1]?.body as string)).toMatchObject({ team_size: "11-25", focus: "finance" });
-    expect(await screen.findByText("Try these first")).toBeInTheDocument();
+    expect(JSON.parse(spy.mock.calls[0][1]?.body as string).modules).toEqual(["people", "payroll"]);
+    // Only the things to try for the picked apps, plus Mei.
+    expect(await screen.findByRole("tab", { name: "Payroll" })).toBeInTheDocument();
+    expect(screen.queryByRole("tab", { name: "Inventory" })).toBeNull();
+    expect(screen.getByRole("tab", { name: "Mei AI" })).toBeInTheDocument();
+  });
+
+  it("does not start a demo with no app picked", async () => {
+    const user = userEvent.setup();
+    const spy = reply(201, {});
+    render(<DemoForm />);
+    await user.type(screen.getByLabelText("Your name"), "Asha");
+    await user.type(screen.getByLabelText("Work email"), "asha@rao.example");
+    await user.type(screen.getByLabelText("Phone number"), "+91 98765 43210");
+    await user.click(screen.getByRole("checkbox", { name: /CRM & Sales/ }));
+    await user.click(screen.getByRole("checkbox", { name: /Invoices & expenses/ }));
+    await user.click(screen.getByRole("button", { name: "Start my demo" }));
+    expect(await screen.findByRole("alert")).toHaveTextContent("Choose at least one app");
+    expect(spy).not.toHaveBeenCalled();
   });
 
   it("shows field errors from the server beside the fields", async () => {
@@ -87,31 +117,21 @@ describe("the contact form", () => {
     await user.type(screen.getByLabelText("Your message"), "Price for 80 people?");
     await user.click(screen.getByRole("button", { name: "Send message" }));
     expect(await screen.findByText(/thank you, ravi\. we have your message/i)).toBeInTheDocument();
-    // What happens next, and a way to book the call straight away.
-    expect(screen.getByText(/we reply to ravi@kumar\.example/i)).toBeInTheDocument();
+    expect(screen.getByText(/reply to ravi@kumar\.example within one working day/i)).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /book a time now/i })).toHaveAttribute("href", expect.stringContaining("cal.com"));
   });
 
-  it("sends the team size and timeline the visitor chose, and fills the message from a starter", async () => {
+  it("sends the plan it was linked with and the message", async () => {
     const user = userEvent.setup();
     const spy = reply(201, { data: { status: "received" } });
-    render(<ContactForm />);
+    render(<ContactForm defaultPlan="grow" defaultMessage="I would like a lifetime licence." />);
+    expect(screen.getByText(/looking at the Grow plan/)).toBeInTheDocument();
     await user.type(screen.getByLabelText("Your name"), "Ravi");
     await user.type(screen.getByLabelText("Work email"), "ravi@kumar.example");
     await user.type(screen.getByLabelText("Phone number"), "+91 98765 43210");
-    await user.click(screen.getByRole("radio", { name: "26 to 100" }));
-    await user.click(screen.getByRole("radio", { name: "Within a month" }));
-    await user.click(screen.getByRole("button", { name: /price for my team size/ }));
-    expect(screen.getByLabelText("Your message")).toHaveValue("I would like a price for my team size.");
+    expect(screen.getByLabelText("Your message")).toHaveValue("I would like a lifetime licence.");
     await user.click(screen.getByRole("button", { name: "Send message" }));
     await waitFor(() => expect(spy).toHaveBeenCalled());
-    const sent = JSON.parse(spy.mock.calls[0][1]?.body as string);
-    expect(sent).toMatchObject({ team_size: "26-100", timeline: "month", interest: "cloud" });
-  });
-
-  it("starts on the interest the pricing page linked with", () => {
-    render(<ContactForm defaultInterest="on_prem" />);
-    expect(screen.getByRole("radio", { name: /Own server/ })).toHaveAttribute("aria-checked", "true");
-    expect(screen.getByRole("radio", { name: /Cloud/ })).toHaveAttribute("aria-checked", "false");
+    expect(JSON.parse(spy.mock.calls[0][1]?.body as string)).toMatchObject({ plan: "grow", interest: "on_prem", message: "I would like a lifetime licence." });
   });
 });

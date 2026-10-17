@@ -4,9 +4,11 @@
  */
 import { ENTRIES, longDay, sortedEntries } from "@/content/changelog";
 import { FAQ_GROUPS, PRICING_FAQ } from "@/content/faq";
+import { INDUSTRIES } from "@/content/industries";
+import { PRODUCT_PAGES } from "@/content/product";
 import { HIGHLIGHTS, MODULES } from "@/content/features";
 import { CAPABILITIES, TRUST } from "@/content/mei";
-import { AMC, CLOUD, ON_PREM, PRICES, cloudPrice, licencePrice, money } from "@/content/pricing";
+import { AMC_TEXT, APP_GROUPS, CLOUD, OWN_SERVER, LICENCE_INCLUDED, TERMS, amcPrice, licencePrice, money } from "@/content/pricing";
 import { CURRENCY_CODES, type CurrencyCode } from "@/lib/currency";
 import { COMPANY, DESCRIPTION } from "@/lib/seo";
 import { SITE } from "@/lib/site";
@@ -19,19 +21,18 @@ function allCurrencies(price: (c: CurrencyCode) => number): string {
 const u = (path: string) => SITE.url + path;
 
 function pricing(): string {
-  const cloud = CLOUD.tiers.map((t) => `- ${t.name}: ${t.perMonth ? `${allCurrencies((c) => cloudPrice(t.id, c)!)} a month` : "priced with you"}. ${t.for}; ${t.team.toLowerCase()}. Backups: ${t.backups.toLowerCase()}.`);
-  const own = ON_PREM.map((l) => `- ${l.name}: ${allCurrencies((c) => licencePrice(l.id, c))} ${l.per}. ${l.note}`);
+  const plans = CLOUD.tiers.filter((t) => t.perMonth);
+  const own = plans.flatMap((t) => [`- ${t.name} licence:`, ...TERMS.map((l) => `  - ${l.name}: ${allCurrencies((c) => licencePrice(t.id, l.id, c))} ${l.per}. ${l.note}`), `  - Support and updates after a lifetime licence: ${allCurrencies((c) => amcPrice(t.id, c))} a year`]);
   return [
     "## Pricing",
     "",
-    `One flat price by company size, never per user. Every plan includes every module, Mei the AI assistant and unlimited users. Prices are set in Indian rupees, US dollars, British pounds, euros and UAE dirhams (the site shows the one for the visitor's country) and exclude taxes such as GST or VAT. Yearly cloud billing saves ${CLOUD.annualDiscountPct}%. AI usage is billed by the AI provider whose key the customer connects.`,
+    `Plans are chosen by how many of six app groups a company picks, never per user: ${APP_GROUPS.map((g) => g.name).join("; ")}. Start takes any two, Grow any four and Complete all six, so a team that needs only sales, inventory and HR pays for just those. Every plan has unlimited users and Mei the AI assistant, which is not one of the six. Crux is sold as a licence for one year, two years or for good, installed on the customer's own server. Prices are set in Indian rupees, US dollars, British pounds, euros and UAE dirhams (the site shows the one for the visitor's country) and exclude taxes such as GST or VAT. AI usage is billed by the AI provider whose key the customer connects.`,
     "",
-    "Cloud (we host and run it; each company gets its own instance and database):",
-    ...cloud,
     "",
-    "Own server (installed on the customer's server; the customer owns the database):",
+    `Own server (installed on the customer's server; the customer owns the database). Every licence: ${LICENCE_INCLUDED.join("; ").toLowerCase()}.`,
     ...own,
-    `- Optional yearly support for a lifetime licence: ${allCurrencies((c) => PRICES[c].amc)} a year. ${AMC.text}`,
+    `- ${AMC_TEXT}`,
+    `- Server for a licence: ${OWN_SERVER.sizes.map((r) => `${r.users}: ${r.vcpu} vCPU, ${r.ramGb} GB memory, ${r.diskGb} GB SSD`).join("; ")}. ${OWN_SERVER.requirements} Users are never counted; ${OWN_SERVER.private.join("; ").toLowerCase()}.`,
     "",
     `Details: ${u("/pricing")}`,
   ].join("\n");
@@ -43,7 +44,7 @@ function intro(): string {
     "",
     `> ${DESCRIPTION}`,
     "",
-    `${SITE.name} is made by ${COMPANY}. Website: ${SITE.url}. It runs on our cloud or on the customer's own server, and is built for growing companies, with GST invoicing for India and billing in other currencies.`,
+    `${SITE.name} is made by ${COMPANY}. Website: ${SITE.url}. It is installed on the customer's own server, and is built for growing companies, with GST invoicing for India and billing in other currencies.`,
     "",
     "## Why companies choose it",
     "",
@@ -70,7 +71,9 @@ function pages(): string {
     "## Pages",
     "",
     `- [Home](${u("/")}): what Crux is, the modules, Mei, how it works and the FAQ`,
-    `- [Pricing](${u("/pricing")}): cloud plans, licences for your own server and pricing questions`,
+    `- [Apps](${u("/product")}): ${PRODUCT_PAGES.map((p) => p.name).join(", ")}`,
+    `- [Industries](${u("/industries")}): ${INDUSTRIES.map((i) => i.name).join(", ")}`,
+    `- [Pricing](${u("/pricing")}): licences for your own server and pricing questions`,
     `- [Try the demo](${u("/demo")}): a private copy with a sample company, ready in seconds, no card`,
     `- [Contact sales](${u("/contact")}): get a recommendation and a setup within 24 hours`,
     `- [Changelog](${u("/changelog")}): what shipped and when`,

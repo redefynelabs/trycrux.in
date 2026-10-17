@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { pageMeta } from "@/lib/seo";
 import { LegalPage } from "@/components/legal-page";
 
-export const metadata: Metadata = pageMeta("/legal/terms", "Terms of service", "The terms for using Crux on our cloud or on your own server, for Mei the AI assistant, and for trying a demo.");
+export const metadata: Metadata = pageMeta("/legal/terms", "Terms of service", "The terms for using Crux on your own server, for Mei the AI assistant, and for trying a demo.");
 
 export default function Terms() {
   return (
@@ -10,7 +10,7 @@ export default function Terms() {
       <p>These terms cover your company&rsquo;s use of Crux, the business operating system made by Redefyne (&ldquo;we&rdquo;, &ldquo;us&rdquo;). By using Crux, or by signing an order with us, your company (&ldquo;you&rdquo;) agrees to them.</p>
 
       <h2>The service</h2>
-      <p>Crux is software for running a company: people and HR, projects and timesheets, CRM and sales, and finance, with Mei, an AI assistant. You can use it on our cloud, where we host and run it for you, or on your own server under a licence.</p>
+      <p>Crux is software for running a company: people, HR and payroll, projects and timesheets, CRM and sales, inventory and purchasing, and finance, with Mei, an AI assistant. You can use it on our cloud, where we host and run it for you, or on your own server under a licence.</p>
 
       <h2>Your account</h2>
       <ul>

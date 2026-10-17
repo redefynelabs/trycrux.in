@@ -13,7 +13,7 @@ afterEach(() => vi.restoreAllMocks());
 describe("the demo route", () => {
   it("forwards a valid request with the visitor's address, and returns the control plane's answer", async () => {
     const fetchMock = vi.spyOn(globalThis, "fetch").mockResolvedValue(new Response(JSON.stringify({ data: { url: "https://x.demo" } }), { status: 201 }));
-    const res = await demo(post({ name: "Asha", email: "asha@rao.example", phone: "+91 98765 43210" }, { "x-forwarded-for": "198.51.100.9, 10.0.0.1" }));
+    const res = await demo(post({ name: "Asha", email: "asha@rao.example", phone: "+91 98765 43210", modules: ["sales"] }, { "x-forwarded-for": "198.51.100.9, 10.0.0.1" }));
     expect(res.status).toBe(201);
     expect(await res.json()).toEqual({ data: { url: "https://x.demo" } });
     const [url, init] = fetchMock.mock.calls[0];
@@ -37,14 +37,14 @@ describe("the demo route", () => {
   it("gives a friendly error when the control plane is down", async () => {
     vi.spyOn(globalThis, "fetch").mockRejectedValue(new Error("connect ECONNREFUSED"));
     vi.spyOn(console, "error").mockImplementation(() => {});
-    const res = await demo(post({ name: "Asha", email: "asha@rao.example", phone: "+91 98765 43210" }));
+    const res = await demo(post({ name: "Asha", email: "asha@rao.example", phone: "+91 98765 43210", modules: ["sales"] }));
     expect(res.status).toBe(502);
     expect((await res.json()).error.message).toMatch(/try again/i);
   });
 
   it("passes the control plane's limits through", async () => {
     vi.spyOn(globalThis, "fetch").mockResolvedValue(new Response(JSON.stringify({ error: { code: "rate_limited", message: "slow down" } }), { status: 429 }));
-    const res = await demo(post({ name: "Asha", email: "asha@rao.example", phone: "+91 98765 43210" }));
+    const res = await demo(post({ name: "Asha", email: "asha@rao.example", phone: "+91 98765 43210", modules: ["sales"] }));
     expect(res.status).toBe(429);
   });
 });

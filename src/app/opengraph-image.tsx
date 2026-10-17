@@ -20,10 +20,10 @@ export default async function Image() {
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
           <div style={{ fontFamily: "Punta", fontSize: 76, lineHeight: 1.05, letterSpacing: 1, maxWidth: 980 }}>The only software your business needs.</div>
-          <div style={{ fontSize: 30, color: "#4b5563", maxWidth: 1000 }}>The AI-powered business operating system: HR, projects, CRM, sales and finance in one system, with Mei, your AI assistant.</div>
+          <div style={{ fontSize: 30, color: "#4b5563", maxWidth: 1000 }}>The AI-powered business operating system: HR and payroll, projects, CRM, sales, inventory and finance in one system, with Mei, your AI assistant.</div>
         </div>
         <div style={{ display: "flex", gap: 14, fontSize: 24, color: "#1d4ed8" }}>
-          <div style={{ display: "flex", padding: "10px 22px", borderRadius: 999, background: "#ffffff", border: "1px solid #c7d7fe" }}>Every feature, every plan</div>
+          <div style={{ display: "flex", padding: "10px 22px", borderRadius: 999, background: "#ffffff", border: "1px solid #c7d7fe" }}>Three plans, unlimited users</div>
           <div style={{ display: "flex", padding: "10px 22px", borderRadius: 999, background: "#ffffff", border: "1px solid #c7d7fe" }}>No per-user price</div>
           <div style={{ display: "flex", padding: "10px 22px", borderRadius: 999, background: "#ffffff", border: "1px solid #c7d7fe" }}>Live within 24 hours</div>
         </div>

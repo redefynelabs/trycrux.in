@@ -5,12 +5,14 @@ import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState } from "react";
 import { buttonClass } from "@/components/buttons";
 import { CheckIcon } from "@/components/icons";
-import { FOCUS, TEAM_SIZE_LABELS, TRY_FIRST } from "@/content/lead";
+import { FOCUS, TRY_FIRST } from "@/content/lead";
 import { track } from "@/lib/analytics";
 import { postJson, readAttribution } from "@/lib/client";
-import { FOCUSES, TEAM_SIZES, type FieldErrors } from "@/lib/schemas";
+import { AppPicker } from "@/components/app-picker";
+import { withNeeds, type GroupId } from "@/content/pricing";
+import type { FieldErrors } from "@/lib/schemas";
 import { cn } from "@/lib/utils";
-import { ChoiceCards, Field, Honeypot, Pills, TextInput } from "./field";
+import { Field, Honeypot, TextInput } from "./field";
 import { captchaEnabled, Turnstile } from "./turnstile";
 
 interface Ready {
@@ -77,9 +79,14 @@ function Building() {
   );
 }
 
-function Result({ ready, focus }: { ready: Ready; focus: string }) {
+/** The tab of things to try that belongs to each app group the visitor can pick. */
+const TAB_OF: Record<GroupId, string> = { sales: "crm", finance: "finance", projects: "projects", people: "people", payroll: "payroll", inventory: "inventory" };
+
+function Result({ ready, focus, modules }: { ready: Ready; focus: string; modules: GroupId[] }) {
   const [now, setNow] = useState(() => Date.now());
-  const [tab, setTab] = useState(focus && TRY_FIRST[focus] ? focus : "mei");
+  // The demo has only the apps the visitor picked, so the things to try are those, and Mei.
+  const tabs = FOCUS.filter((f) => f.value === "mei" || modules.map((m) => TAB_OF[m]).includes(f.value));
+  const [tab, setTab] = useState(focus && TRY_FIRST[focus] ? focus : tabs[0]?.value ?? "mei");
   useEffect(() => {
     const id = setInterval(() => setNow(Date.now()), 1000);
     return () => clearInterval(id);
@@ -121,7 +128,7 @@ function Result({ ready, focus }: { ready: Ready; focus: string }) {
         <div>
           <p className="text-sm font-semibold">Try these first</p>
           <div role="tablist" aria-label="What to try" className="mt-3 flex flex-wrap gap-2">
-            {FOCUS.map((f) => (
+            {tabs.map((f) => (
               <button key={f.value} role="tab" aria-selected={tab === f.value} onClick={() => setTab(f.value)} className={cn("rounded-full px-3.5 py-1.5 text-xs font-medium transition-colors", tab === f.value ? "bg-accent text-white" : "bg-soft text-muted ring-1 ring-line hover:text-fg")}>
                 {f.label}
               </button>
@@ -134,6 +141,7 @@ function Result({ ready, focus }: { ready: Ready; focus: string }) {
                   <li key={s} className="flex gap-3"><span className="grid size-6 shrink-0 place-items-center bg-brand-soft text-xs font-semibold text-brand">{i + 1}</span><span className="pt-0.5">{s}</span></li>
                 ))}
               </ol>
+              {guide.mei.length > 0 ? (
               <div>
                 <p className="text-xs font-semibold tracking-wide text-muted uppercase">Ask Mei (15 free questions)</p>
                 <ul className="mt-2 space-y-2">
@@ -142,6 +150,9 @@ function Result({ ready, focus }: { ready: Ready; focus: string }) {
                   ))}
                 </ul>
               </div>
+              ) : (
+                <p className="self-start bg-soft px-3 py-2 text-sm text-muted ring-1 ring-line">{guide.note}</p>
+              )}
             </motion.div>
           </AnimatePresence>
         </div>
@@ -159,7 +170,8 @@ function Result({ ready, focus }: { ready: Ready; focus: string }) {
 }
 
 export function DemoForm() {
-  const [values, setValues] = useState({ name: "", email: "", phone: "", company: "", team_size: "", focus: "", website: "" });
+  const [values, setValues] = useState({ name: "", email: "", phone: "", website: "" });
+  const [modules, setModules] = useState<GroupId[]>(["sales", "finance"]);
   const [token, setToken] = useState("");
   const [reset, setReset] = useState(0);
   const [errors, setErrors] = useState<FieldErrors>({});
@@ -168,7 +180,7 @@ export function DemoForm() {
   const [ready, setReady] = useState<Ready | null>(null);
   const [started, setStarted] = useState(false);
   // Which choices were made, never what was typed.
-  const choices = { form_name: "demo", team_size: values.team_size, focus: values.focus };
+  const choices = { form_name: "demo", modules: withNeeds(modules).join(",") };
 
   const set = (k: keyof typeof values) => (e: { target: { value: string } }) => setValues((v) => ({ ...v, [k]: e.target.value }));
 
@@ -177,6 +189,10 @@ export function DemoForm() {
     if (busy) return;
     setErrors({});
     setFormError("");
+    if (modules.length === 0) {
+      setErrors({ modules: "Choose at least one app" });
+      return;
+    }
     if (captchaEnabled && !token) {
       track("form_error", { ...choices, error_fields: "captcha", error: "captcha" });
       setFormError("Please complete the check below first.");
@@ -184,7 +200,7 @@ export function DemoForm() {
     }
     setBusy(true);
     track("form_submit", choices);
-    const out = await postJson<Ready>("/api/demo", { ...values, captcha_token: token, attribution: readAttribution() });
+    const out = await postJson<Ready>("/api/demo", { ...values, modules: withNeeds(modules), captcha_token: token, attribution: readAttribution() });
     setBusy(false);
     if (out.ok) {
       track("generate_lead", { ...choices, lead_type: "demo" });
@@ -199,7 +215,7 @@ export function DemoForm() {
     setReset((n) => n + 1);
   }
 
-  if (ready) return <Result ready={ready} focus={values.focus} />;
+  if (ready) return <Result ready={ready} focus="" modules={withNeeds(modules)} />;
   if (busy) return <Building />;
 
   return (
@@ -216,40 +232,24 @@ export function DemoForm() {
     >
       <div className="flex items-center justify-between gap-3 bg-brand px-6 py-3 text-sm font-semibold text-white sm:px-8">
         <span>Start your free demo</span>
-        <span className="text-xs font-medium text-white/80">No card · 1 hour · Mei included</span>
+        <span className="text-xs font-medium text-white/80">No card · 1 hour</span>
       </div>
       <div className="space-y-5 p-6 sm:p-8">
         <Honeypot value={values.website} onChange={(v) => setValues((s) => ({ ...s, website: v }))} />
-        <div className="grid gap-4 sm:grid-cols-2">
-          <Field label="Your name" error={errors.name}>
-            <TextInput name="name" autoComplete="name" placeholder="Asha Rao" value={values.name} onChange={set("name")} invalid={!!errors.name} required />
-          </Field>
-          <Field label="Work email" error={errors.email} hint="We send nothing but your demo, and one follow-up.">
-            <TextInput name="email" type="email" autoComplete="email" placeholder="asha@company.com" value={values.email} onChange={set("email")} invalid={!!errors.email} required />
-          </Field>
-          <Field label="Company (optional)" error={errors.company}>
-            <TextInput name="company" autoComplete="organization" value={values.company} onChange={set("company")} invalid={!!errors.company} />
-          </Field>
-          <Field label="Phone number" error={errors.phone}>
-            <TextInput name="phone" type="tel" autoComplete="tel" required placeholder="+91 98765 43210" value={values.phone} onChange={set("phone")} invalid={!!errors.phone} />
-          </Field>
-        </div>
+        <Field label="Your name" error={errors.name}>
+          <TextInput name="name" autoComplete="name" placeholder="Asha Rao" value={values.name} onChange={set("name")} invalid={!!errors.name} required />
+        </Field>
+        <Field label="Work email" error={errors.email} hint="We send nothing but your demo, and one follow-up.">
+          <TextInput name="email" type="email" autoComplete="email" placeholder="asha@company.com" value={values.email} onChange={set("email")} invalid={!!errors.email} required />
+        </Field>
+        <Field label="Phone number" error={errors.phone}>
+          <TextInput name="phone" type="tel" autoComplete="tel" required placeholder="+91 98765 43210" value={values.phone} onChange={set("phone")} invalid={!!errors.phone} />
+        </Field>
 
         <fieldset>
-          <legend className="mb-2 text-sm font-medium">How big is your team? <span className="font-normal text-muted">(optional)</span></legend>
-          <Pills label="Team size" value={values.team_size as (typeof TEAM_SIZES)[number] | ""} onChange={(v) => setValues((s) => ({ ...s, team_size: v }))} options={TEAM_SIZES.map((t) => ({ value: t, label: TEAM_SIZE_LABELS[t] }))} />
-        </fieldset>
-
-        <fieldset>
-          <legend className="mb-2 text-sm font-medium">What do you want to see first? <span className="font-normal text-muted">(optional)</span></legend>
-          <ChoiceCards
-            label="What to see first"
-            clearable
-            columns="sm:grid-cols-2 sm:[&>*:last-child:nth-child(odd)]:col-span-2"
-            value={values.focus as (typeof FOCUSES)[number] | ""}
-            onChange={(v) => setValues((s) => ({ ...s, focus: v }))}
-            options={FOCUS.map((f) => ({ value: f.value, label: f.label, text: f.text, icon: <f.Icon /> }))}
-          />
+          <legend className="mb-3 text-base font-semibold">Which apps do you want to try?</legend>
+          <AppPicker value={modules} onChange={setModules} presetsLabel="Quick picks" groupsLabel="Your demo will have only these" meiText="Always in your demo, with 15 free questions. It answers from the apps you pick." />
+          {errors.modules && <span role="alert" className="mt-2 block text-sm text-bad">{errors.modules}</span>}
         </fieldset>
 
         <Turnstile onToken={setToken} resetKey={reset} />

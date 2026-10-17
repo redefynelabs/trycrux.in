@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "motion/react";
-import { CrmIcon, FinanceIcon, PeopleIcon, ProjectsIcon } from "@/components/icons";
+import { CrmIcon, FinanceIcon, InventoryIcon, PayrollIcon, PeopleIcon, ProjectsIcon } from "@/components/icons";
 import { Logo } from "@/components/logo";
 import { Reveal } from "@/components/reveal";
 
@@ -62,6 +62,8 @@ const MODULES = [
   { name: "Projects & Tasks", Icon: ProjectsIcon, from: 35, to: 78 },
   { name: "CRM & Sales", Icon: CrmIcon, from: 48, to: 86 },
   { name: "Finance & Billing", Icon: FinanceIcon, from: 62, to: 96 },
+  { name: "Inventory & Purchasing", Icon: InventoryIcon, from: 40, to: 84 },
+  { name: "Payroll & Payslips", Icon: PayrollIcon, from: 52, to: 90 },
 ];
 
 function Hub() {

@@ -17,6 +17,7 @@ import { PricingTabs } from "@/components/pricing-tabs";
 import { OneSystem } from "@/components/one-system";
 import { MeiSection } from "@/components/mei-section";
 import { ModuleGrid } from "@/components/module-grid";
+import { IndustryCards } from "@/components/home-more";
 import { AskAi } from "@/components/ask-ai";
 import { FAQ_GROUPS } from "@/content/faq";
 import { faqPage, jsonLd } from "@/lib/seo";
@@ -48,7 +49,7 @@ export default function HomePage() {
           <BlurText text="The only software your business needs." animateBy="words" delay={90} className="justify-center gradient-text" />
         </h1>
         <p className="mx-auto mt-5 max-w-2xl text-[15px] leading-relaxed text-muted sm:mt-7 sm:text-xl sm:leading-normal">
-          Crux is the system at the heart of your company. People, projects, sales and money run on one set of records, and Mei, your AI assistant, answers questions, drafts the paperwork and clears the busywork. Live within 24 hours, with every feature, unlimited users and no per-user price.
+          Crux is the system at the heart of your company. People, payroll, projects, sales, stock and money run on one set of records, and Mei, your AI assistant, answers questions, drafts the paperwork and clears the busywork. Live within 24 hours, with unlimited users and no per-user price.
         </p>
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3 sm:mt-10">
           <ShimmerLink href="/demo">Start a free demo</ShimmerLink>
@@ -66,8 +67,13 @@ export default function HomePage() {
       </section>
 
       <section className="mx-auto mt-32 max-w-[84rem] px-4 sm:px-6" aria-labelledby="features">
-        <Reveal><SectionHead id="features" eyebrow="Features" title="Every part of the company, in one system" text="Four modules that share one set of people, clients and permissions, so nothing is typed twice. Use all of them, or only the ones you need." /></Reveal>
+        <Reveal><SectionHead id="features" eyebrow="Features" title="Every part of the company, in one system" text="Apps that share one set of people, clients and permissions, so nothing is typed twice. We switch on what you need today and add more as you grow." /></Reveal>
         <Reveal delay={0.1} className="mt-14"><ModuleGrid /></Reveal>
+      </section>
+
+      <section className="mx-auto mt-32 max-w-[84rem] px-4 sm:px-6" aria-labelledby="industries">
+        <Reveal><SectionHead id="industries" eyebrow="Industries" title="Made for how your trade works" text="Software teams, agencies, clinics, field service, distributors and consultancies. We start you with the words and defaults of your trade." /></Reveal>
+        <Reveal delay={0.1} className="mt-14"><IndustryCards /></Reveal>
       </section>
 
       <section className="mx-auto mt-32 max-w-[84rem] px-4 sm:px-6" aria-labelledby="one">
@@ -88,7 +94,7 @@ export default function HomePage() {
       </section>
 
       <section className="mx-auto mt-32 max-w-[84rem] px-4 sm:px-6" aria-labelledby="ways">
-        <Reveal><SectionHead id="ways" eyebrow="Pricing" title="Pay for the app, not per user" text="Every feature and unlimited users in every plan. Choose how you want to run it." /></Reveal>
+        <Reveal><SectionHead id="ways" eyebrow="Pricing" title="Pay for the apps, not per user" text="Three plans, from selling and billing to payroll and stock, with unlimited users in each. Buy a licence for one year, two years or for good, and run it on your own server." /></Reveal>
         <Reveal delay={0.1} className="mt-14"><PricingTabs /></Reveal>
         <p className="mt-6 text-center text-sm text-muted"><TaxNote /> <Link href="/pricing" className="font-medium text-brand underline">Full pricing details</Link></p>
       </section>

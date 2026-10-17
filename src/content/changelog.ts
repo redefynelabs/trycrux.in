@@ -17,6 +17,11 @@ export interface Entry {
 
 export const ENTRIES: Entry[] = [
   {
+    date: "2026-10-17", area: "People & HR", title: "Payroll, with a payslip for everyone",
+    text: "A monthly pay run worked out from attendance, leave and timesheets, approved by someone other than the person who prepared it.",
+    points: ["Pay components and a salary structure for each person, kept as dated versions", "A pay run each month: calculate, approve, mark paid", "Payslip PDFs with your letterhead, emailed to each person", "People see only their own payslips; salary never appears in the people list or to Mei", "An approved run posts one payroll expense to Accounting"],
+  },
+  {
     date: "2026-10-15", area: "Finance", title: "See what every project and product earns",
     text: "Sales now carry the project and the product all the way to the invoice, so revenue lands where it belongs.",
     points: ["Quotes and orders can name one of the client's projects, and the invoice keeps it", "Add invoice lines straight from the product catalog, with its price, unit and tax", "Revenue reports broken down by product and by product category", "A budget for each project, with budget left, revenue, expenses and profit on the project page, seen only by people with finance access", "An order that has been invoiced is locked until its invoice is voided, so orders and invoices never disagree"],

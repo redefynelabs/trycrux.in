@@ -1,8 +1,10 @@
 import type { MetadataRoute } from "next";
 import { sortedEntries, ENTRIES } from "@/content/changelog";
+import { INDUSTRIES } from "@/content/industries";
+import { PRODUCT_PAGES } from "@/content/product";
 import { SITE } from "@/lib/site";
 
-const PATHS = ["", "/pricing", "/demo", "/contact", "/changelog", "/legal/terms", "/legal/privacy", "/legal/data-ownership"];
+const PATHS = ["", "/pricing", "/product", ...PRODUCT_PAGES.map((p) => `/product/${p.slug}`), "/industries", ...INDUSTRIES.map((i) => `/industries/${i.slug}`), "/demo", "/contact", "/changelog", "/legal/terms", "/legal/privacy", "/legal/data-ownership"];
 
 export default function sitemap(): MetadataRoute.Sitemap {
   // The newest changelog entry is when the product, and so the product pages, last changed.

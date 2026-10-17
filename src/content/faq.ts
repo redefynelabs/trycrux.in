@@ -10,21 +10,25 @@ export interface FaqGroup {
 }
 
 export const PRODUCT_FAQ: QA[] = [
-  { q: "What is Crux?", a: "The AI-powered business operating system: the only software you need to run a company. People and HR, projects and timesheets, CRM and sales, and invoicing with taxes, all on one set of records and one login. It also includes Mei, an AI assistant that answers from your own data." },
-  { q: "Which modules are included?", a: "All of them, in every plan: People & HR (records, documents, attendance, shifts, holidays, leave), Projects & Tasks (boards, timesheets), CRM & Sales (leads, clients, follow-ups, meetings, quotes, orders and a product catalog) and Finance & Billing (invoices, credit notes, recurring invoices, payments, expenses, banking and reports), plus Mei and the admin controls." },
+  { q: "What is Crux?", a: "The AI-powered business operating system: the only software you need to run a company. People, HR and payroll, projects and timesheets, CRM and sales, inventory and purchasing, and invoicing with taxes, all on one set of records and one login. It also includes Mei, an AI assistant that answers from your own data." },
+  { q: "Which modules are included?", a: "You pick from six app groups: CRM & Sales, Invoices & expenses, Projects & tasks, People & HR, Payroll, and Inventory & purchasing. Start takes any two, Grow any four and Complete all six. Mei the AI assistant, roles, the audit log and unlimited users are in every plan, on top of the six." },
   { q: "Does it handle my taxes and other currencies?", a: "Yes. You can define named tax rates such as VAT or sales tax on every document (and GST with CGST, SGST and IGST for India), and you can bill in other currencies while the base-currency value is kept with the rate you used." },
-  { q: "Do I have to use every module?", a: "No. HR, Projects, CRM and Finance each work on their own, and features inside them can be switched on or off. Use what your team needs today and turn on more later; the records are shared when you do." },
+  { q: "We only need sales, inventory and HR. Can we pay for just those?", a: "Yes. Tick those app groups in the plan builder on the pricing page. Three groups fit the Grow plan, which takes any four. Payroll needs People & HR, so choosing Payroll adds it." },
+  { q: "Do I have to use every module?", a: "No. You choose the app groups your team needs, for example only sales, inventory and People & HR, and we switch on just those. Each feature inside an app can be switched on or off too. Change the mix whenever you like; the records are shared, so nothing is retyped." },
+  { q: "Is it only for certain kinds of company?", a: "No. Software and tech companies, agencies, clinics, trades and field service, distributors and consultancies all run on it. We start you with the words and defaults of your trade, for example Patients and Cases for a clinic, or Customers and Jobs for field service, and you can change them. See the industries page." },
+  { q: "Does it do payroll?", a: "Yes. You set up pay components and a salary structure for each person, run a pay run each month from attendance, leave and timesheets, have it approved by someone other than the person who prepared it, and give everyone a payslip. Tax and statutory deductions are not worked out for you yet: your accountant enters them as components." },
   { q: "How quickly can we start?", a: "Within 24 hours. Talk to us, and we set up your system with you, bring in your people and clients, and set roles, so your business runs on it the next day." },
   { q: "Can I bring in the data I already have?", a: "Leads can be imported from a spreadsheet: you check a preview, nothing is imported until you confirm. For other records, tell us what you have and we will advise on the quickest way in." },
   { q: "Can I try it first?", a: "Yes. Request a demo and you get a private copy with sample data for one hour, no card and no installation. Mei, the AI assistant, answers up to 15 questions in the demo, on us." },
 ];
 
 export const PRICING_GROUP_FAQ: QA[] = [
-  { q: "Is there a per-user price?", a: "No. Every plan includes every feature and unlimited users. On the cloud you pay one flat monthly price for the size of your system, so it follows the capacity you need, not the number of logins." },
-  { q: "What do the sizes mean?", a: "Your company gets its own private copy of the system with its own database and file bucket. A bigger size reserves more processing power and memory for it, a larger file allowance and longer backups. There is no user limit at any size; the team size shown is only a guide, and you can change size later." },
-  { q: "Are there add-on modules or hidden costs?", a: "No add-on modules. The only other cost is your own AI provider's bill if you use Mei, because the AI is billed to you by that provider at their price. Prices exclude applicable taxes such as GST or VAT." },
-  { q: "Do you charge for setup?", a: "Cloud setup is free, and your system is running within 24 hours. For your own server we install it with you; ask us for the current setup and training options." },
-  { q: "What does a lifetime licence include?", a: "The right to run the software forever on your server, with updates for the first year. After that, updates are optional through the yearly support plan; the software never stops working." },
+  { q: "Is there a per-user price?", a: "No. Every plan has unlimited users. You pay for the plan, which follows how many app groups you pick and the capacity they need, not for the number of logins." },
+  { q: "What do the sizes mean?", a: "A plan is how many app groups you pick: any two on Start, any four on Grow, all six on Complete. Users are never counted, so the only limit on how many people use it is your own server. Our guide: a server with 2 CPUs and 4 GB of memory runs 50 people comfortably." },
+  { q: "Are there add-on modules or hidden costs?", a: "No add-ons to buy one by one: you choose Start, Grow or Complete. The only other cost is your own AI provider's bill if you use Mei, because the AI is billed to you by that provider at their price. Prices exclude applicable taxes such as GST or VAT." },
+  { q: "Do you charge for setup?", a: "We install it on your server with you and bring in your people and clients, so you are running within a day. Ask us for the current setup and training options." },
+  { q: "How does a licence on my own server work?", a: "You receive a licence key and enter it once when we install the system, which needs an internet connection that day. The key carries which apps you have, when the licence ends and the date your updates run to. After that the system runs on your server with no connection to us. A lifetime licence never stops working; updates continue with the yearly support plan." },
+  { q: "What does a lifetime licence include?", a: "The right to run the software forever on your server, with updates for the first year and the first year of the server included. If you already have a server, the price drops by what that year is worth. After that, updates are optional through the yearly support plan for your plan; the software never stops working." },
   { q: "What happens when a term licence ends?", a: "The term you bought is over. Renew it to keep using the software and to receive updates and support. Your data is always yours: we never delete, lock or encrypt it, and you can export it at any time." },
 ];
 
@@ -33,16 +37,15 @@ export const INTEGRATIONS_FAQ: QA[] = [
   { q: "Do emails go out from my own address?", a: "Yes. You connect your own mail server, so invoices and reminders come from your domain. Every email template can be edited, and a delivery log shows what was sent and lets you retry a failure." },
   { q: "How does WhatsApp work?", a: "You connect your own Meta Business account, so messages are sent from your number. Invoices and updates can go to clients on WhatsApp as well as by email." },
   { q: "Will meetings show in my calendar?", a: "Yes. Each person can connect their Google or Microsoft calendar, and meetings and follow-ups sync to it, with a Meet or Teams link where you want one." },
-  { q: "Where are my files stored?", a: "On the cloud, in a private Cloudflare R2 bucket created for your company alone, so your files are never mixed with another customer's. On your own server, in a bucket you own, such as Cloudflare R2 or AWS S3, set up once when we install it. Confidential documents are only ever opened through short-lived links." },
+  { q: "Where are my files stored?", a: "In a private bucket you own, such as Cloudflare R2 or AWS S3, set up once when we install it. Files are never mixed with anyone else's, and confidential documents are only ever opened through short-lived links." },
   { q: "What if I need a tool that is not listed?", a: "Tell us which one and what you need it to do. Your data is standard PostgreSQL and can be exported at any time, so you are never stuck." },
 ];
 
 export const SECURITY_FAQ: QA[] = [
-  { q: "Who owns the data?", a: "You do. It sits in your database, on your server (or your own instance on our cloud), and you can export it whenever you like, even if you stop paying." },
+  { q: "Who owns the data?", a: "You do. It sits in your own database on your own server, and you can export it whenever you like." },
   { q: "Can I control who sees what?", a: "Yes. There are built-in roles you can change, and fine permissions for every action, so people see only what their job needs. Confidential employee documents are visible only to the people you allow." },
   { q: "Is there an audit trail?", a: "Yes. The audit log records who changed what and when, for the things that matter, and approvals leave a trail too." },
-  { q: "Can I run it on my own server?", a: "Yes. Buy a licence and install it on a Linux server with Docker; we install it with you. The software is the same as the cloud, and it needs no connection to us to run." },
-  { q: "Can I move between cloud and my own server?", a: "Yes. Your data is a standard PostgreSQL database, and we will help you export it and set it up on your server, or the other way round." },
+  { q: "Can I run it on my own server?", a: "Yes, that is how Crux is sold. Buy a licence and install it on a Linux server with Docker; we install it with you. After setup it needs no connection to us to run." },
 ];
 
 export const AI_FAQ: QA[] = [
@@ -57,13 +60,15 @@ export const AI_FAQ: QA[] = [
 ];
 
 export const PRICING_FAQ: QA[] = [
-  { q: "Is there a per-user price?", a: "No. Every plan includes every feature and unlimited users. On the cloud you pay one flat monthly price for the size of your system, so it follows the capacity you need, not the number of logins." },
-  { q: "What do the sizes mean?", a: "Your company gets its own private copy of the system with its own database and file bucket. A bigger size reserves more processing power and memory for it, a larger file allowance and longer backups. There is no user limit at any size; the team size shown is only a guide, and you can change size later." },
-  { q: "Can I move from cloud to my own server later?", a: "Yes. Your data is a standard PostgreSQL database, and we will help you export it and set it up on your server with a licence." },
+  { q: "Is there a per-user price?", a: "No. Every plan has unlimited users. You pay for the plan, which follows how many app groups you pick and the capacity they need, not for the number of logins." },
+  { q: "What do the sizes mean?", a: "A plan is how many app groups you pick: any two on Start, any four on Grow, all six on Complete. Users are never counted, so the only limit on how many people use it is your own server. Our guide: a server with 2 CPUs and 4 GB of memory runs 50 people comfortably." },
+  { q: "Is it cheaper to run it on my own server?", a: "Over a few years, yes. You pay once instead of every month, and a lifetime licence includes the first year of the server. After that the only recurring costs are the server, about \u20b9800 a month for a company of 50 people, and optional yearly support. You do need someone to look after the server, or you can ask us to." },
+  { q: "Can I move up a plan later?", a: "Yes. Swap or add an app group at any time. If you go past your plan's limit you move to the next plan: you pay the difference and receive a new licence key." },
   { q: "What happens when a term licence ends?", a: "The term you bought is over. Renew it to keep using the software and to receive updates and support. Your data is always yours: we never delete, lock or encrypt it, and you can export it at any time." },
-  { q: "What does a lifetime licence include?", a: "The right to run the software forever on your server, with updates for the first year. After that, updates are optional through the yearly support plan; the software never stops working." },
-  { q: "Who owns the data?", a: "You do. It sits in your database, on your server (or your own instance on our cloud), and you can export it whenever you like." },
-  { q: "Do you charge for setup?", a: "Cloud setup is free, and your system is running within 24 hours. For your own server we install it with you; ask us for the current setup and training options." },
+  { q: "How does a licence on my own server work?", a: "You receive a licence key and enter it once when we install the system, which needs an internet connection that day. The key carries which apps you have, when the licence ends and the date your updates run to. After that the system runs on your server with no connection to us. A lifetime licence never stops working; updates continue with the yearly support plan." },
+  { q: "What does a lifetime licence include?", a: "The right to run the software forever on your server, with updates for the first year and the first year of the server included. If you already have a server, the price drops by what that year is worth. After that, updates are optional through the yearly support plan for your plan; the software never stops working." },
+  { q: "Who owns the data?", a: "You do. It sits in your own database on your own server, and you can export it whenever you like." },
+  { q: "Do you charge for setup?", a: "We install it on your server with you and bring in your people and clients, so you are running within a day. Ask us for the current setup and training options." },
   { q: "Is the AI assistant included?", a: "Yes, Mei is part of every plan. You connect your own AI provider account, so the cost of the AI is billed to you by that provider, at their price." },
   { q: "Is tax included?", a: "Prices exclude applicable taxes such as GST or VAT, which are added on the invoice." },
   { q: "Which currencies can I pay in?", a: "Indian rupees, US dollars, British pounds, euros and UAE dirhams. The site shows prices in the currency for your country, and you can switch it above the plans. You are invoiced in the currency you choose, at the price shown." },
@@ -71,7 +76,8 @@ export const PRICING_FAQ: QA[] = [
 
 export const RUNNING_FAQ: QA[] = [
   { q: "Can I try it first?", a: "Yes. Request a demo and you get a private copy with sample data for one hour, no card and no installation. Mei, the AI assistant, answers up to 15 questions in the demo, on us." },
-  { q: "What do I need to run it on my own server?", a: "A Linux server with Docker, 2 CPUs and 4 GB of memory to start, and a domain name. Our installer does the rest." },
+  { q: "How many users can my own server handle?", a: "As many as the machine can carry, since a licence never counts users. A server with 2 CPUs, 4 GB of memory and 40 GB of disk is our recommended minimum and comfortably runs 50 people. Use 4 CPUs and 8 GB for up to 150 people. Everything stays private on your server: the database, the files and the backups." },
+  { q: "What do I need to run it on my own server?", a: "A Linux server (Ubuntu 22.04 or 24.04) with Docker and a domain name. Two CPUs, 4 GB of memory and 40 GB of disk comfortably run a company of 50 people; for 50 to 150 people use 4 CPUs, 8 GB and 100 GB. Users are never counted, so the server is the only limit. Our installer does the rest." },
   { q: "How do updates reach my server?", a: "With the yearly support plan or a current term licence you pull new releases with one command. A copy of your data is taken first, and it rolls back automatically if the new version does not start." },
   { q: "Is my data safe in the demo?", a: "A demo contains only invented sample data and is deleted after one hour. Do not enter real customer or employee information." },
 ];

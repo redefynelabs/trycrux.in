@@ -7,7 +7,7 @@ import { COMPANY } from "@/lib/seo";
 import { SITE } from "@/lib/site";
 
 const COLS = [
-  { title: "Product", links: [["/#features", "Features"], ["/#mei", "Mei AI assistant"], ["/#how", "How it works"], ["/#control", "Security and control"], ["/pricing", "Pricing"]] },
+  { title: "Product", links: [["/#features", "Features"], ["/#mei", "Mei AI assistant"], ["/#how", "How it works"], ["/#control", "Security and control"], ["/product", "All apps"], ["/industries", "Industries"], ["/pricing", "Pricing"]] },
   { title: "Get started", links: [["/demo", "Try the demo"], ["/contact", "Talk to sales"], ["/changelog", "Changelog"], ["/llms.txt", "Crux for AI assistants"]] },
   { title: "Legal", links: [["/legal/terms", "Terms of service"], ["/legal/privacy", "Privacy notice"], ["/legal/data-ownership", "Your data, your ownership"]] },
 ] as const;
@@ -18,7 +18,7 @@ export function SiteFooter() {
       <div className="mx-auto grid max-w-[84rem] gap-12 px-4 pt-16 pb-12 sm:px-6 lg:grid-cols-12 lg:gap-8">
         <div className="lg:col-span-5">
           <Logo />
-          <p className="mt-5 max-w-sm text-sm leading-relaxed text-muted">{SITE.tagline}. HR, projects, CRM, sales and finance in one system, on our cloud or your own server, with every feature and no per-user price.</p>
+          <p className="mt-5 max-w-sm text-sm leading-relaxed text-muted">{SITE.tagline}. HR and payroll, projects, CRM, sales, inventory and finance in one system, on your own server, in three plans with unlimited users and no per-user price.</p>
           <div className="mt-8">
             <p className="text-xs font-semibold tracking-wide text-fg uppercase">Ask an AI about {SITE.name}</p>
             <AskAiButtons size="sm" align="start" className="mt-3" />

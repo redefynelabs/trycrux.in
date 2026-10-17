@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { CURRENCY_CODES, currencyForCountry, localize, type CurrencyCode } from "@/lib/currency";
-import { AMC, CLOUD, ON_PREM, PRICES, RUNNING_COST, money, runningCost } from "./pricing";
+import { CLOUD, PLAN_IDS, PRICES, RUNNING_COST, TERM_IDS, licenceTotal, money, runningCost, serverYearValue, type PlanId } from "./pricing";
 
 describe("cloud pricing", () => {
   it("leaves at least the target margin over what each plan costs us to run", () => {
@@ -24,21 +24,50 @@ describe("cloud pricing", () => {
   });
 });
 
+describe("licence prices", () => {
+  it("get cheaper by the year with a longer term, and dearer as a plan adds apps", () => {
+    for (const p of PLAN_IDS) {
+      const o = PRICES.INR.own[p];
+      expect(o.term2 / 2).toBeLessThan(o.term1);
+      expect(o.lifetime).toBeGreaterThan(o.term2);
+    }
+    for (const t of TERM_IDS) expect(PRICES.INR.own.start[t] < PRICES.INR.own.grow[t] && PRICES.INR.own.grow[t] < PRICES.INR.own.complete[t]).toBe(true);
+  });
+
+  it("include the first year of the server in a lifetime licence, which is a small part of its price", () => {
+    for (const p of PLAN_IDS) {
+      const worth = serverYearValue(p, "INR");
+      expect(worth, p).toBeGreaterThan(0);
+      expect(worth / PRICES.INR.own[p].lifetime, p).toBeLessThan(0.15);
+      expect(licenceTotal(p, "lifetime", "INR", true), p).toBe(PRICES.INR.own[p].lifetime - worth);
+    }
+  });
+
+  it("take nothing off a one or two year licence for having a server", () => {
+    for (const p of PLAN_IDS) {
+      expect(licenceTotal(p, "term1", "INR", true)).toBe(PRICES.INR.own[p].term1);
+      expect(licenceTotal(p, "term2", "INR", true)).toBe(PRICES.INR.own[p].term2);
+    }
+  });
+
+  it("keep optional support small next to the lifetime price", () => {
+    for (const p of PLAN_IDS) expect(PRICES.INR.amc[p] / PRICES.INR.own[p].lifetime, p).toBeLessThan(0.12);
+  });
+});
+
 describe("prices in other currencies", () => {
   // INR per unit, as in the PRICES comment.
   const rate: Record<CurrencyCode, number> = { INR: 1, USD: 98, GBP: 98 * 1.33, EUR: 98 * 1.16, AED: 98 / 3.67 };
-  const inrPrices = (c: CurrencyCode) => [...Object.values(PRICES[c].cloud), ...Object.values(PRICES[c].own), PRICES[c].amc];
+  const flat = (c: CurrencyCode) => [...Object.values(PRICES[c].cloud), ...PLAN_IDS.flatMap((p) => TERM_IDS.map((t) => PRICES[c].own[p][t])), ...Object.values(PRICES[c].amc)];
 
   it("keeps the INR table equal to the plans", () => {
-    for (const t of CLOUD.tiers) expect(PRICES.INR.cloud[t.id as "small"]).toBe(t.perMonth);
-    for (const l of ON_PREM) expect(PRICES.INR.own[l.id as "term1"]).toBe(l.price);
-    expect(PRICES.INR.amc).toBe(AMC.perYear);
+    for (const t of CLOUD.tiers.filter((x) => x.perMonth)) expect(PRICES.INR.cloud[t.id as PlanId]).toBe(t.perMonth);
   });
 
   it("stays within 15% of the INR price at the assumed rates", () => {
-    const base = inrPrices("INR");
+    const base = flat("INR");
     for (const c of CURRENCY_CODES) {
-      inrPrices(c).forEach((p, i) => {
+      flat(c).forEach((p, i) => {
         const diff = Math.abs(p * rate[c] - base[i]) / base[i];
         expect(diff, `${c} price ${p} against ₹${base[i]}`).toBeLessThanOrEqual(0.15);
       });

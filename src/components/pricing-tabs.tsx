@@ -2,15 +2,13 @@
 
 import Link from "next/link";
 import { animate } from "motion/react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { buttonClass } from "@/components/buttons";
-import { CheckIcon, CloudIcon, ServerIcon } from "@/components/icons";
+import { CheckIcon, SparkIcon } from "@/components/icons";
 import { useCurrency } from "@/components/currency-picker";
-import { AMC, CLOUD, cloudPrice, licencePrice, money, ON_PREM, PRICES } from "@/content/pricing";
+import { AMC_TEXT, CLOUD, OWN_SERVER, LICENCE_INCLUDED, TERMS, amcPrice, licenceTotal, money, serverYearValue, type TermId } from "@/content/pricing";
 import { CURRENCIES, type CurrencyCode } from "@/lib/currency";
 import { cn } from "@/lib/utils";
-
-type Mode = "cloud" | "own";
 
 /** The currency sign before a price, smaller than the figure. */
 function CurrencySign({ currency }: { currency: CurrencyCode }) {
@@ -74,120 +72,102 @@ function Tick() {
   return <span className="mt-0.5 grid size-5 shrink-0 place-items-center bg-ok-soft text-ok"><CheckIcon className="size-3" /></span>;
 }
 
-/** Cloud or your own server, monthly or yearly, with prices that count to their new value. */
+/** One plan card: its price, what it adds, capacity and the button. Used for a licence. */
+function PlanCard({ plan, price, priceNote, specs, bullets, href, cta }: { plan: (typeof CLOUD.tiers)[number]; price: ReactNode; priceNote: string; specs: [string, string][]; bullets: string[]; href: string; cta: string }) {
+  return (
+    <Plan popular={plan.popular} band={plan.popular ? `Most chosen · ${plan.for}` : plan.for}>
+      <h3 className="text-2xl font-semibold tracking-tight">{plan.name}</h3>
+      <p className="mt-6 flex items-baseline gap-1.5 whitespace-nowrap">{price}</p>
+      <p className="mt-2 text-xs text-muted">{priceNote}</p>
+      <p className="mt-4 flex items-center gap-2 bg-brand-soft px-3 py-2 text-sm font-medium text-brand"><SparkIcon className="size-4" /> Mei AI assistant included</p>
+      <ul className="mt-6 space-y-3 border-t border-line pt-6 text-sm">
+        {bullets.map((b) => <li key={b} className="flex gap-2.5"><Tick />{b}</li>)}
+      </ul>
+      <dl className="mt-6 divide-y divide-line border-y border-line">
+        {specs.map(([k, v]) => <SpecRow key={k} k={k} v={v} />)}
+      </dl>
+      <div className="flex-1" />
+      <Link href={href} className={buttonClass(plan.popular ? "brand" : "primary", "lg", "mt-8 w-full")}>{cta}</Link>
+    </Plan>
+  );
+}
+
+/** Licences for your own server, by plan, for one year, two years or for good, with prices that count to their new value. */
 export function PricingTabs({ showExtras = true }: { showExtras?: boolean }) {
-  const [mode, setMode] = useState<Mode>("cloud");
-  const [yearly, setYearly] = useState(false);
+  const [term, setTerm] = useState<TermId>("lifetime");
+  const [haveServer, setHaveServer] = useState(false);
   const currency = useCurrency();
-  const factor = yearly ? 1 - CLOUD.annualDiscountPct / 100 : 1;
+  const plans = CLOUD.tiers.filter((t) => t.perMonth);
+  const termInfo = TERMS.find((t) => t.id === term)!;
 
   return (
     <div>
       <div className="flex flex-col items-center gap-4">
-        <Segmented
-          label="How to run it"
-          value={mode}
-          onChange={setMode}
-          options={[
-            { id: "cloud", label: "Cloud", icon: <CloudIcon className="size-4" /> },
-            { id: "own", label: "Your own server", icon: <ServerIcon className="size-4" /> },
-          ]}
-        />
-        {mode === "cloud" ? (
-          <Segmented label="Billing period" value={yearly ? "yearly" : "monthly"} onChange={(v) => setYearly(v === "yearly")} options={[{ id: "monthly", label: "Monthly" }, { id: "yearly", label: "Yearly", badge: `Save ${CLOUD.annualDiscountPct}%` }]} />
-        ) : (
-          <p className="text-sm text-muted">Buy once and run it on your server. We install it with you, and it needs no connection to us.</p>
+        <Segmented label="Licence term" value={term} onChange={setTerm} options={TERMS.map((t) => ({ id: t.id, label: t.id === "lifetime" ? "Lifetime" : t.id === "term1" ? "1 year" : "2 years", badge: t.id === "lifetime" ? "Pay once" : undefined }))} />
+        <p className="text-sm text-muted">{termInfo.note} Runs on your own server, and everything stays private to you.</p>
+        {term === "lifetime" && (
+          <label className="flex cursor-pointer items-center gap-2.5 bg-soft px-4 py-2.5 text-sm ring-1 ring-line">
+            <input type="checkbox" checked={haveServer} onChange={(e) => setHaveServer(e.target.checked)} className="size-4 accent-[var(--brand)]" />
+            <span>I already have a server <span className="text-muted">(the price drops by the server year we include)</span></span>
+          </label>
         )}
       </div>
 
-      {mode === "cloud" ? (
-        <div className="mt-12 grid gap-px bg-line ring-1 ring-line md:grid-cols-3">
-          {CLOUD.tiers.map((t) => {
-            const perMonth = cloudPrice(t.id, currency);
-            if (!perMonth) {
-              return (
-                <Plan key={t.id} band={t.for}>
-                  <h3 className="text-2xl font-semibold tracking-tight">{t.name}</h3>
-                  <p className="mt-6 text-5xl font-semibold tracking-tighter">Let&apos;s talk</p>
-                  <p className="mt-2 text-xs text-muted">{t.team}. Unlimited users.</p>
-                  <dl className="mt-6 divide-y divide-line border-y border-line">
-                    <SpecRow k="Capacity" v="Sized for you" />
-                    <SpecRow k="File storage" v="As much as you need" />
-                    <SpecRow k="Backups" v="Retention you choose" />
-                    <SpecRow k="Team size" v={t.team} />
-                  </dl>
-                  <ul className="mt-6 flex-1 space-y-3 text-sm">
-                    <li className="flex gap-2.5"><Tick />Every module and Mei AI</li>
-                    <li className="flex gap-2.5"><Tick />Help moving your data in</li>
-                    <li className="flex gap-2.5"><Tick />A named person for support</li>
-                  </ul>
-                  <Link href="/contact?interest=cloud&plan=larger" className={buttonClass("primary", "lg", "mt-8 w-full")}>Talk to sales</Link>
-                </Plan>
-              );
-            }
-            const monthly = Math.round(perMonth * factor);
-            return (
-              <Plan key={t.id} popular={t.popular} band={t.popular ? `Most chosen · ${t.for}` : t.for}>
-                <h3 className="text-2xl font-semibold tracking-tight">{t.name}</h3>
-                <p className="mt-6 flex items-baseline gap-1.5 whitespace-nowrap">
-                  <CurrencySign currency={currency} />
-                  <Price key={currency} value={monthly} currency={currency} />
-                  <span className="text-sm text-muted">/ month</span>
-                </p>
-                <p className="mt-2 text-xs text-muted">{yearly ? `Billed yearly, ${money(monthly * 12, currency)}. ` : ""}{t.team}. Unlimited users.</p>
-                <dl className="mt-6 divide-y divide-line border-y border-line">
-                  <SpecRow k="Dedicated capacity" v={`${t.vcpu} vCPU, ${t.ramGb} GB`} />
-                  <SpecRow k="File storage" v={`${t.filesGb} GB`} />
-                  <SpecRow k="Backups" v={t.backups} />
-                  <SpecRow k="Team size" v={t.team.replace("Up to about", "Up to").replace("About ", "")} />
-                </dl>
-                <ul className="mt-6 flex-1 space-y-3 text-sm">
-                  <li className="flex gap-2.5"><Tick />Every module and Mei AI</li>
-                  <li className="flex gap-2.5"><Tick />Unlimited users</li>
-                  <li className="flex gap-2.5"><Tick />Updates and support included</li>
-                </ul>
-                <Link href={`/contact?interest=cloud&plan=${t.id}`} className={buttonClass(t.popular ? "brand" : "primary", "lg", "mt-8 w-full")}>Get started</Link>
-              </Plan>
-            );
-          })}
-        </div>
-      ) : (
-        <div className="mt-12 grid gap-px bg-line ring-1 ring-line md:grid-cols-3">
-          {ON_PREM.map((l) => (
-            <Plan key={l.id} popular={l.popular} band={l.popular ? "Best value" : l.per}>
-              <h3 className="text-2xl font-semibold tracking-tight">{l.name}</h3>
-              <p className="mt-6 flex items-baseline gap-1.5 whitespace-nowrap">
-                <CurrencySign currency={currency} />
-                <Price key={currency} value={licencePrice(l.id, currency)} currency={currency} />
-              </p>
-              <p className="mt-2 text-xs text-muted">{l.per}. {l.note}</p>
-              <ul className="mt-6 flex-1 space-y-3 border-t border-line pt-6 text-sm">
-                {l.features.map((f) => (
-                  <li key={f} className="flex gap-2.5"><Tick />{f}</li>
+      <div className="mt-12 grid gap-px bg-line ring-1 ring-line md:grid-cols-3">
+        {plans.map((t) => (
+          <PlanCard
+            key={t.id}
+            plan={t}
+            price={<><CurrencySign currency={currency} /><Price key={`${currency}${term}${haveServer}`} value={licenceTotal(t.id, term, currency, haveServer)} currency={currency} /></>}
+            priceNote={term === "lifetime" ? (haveServer ? `${termInfo.per}, using your own server. Unlimited users.` : `${termInfo.per}. Includes 1 year of the server, worth ${money(serverYearValue(t.id, currency), currency)}. Unlimited users.`) : `${termInfo.per}. Unlimited users.`}
+            bullets={t.apps}
+            specs={[["Updates", term === "lifetime" ? "1 year, then optional" : term === "term1" ? "1 year" : "2 years"], ["Support and updates after", term === "lifetime" ? `${money(amcPrice(t.id, currency), currency)} / year` : "Renew the licence"], ["Users", "Unlimited, your server sets the limit"]]}
+            href={`/contact?interest=on_prem&plan=${t.id}&term=${term}${haveServer ? "&server=own" : ""}`}
+            cta="Ask about this"
+          />
+        ))}
+      </div>
+
+      <div className="mt-6 grid gap-px bg-line ring-1 ring-line lg:grid-cols-[1.2fr_1fr]">
+        <div className="bg-bg p-6 sm:p-8">
+          <h3 className="font-semibold tracking-tight">What server do I need?</h3>
+          <p className="mt-1 text-sm text-muted">Users are never counted on your own server. How many it handles depends on the machine, so size it for your team.</p>
+          <div className="mt-5 overflow-x-auto">
+            <table className="w-full min-w-[26rem] text-left text-sm">
+              <thead><tr className="border-b border-line text-muted"><th className="py-2 font-medium">Team</th><th className="py-2 font-medium">CPU</th><th className="py-2 font-medium">Memory</th><th className="py-2 font-medium">Disk</th></tr></thead>
+              <tbody className="divide-y divide-line">
+                {OWN_SERVER.sizes.map((r, i) => (
+                  <tr key={r.users} className={i === 0 ? "bg-brand-soft/60" : ""}><th scope="row" className="py-3 pr-3 font-semibold">{r.users}<span className="block text-xs font-normal text-muted">{r.note}</span></th><td className="py-3">{r.vcpu} vCPU</td><td className="py-3">{r.ramGb} GB</td><td className="py-3">{r.diskGb} GB SSD</td></tr>
                 ))}
-              </ul>
-              <Link href="/contact?interest=on_prem" className={buttonClass(l.popular ? "brand" : "primary", "lg", "mt-8 w-full")}>Ask about this</Link>
-            </Plan>
-          ))}
+              </tbody>
+            </table>
+          </div>
+          <p className="mt-4 text-xs text-muted">{OWN_SERVER.requirements}</p>
         </div>
-      )}
+        <div className="bg-soft p-6 sm:p-8">
+          <h3 className="font-semibold tracking-tight">Private, on your own server</h3>
+          <ul className="mt-4 space-y-3 text-sm">
+            {OWN_SERVER.private.map((t) => <li key={t} className="flex gap-2.5"><Tick />{t}</li>)}
+          </ul>
+        </div>
+      </div>
 
       {showExtras && (
         <div className="mt-6 grid gap-px bg-line ring-1 ring-line lg:grid-cols-3">
           <div className="bg-bg p-8 lg:col-span-2">
-            <h3 className="font-semibold tracking-tight">Every plan includes</h3>
+            <h3 className="font-semibold tracking-tight">Every licence includes</h3>
             <ul className="mt-5 grid gap-x-8 gap-y-3 text-sm sm:grid-cols-2">
-              {(mode === "cloud" ? CLOUD.included : ["Every module: HR, projects, CRM and finance", "Mei AI assistant (you bring your own AI key)", "Unlimited users", "The database and server are yours", "Export everything, any time", "Your data is never locked, and you can export it any time"]).map((i) => (
+              {LICENCE_INCLUDED.map((i) => (
                 <li key={i} className="flex gap-2.5"><Tick />{i}</li>
               ))}
             </ul>
           </div>
           <div className="flex flex-col justify-between bg-blue-600 p-8 text-white">
             <div>
-              <h3 className="font-semibold tracking-tight">{mode === "cloud" ? "Not sure which size?" : `Support and updates: ${money(PRICES[currency].amc, currency)} / year`}</h3>
-              <p className="mt-2 text-sm text-white/80">{mode === "cloud" ? "Try the demo, then tell us about your team and we will recommend a plan." : AMC.text}</p>
+              <h3 className="font-semibold tracking-tight">Support and updates after a lifetime licence</h3>
+              <p className="mt-2 text-sm text-white/80">{AMC_TEXT}</p>
             </div>
-            <Link href={mode === "cloud" ? "/demo" : "/contact?interest=on_prem"} className={buttonClass("onDark", "md", "mt-6 w-fit text-blue-700")}>{mode === "cloud" ? "Start a demo" : "Ask about support"}</Link>
+            <Link href="/contact?interest=on_prem" className={buttonClass("onDark", "md", "mt-6 w-fit text-blue-700")}>Ask about support</Link>
           </div>
         </div>
       )}

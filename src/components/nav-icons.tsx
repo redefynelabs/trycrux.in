@@ -1,4 +1,4 @@
-import { ChartLineData01Icon, Invoice01Icon, KanbanIcon, SparklesIcon, UserGroupIcon } from "@hugeicons/core-free-icons";
+import { ChartLineData01Icon, Invoice01Icon, KanbanIcon, MoneyBag02Icon, Package01Icon, SparklesIcon, UserGroupIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 
 // The same icon set as the ERP, so the menu shows what the product shows.
@@ -12,4 +12,6 @@ export const NavPeopleIcon = make(UserGroupIcon);
 export const NavProjectsIcon = make(KanbanIcon);
 export const NavCrmIcon = make(ChartLineData01Icon);
 export const NavFinanceIcon = make(Invoice01Icon);
+export const NavInventoryIcon = make(Package01Icon);
+export const NavPayrollIcon = make(MoneyBag02Icon);
 export const NavSparkIcon = make(SparklesIcon);

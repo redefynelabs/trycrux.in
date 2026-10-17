@@ -1,102 +1,42 @@
 import type { Metadata } from "next";
 import { pageMeta } from "@/lib/seo";
 import Link from "next/link";
+import { APP_GROUPS } from "@/content/pricing";
 import { ContactForm } from "@/components/contact-form";
-import { FaqTabs } from "@/components/faq";
-import { ArrowRightIcon, CheckIcon } from "@/components/icons";
-import { Proof } from "@/components/proof";
 import { TalkOptions } from "@/components/talk-options";
-import { PRICING_PAGE_FAQ } from "@/content/faq";
 import { SITE } from "@/lib/site";
 
-export const metadata: Metadata = pageMeta("/contact", "Contact sales", "Talk to the Crux team: tell us about your company and we recommend the cloud plan or licence that fits, and set up your system within 24 hours. We reply within one working day.");
+export const metadata: Metadata = pageMeta("/contact", "Contact sales", "Talk to the Crux team: tell us about your company and we recommend the plan and licence that fit, and set up your system within 24 hours. We reply within one working day.");
 
 type Interest = "cloud" | "on_prem" | "other";
 
-const NEXT = [
-  ["We read your message", "A person reads it, not a bot, and checks what you want to run."],
-  ["We reply within one working day", "With the plan or licence that fits your team, the price, and the next step."],
-  ["A walk-through, if you want one", "A call where we show your use case in the system and answer what is left."],
-] as const;
-
-export default async function ContactPage({ searchParams }: { searchParams: Promise<{ interest?: string; plan?: string }> }) {
-  const { interest, plan } = await searchParams;
-  const initialPlan = plan === "small" || plan === "business" || plan === "larger" ? plan : "";
-  const initial: Interest = interest === "on_prem" || interest === "other" ? interest : "cloud";
+export default async function ContactPage({ searchParams }: { searchParams: Promise<{ interest?: string; plan?: string; apps?: string; term?: string; server?: string }> }) {
+  const { interest, plan, apps, term, server } = await searchParams;
+  const wanted = (apps ?? "").split(",").flatMap((a) => APP_GROUPS.find((g) => g.id === a)?.name ?? []);
+  const initialPlan = plan === "start" || plan === "grow" || plan === "complete" ? plan : "";
+  const initial: Interest = interest === "other" ? interest : "on_prem";
   return (
-    <div className="px-4 pt-16 sm:px-6 sm:pt-20">
-      {/* Phones: the heading and the call options, then the form, then the rest. Wide screens: two columns. */}
-      <div className="mx-auto grid max-w-[84rem] grid-cols-1 items-start gap-10 lg:grid-cols-12 lg:gap-x-16 lg:gap-y-10">
-        <div className="min-w-0 lg:col-span-5 lg:row-start-1">
+    <div className="px-4 pt-16 pb-8 sm:px-6 sm:pt-20">
+      <div className="mx-auto grid max-w-[84rem] grid-cols-1 items-start gap-10 lg:grid-cols-12 lg:gap-16">
+        <div className="min-w-0 lg:col-span-5">
           <p className="text-sm font-semibold tracking-wide text-brand uppercase">Contact sales</p>
-          <h1 className="mt-3 text-4xl font-semibold tracking-tighter sm:text-6xl sm:leading-[1.03]">Tell us about your team</h1>
-          <p className="mt-5 text-lg text-muted">Say what you want to run and how big your team is, and we will recommend the plan that fits. No pushy follow-ups.</p>
-
-          <p className="mt-6 inline-flex items-center gap-2 bg-ok-soft px-3.5 py-2 text-sm font-semibold text-ok">
-            <span className="relative flex size-2"><span className="absolute inline-flex size-full animate-ping bg-ok/60 motion-reduce:animate-none" /><span className="relative inline-flex size-2 bg-ok" /></span>
-            We reply within one working day
-          </p>
+          <h1 className="mt-3 text-4xl font-semibold tracking-tighter sm:text-6xl sm:leading-[1.03]">Tell us what you need</h1>
+          <p className="mt-5 text-lg text-muted">Send a short message and we will recommend the plan that fits. A person replies within one working day.</p>
 
           <p className="mt-8 mb-3 text-sm font-medium text-muted">Rather talk now?</p>
           <TalkOptions compact />
-        </div>
 
-        <div className="min-w-0 lg:col-span-7 lg:col-start-6 lg:row-span-2 lg:row-start-1">
-          <ContactForm defaultInterest={initial} defaultPlan={initialPlan} />
-        </div>
-
-        <div className="min-w-0 lg:col-span-5 lg:row-start-2">
-
-          <ol className="divide-y divide-line ring-1 ring-line">
-            {NEXT.map(([t, d], i) => (
-              <li key={t} className="flex gap-4 bg-bg p-5">
-                <span className="grid size-9 shrink-0 place-items-center bg-accent text-sm font-semibold text-white">{i + 1}</span>
-                <div>
-                  <p className="font-semibold">{t}</p>
-                  <p className="mt-0.5 text-sm text-muted">{d}</p>
-                </div>
-              </li>
-            ))}
-          </ol>
-
-          <div className="mt-8 grid gap-px bg-line ring-1 ring-line">
-            <Link href="/demo" className="group flex items-center justify-between gap-4 bg-bg p-5 transition-colors hover:bg-soft">
-              <span>
-                <span className="block font-semibold">Rather try it first?</span>
-                <span className="block text-sm text-muted">A private demo in ten seconds, with Mei included.</span>
-              </span>
-              <ArrowRightIcon className="size-5 shrink-0 text-brand transition-transform group-hover:translate-x-1" />
-            </Link>
-            <Link href="/pricing" className="group flex items-center justify-between gap-4 bg-bg p-5 transition-colors hover:bg-soft">
-              <span>
-                <span className="block font-semibold">Looking for prices?</span>
-                <span className="block text-sm text-muted">Every plan, side by side, and the cost of running it yourself.</span>
-              </span>
-              <ArrowRightIcon className="size-5 shrink-0 text-brand transition-transform group-hover:translate-x-1" />
-            </Link>
-            <a href={`mailto:${SITE.email}`} className="group flex items-center justify-between gap-4 bg-bg p-5 transition-colors hover:bg-soft">
-              <span>
-                <span className="block font-semibold">Prefer email?</span>
-                <span className="block text-sm text-muted">{SITE.email}</span>
-              </span>
-              <ArrowRightIcon className="size-5 shrink-0 text-brand transition-transform group-hover:translate-x-1" />
-            </a>
-          </div>
-
-          <ul className="mt-8 space-y-2.5 text-sm">
-            {["Every feature and unlimited users in every plan", "Cloud or your own server, the same software", "Your data is yours and can be exported any time"].map((t) => (
-              <li key={t} className="flex gap-2.5"><span className="mt-0.5 grid size-5 shrink-0 place-items-center bg-ok-soft text-ok"><CheckIcon className="size-3" /></span>{t}</li>
-            ))}
+          <ul className="mt-8 space-y-2 text-sm">
+            <li><Link href="/demo" className="font-medium text-brand underline">Try a private demo first</Link></li>
+            <li><Link href="/pricing" className="font-medium text-brand underline">See the plans and prices</Link></li>
+            <li>Or email <a href={`mailto:${SITE.email}`} className="font-medium text-brand underline">{SITE.email}</a></li>
           </ul>
         </div>
+
+        <div className="min-w-0 lg:col-span-7">
+          <ContactForm defaultInterest={initial} defaultPlan={initialPlan} defaultMessage={[wanted.length ? `I would like: ${wanted.join(", ")}.` : "", term === "term1" ? "A 1-year licence." : term === "term2" ? "A 2-year licence." : term === "lifetime" ? "A lifetime licence." : "", server === "own" ? "I already have a server." : term === "lifetime" ? "I would like the first year of the server included." : ""].filter(Boolean).join(" ")} />
+        </div>
       </div>
-
-      <Proof className="mt-28" />
-
-      <section className="mx-auto mt-28 max-w-4xl pb-8" aria-labelledby="faq">
-        <h2 id="faq" className="mb-8 text-center text-3xl font-semibold tracking-tight">Quick answers</h2>
-        <FaqTabs groups={PRICING_PAGE_FAQ} />
-      </section>
     </div>
   );
 }

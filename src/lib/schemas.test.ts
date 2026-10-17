@@ -3,7 +3,7 @@ import { contactSchema, demoSchema } from "./schemas";
 
 describe("demo form schema", () => {
   it("accepts a name and an email and fills the rest", () => {
-    const r = demoSchema.parse({ name: " Asha ", email: "asha@rao.example", phone: "+91 98765 43210" });
+    const r = demoSchema.parse({ name: " Asha ", email: "asha@rao.example", phone: "+91 98765 43210", modules: ["sales"] });
     expect(r).toMatchObject({ name: "Asha", phone: "+91 98765 43210", company: "", team_size: "", focus: "", website: "", attribution: {} });
   });
 
@@ -14,18 +14,31 @@ describe("demo form schema", () => {
   });
 
   it("accepts only the team sizes and focuses the form offers", () => {
-    expect(demoSchema.safeParse({ name: "A", email: "a@b.example", phone: "+91 98765 43210", team_size: "26-100", focus: "mei" }).success).toBe(true);
-    expect(demoSchema.safeParse({ name: "A", email: "a@b.example", phone: "+91 98765 43210", team_size: "lots" }).success).toBe(false);
-    expect(demoSchema.safeParse({ name: "A", email: "a@b.example", phone: "+91 98765 43210", focus: "everything" }).success).toBe(false);
+    expect(demoSchema.safeParse({ name: "A", email: "a@b.example", phone: "+91 98765 43210", modules: ["sales"], team_size: "26-100", focus: "mei" }).success).toBe(true);
+    expect(demoSchema.safeParse({ name: "A", email: "a@b.example", phone: "+91 98765 43210", modules: ["sales"], team_size: "lots" }).success).toBe(false);
+    expect(demoSchema.safeParse({ name: "A", email: "a@b.example", phone: "+91 98765 43210", modules: ["sales"], focus: "everything" }).success).toBe(false);
   });
 
   it("refuses overlong values", () => {
-    expect(demoSchema.safeParse({ name: "x".repeat(121), email: "a@b.example", phone: "+91 98765 43210" }).success).toBe(false);
+    expect(demoSchema.safeParse({ name: "x".repeat(121), email: "a@b.example", phone: "+91 98765 43210", modules: ["sales"] }).success).toBe(false);
+  });
+});
+
+describe("the apps in a demo", () => {
+  const ok = { name: "A", email: "a@b.example", phone: "+91 98765 43210" };
+  it("must name at least one app, and only apps that exist", () => {
+    expect(demoSchema.safeParse({ ...ok, modules: [] }).error?.issues[0].message).toBe("Choose at least one app");
+    expect(demoSchema.safeParse(ok).success).toBe(false);
+    expect(demoSchema.safeParse({ ...ok, modules: ["sales", "inventory", "payroll", "people"] }).success).toBe(true);
+    expect(demoSchema.safeParse({ ...ok, modules: ["rockets"] }).success).toBe(false);
+  });
+  it("is not asked of the contact form", () => {
+    expect(contactSchema.safeParse({ ...ok, message: "hi" }).success).toBe(true);
   });
 });
 
 describe("phone number", () => {
-  const base = { name: "A", email: "a@b.example" };
+  const base = { name: "A", email: "a@b.example", modules: ["sales"] };
   it("is required on both forms", () => {
     expect(demoSchema.safeParse(base).success).toBe(false);
     expect(demoSchema.safeParse({ ...base, phone: "" }).error?.issues[0].message).toBe("Enter a contact number");

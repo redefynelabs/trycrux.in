@@ -7,19 +7,22 @@ import { useEffect, useRef, useState } from "react";
 import { buttonClass } from "@/components/buttons";
 import { CurrencyPicker, Local } from "@/components/currency-picker";
 import { ArrowRightIcon } from "@/components/icons";
-import { NavCrmIcon, NavFinanceIcon, NavPeopleIcon, NavProjectsIcon, NavSparkIcon } from "@/components/nav-icons";
+import { NavCrmIcon, NavFinanceIcon, NavInventoryIcon, NavPayrollIcon, NavPeopleIcon, NavProjectsIcon, NavSparkIcon } from "@/components/nav-icons";
 import { Logo } from "@/components/logo";
 import { SITE } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 const MODULES = [
-  { href: "/#features", label: "People & HR", text: "Attendance, leave, shifts", Icon: NavPeopleIcon },
-  { href: "/#features", label: "Projects & Tasks", text: "Boards and timesheets", Icon: NavProjectsIcon },
-  { href: "/#features", label: "CRM & Sales", text: "Leads and follow-ups", Icon: NavCrmIcon },
-  { href: "/#features", label: "Finance & Billing", text: "Invoices, tax, expenses", Icon: NavFinanceIcon },
+  { href: "/product/people-hr", label: "People & HR", text: "Attendance, leave, payroll", Icon: NavPeopleIcon },
+  { href: "/product/projects-tasks", label: "Projects & Tasks", text: "Boards and timesheets", Icon: NavProjectsIcon },
+  { href: "/product/crm-sales", label: "CRM & Sales", text: "Leads and follow-ups", Icon: NavCrmIcon },
+  { href: "/product/finance-billing", label: "Finance & Billing", text: "Invoices, receipts, expenses", Icon: NavFinanceIcon },
+  { href: "/product/inventory-purchasing", label: "Inventory", text: "Stock and purchase orders", Icon: NavInventoryIcon },
+  { href: "/product/payroll", label: "Payroll", text: "Pay runs and payslips", Icon: NavPayrollIcon },
 ] as const;
 
 const MORE = [
+  { href: "/product", label: "All apps" },
   { href: "/#one", label: "Why one system" },
   { href: "/#how", label: "How it works" },
   { href: "/#control", label: "Security and control" },
@@ -27,6 +30,7 @@ const MORE = [
 ] as const;
 
 const LINKS = [
+  { href: "/industries", label: "Industries" },
   { href: "/pricing", label: "Pricing" },
   { href: "/changelog", label: "Changelog" },
   { href: "/contact", label: "Contact" },
@@ -37,7 +41,7 @@ function Pill() {
   return <motion.span layoutId="nav-hover" transition={{ type: "spring", bounce: 0.15, duration: 0.4 }} className="absolute inset-0 rounded-lg bg-soft" />;
 }
 
-/** The product menu: the four modules, the places on the home page people look for, and Mei with a preview of a chat. */
+/** The product menu: the modules, the places on the home page people look for, and Mei with a preview of a chat. */
 function ProductMenu({ onNavigate }: { onNavigate: () => void }) {
   return (
     <div className="grid grid-cols-[1.5fr_1fr_1.1fr] gap-2 rounded-2xl bg-bg p-2 shadow-[0_24px_60px_-20px_rgba(30,50,120,0.35)] ring-1 ring-line">
