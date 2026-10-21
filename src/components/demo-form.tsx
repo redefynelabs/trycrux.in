@@ -4,7 +4,7 @@ import Link from "next/link";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState } from "react";
 import { buttonClass } from "@/components/buttons";
-import { CheckIcon } from "@/components/icons";
+import { CheckIcon, ClockIcon } from "@/components/icons";
 import { FOCUS, TRY_FIRST } from "@/content/lead";
 import { track } from "@/lib/analytics";
 import { postJson, readAttribution } from "@/lib/client";
@@ -21,6 +21,14 @@ interface Ready {
   login_password: string;
   expires_at: string;
 }
+
+/** The answer when every demo room is busy: a place in line instead of a demo. */
+interface Queued {
+  queued: true;
+  position: number;
+}
+
+const isQueued = (v: Ready | Queued): v is Queued => (v as Queued).queued === true;
 
 const TOTAL_MS = 60 * 60 * 1000;
 
@@ -74,6 +82,39 @@ function Building() {
       </ul>
       <div className="mt-8 h-1.5 bg-soft">
         <motion.div className="h-full bg-brand" initial={{ width: "4%" }} animate={{ width: "92%" }} transition={{ duration: 14, ease: "easeOut" }} />
+      </div>
+    </div>
+  );
+}
+
+/** Shown when every demo room is busy: the visitor is in line and gets their login by email. */
+function InLine({ position, email }: { position: number; email: string }) {
+  return (
+    <div className="bg-bg ring-1 ring-line" role="status" aria-live="polite">
+      <div className="flex items-center gap-3 bg-brand-soft px-6 py-5 sm:px-8">
+        <span className="grid size-8 place-items-center bg-brand text-white"><ClockIcon className="size-4" /></span>
+        <div>
+          <p className="text-sm font-semibold tracking-wide text-brand uppercase">You are in line</p>
+          <h2 className="text-2xl font-semibold tracking-tight">Place {position}</h2>
+        </div>
+      </div>
+      <div className="space-y-4 p-6 sm:p-8">
+        <p>
+          All our demo rooms are busy right now. We saved your request and will email <strong className="break-all">{email}</strong> the moment a room is free, with
+          the link and your login.
+        </p>
+        <ul className="list-disc space-y-1.5 pl-5 text-sm text-muted">
+          <li>You can close this page. Your hour starts when the email arrives, not before.</li>
+          <li>Rooms free up as other demos end, usually within the hour. Check your spam folder if you hear nothing.</li>
+          <li>If we cannot fit you in within a day, we will tell you.</li>
+        </ul>
+        <p className="border-t border-line pt-5 text-sm text-muted">
+          Prefer not to wait?{" "}
+          <Link className="font-medium text-accent underline" href="/contact">
+            Talk to us
+          </Link>{" "}
+          and we will show you the product ourselves.
+        </p>
       </div>
     </div>
   );
@@ -178,6 +219,7 @@ export function DemoForm() {
   const [formError, setFormError] = useState("");
   const [busy, setBusy] = useState(false);
   const [ready, setReady] = useState<Ready | null>(null);
+  const [queued, setQueued] = useState<Queued | null>(null);
   const [started, setStarted] = useState(false);
   // Which choices were made, never what was typed.
   const choices = { form_name: "demo", modules: withNeeds(modules).join(",") };
@@ -200,10 +242,15 @@ export function DemoForm() {
     }
     setBusy(true);
     track("form_submit", choices);
-    const out = await postJson<Ready>("/api/demo", { ...values, modules: withNeeds(modules), captcha_token: token, attribution: readAttribution() });
+    const out = await postJson<Ready | Queued>("/api/demo", { ...values, modules: withNeeds(modules), captcha_token: token, attribution: readAttribution() });
     setBusy(false);
     if (out.ok) {
       track("generate_lead", { ...choices, lead_type: "demo" });
+      if (isQueued(out.data)) {
+        track("demo_queued", { ...choices, position: out.data.position });
+        setQueued(out.data);
+        return;
+      }
       track("demo_ready", choices);
       setReady(out.data);
       return;
@@ -215,6 +262,7 @@ export function DemoForm() {
     setReset((n) => n + 1);
   }
 
+  if (queued) return <InLine position={queued.position} email={values.email.trim()} />;
   if (ready) return <Result ready={ready} focus="" modules={withNeeds(modules)} />;
   if (busy) return <Building />;
 

@@ -21,6 +21,7 @@ export type EventName =
   | "form_error" // the server or the checks refused it
   | "generate_lead" // a demo was started or a sales request was sent
   | "demo_ready" // the demo finished building and its link was shown
+  | "demo_queued" // every demo room was busy: they were put in line and will be emailed
   | "demo_open" // they opened their demo
   | "video_start"
   | "video_progress"

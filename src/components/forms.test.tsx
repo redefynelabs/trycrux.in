@@ -22,6 +22,19 @@ describe("the demo form", () => {
     expect(screen.getByText(/ends in about/)).toBeInTheDocument();
   });
 
+  it("tells a visitor they are in line, and where, when every demo room is busy", async () => {
+    const user = userEvent.setup();
+    reply(202, { data: { status: "queued", queued: true, position: 3 } });
+    render(<DemoForm />);
+    await user.type(screen.getByLabelText("Your name"), "Asha Rao");
+    await user.type(screen.getByLabelText("Work email"), "asha@rao.example");
+    await user.type(screen.getByLabelText("Phone number"), "+91 98765 43210");
+    await user.click(screen.getByRole("button", { name: "Start my demo" }));
+    expect(await screen.findByText("Place 3")).toBeInTheDocument();
+    expect(screen.getByText("asha@rao.example")).toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "Open your demo" })).toBeNull();
+  });
+
   it("asks for just a name, an email and a phone number", async () => {
     const user = userEvent.setup();
     const spy = reply(201, { data: { url: "https://a.b", login_email: "e", login_password: "p", expires_at: new Date(Date.now() + 3600_000).toISOString() } });
