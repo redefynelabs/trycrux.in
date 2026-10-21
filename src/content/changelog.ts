@@ -17,6 +17,11 @@ export interface Entry {
 
 export const ENTRIES: Entry[] = [
   {
+    date: "2026-10-21", area: "Control", title: "Style every document your business prints",
+    text: "One place to choose how invoices, receipts, credit notes, quotes and payslips look, with a live preview before you save.",
+    points: ["A Document styling tab in Organization, moved out of Finance, with a style for each document", "Pick a design and your brand colour, show or hide the logo and move it, set your own title and a footer line", "Choose what the page includes: notes, terms, the tax column and tax summary, a signature line, page numbers and the date format", "A preview drawn by the same engine that prints the real document, using your letterhead and made-up figures", "Issued invoices and credit notes keep the style they were issued with, so changing it never alters what a client already has"],
+  },
+  {
     date: "2026-10-21", area: "Developers", title: "Send web form leads straight into your CRM",
     text: "Create a lead source, get a key, and every enquiry from your website lands as a lead with its source, owner and campaign already set.",
     points: ["A key for your website form that is safe to publish, and a secret key for your own servers", "Point a plain HTML form at your key, or post JSON from any backend, with ready-to-copy examples", "Each key works only from the websites you list, and the lead goes to one owner or is shared round-robin", "Choose what happens to a repeat enquiry: update the lead, reject it or add another", "Spam traps, rate limits and safe retries, so a double click never makes two leads", "An activity log of the last 30 days shows what arrived, what was refused and why, and you can test a payload without saving it", "Every lead shows where it came from, and automation rules can act only on leads from one source"],
