@@ -17,6 +17,21 @@ export interface Entry {
 
 export const ENTRIES: Entry[] = [
   {
+    date: "2026-10-21", area: "Developers", title: "Send web form leads straight into your CRM",
+    text: "Create a lead source, get a key, and every enquiry from your website lands as a lead with its source, owner and campaign already set.",
+    points: ["A key for your website form that is safe to publish, and a secret key for your own servers", "Point a plain HTML form at your key, or post JSON from any backend, with ready-to-copy examples", "Each key works only from the websites you list, and the lead goes to one owner or is shared round-robin", "Choose what happens to a repeat enquiry: update the lead, reject it or add another", "Spam traps, rate limits and safe retries, so a double click never makes two leads", "An activity log of the last 30 days shows what arrived, what was refused and why, and you can test a payload without saving it", "Every lead shows where it came from, and automation rules can act only on leads from one source"],
+  },
+  {
+    date: "2026-10-21", area: "Developers", title: "Webhooks: tell your other systems when something happens",
+    text: "Pick the events you care about and we send each one, signed, to the address you give us.",
+    points: ["Choose events one by one or by group: leads, deals, quotes, orders, invoices, tasks and leave", "Every request is signed so your server can prove it came from us, with ready-to-copy code to check it", "Failed deliveries are tried again over the next day, and an address that keeps failing is switched off with the reason shown", "A delivery log for each address with the answer we got, a test button and a resend button", "Rotate the signing secret any time; it is shown once, when you create or rotate it"],
+  },
+  {
+    date: "2026-10-19", area: "Automation", title: "Automations that follow your process, on a canvas",
+    text: "Draw what should happen when something changes in your business, and let it run by itself.",
+    points: ["Start from a change (a lead created, a deal won, an invoice paid, a task done, leave requested), from a time rule such as nothing happening for a week, or from a web request sent by another tool", "Add conditions and branches, wait for a delay, and use values from the record in your messages", "Create tasks and follow-ups, notify people, send emails, change an owner or a custom field, move a deal, or call another system with a web request", "A run log shows which path each run took and what every step did", "Rules never trigger each other in a loop"],
+  },
+  {
     date: "2026-10-17", area: "People & HR", title: "Payroll, with a payslip for everyone",
     text: "A monthly pay run worked out from attendance, leave and timesheets, approved by someone other than the person who prepared it.",
     points: ["Pay components and a salary structure for each person, kept as dated versions", "A pay run each month: calculate, approve, mark paid", "Payslip PDFs with your letterhead, emailed to each person", "People see only their own payslips; salary never appears in the people list or to Mei", "An approved run posts one payroll expense to Accounting"],
