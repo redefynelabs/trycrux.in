@@ -22,14 +22,9 @@ export const ENTRIES: Entry[] = [
     points: ["A Document styling tab in Organization, moved out of Finance, with a style for each document", "Pick a design and your brand colour, show or hide the logo and move it, set your own title and a footer line", "Choose what the page includes: notes, terms, the tax column and tax summary, a signature line, page numbers and the date format", "A preview drawn by the same engine that prints the real document, using your letterhead and made-up figures", "Issued invoices and credit notes keep the style they were issued with, so changing it never alters what a client already has"],
   },
   {
-    date: "2026-10-21", area: "Developers", title: "Send web form leads straight into your CRM",
-    text: "Create a lead source, get a key, and every enquiry from your website lands as a lead with its source, owner and campaign already set.",
-    points: ["A key for your website form that is safe to publish, and a secret key for your own servers", "Point a plain HTML form at your key, or post JSON from any backend, with ready-to-copy examples", "Each key works only from the websites you list, and the lead goes to one owner or is shared round-robin", "Choose what happens to a repeat enquiry: update the lead, reject it or add another", "Spam traps, rate limits and safe retries, so a double click never makes two leads", "An activity log of the last 30 days shows what arrived, what was refused and why, and you can test a payload without saving it", "Every lead shows where it came from, and automation rules can act only on leads from one source"],
-  },
-  {
-    date: "2026-10-21", area: "Developers", title: "Webhooks: tell your other systems when something happens",
-    text: "Pick the events you care about and we send each one, signed, to the address you give us.",
-    points: ["Choose events one by one or by group: leads, deals, quotes, orders, invoices, tasks and leave", "Every request is signed so your server can prove it came from us, with ready-to-copy code to check it", "Failed deliveries are tried again over the next day, and an address that keeps failing is switched off with the reason shown", "A delivery log for each address with the answer we got, a test button and a resend button", "Rotate the signing secret any time; it is shown once, when you create or rotate it"],
+    date: "2026-10-21", area: "Developers", title: "Developer tools: lead capture API and webhooks",
+    text: "Get leads in from your website, and tell your other systems when something happens. Both live under Settings > Developers.",
+    points: ["Lead capture: a key for your website form that is safe to publish and a secret key for your servers, with a plain HTML form or JSON example to copy", "Each key works only from the websites you list; the lead goes to one owner or is shared round-robin, and repeat enquiries are updated, refused or added as you choose", "Spam traps, rate limits and safe retries, a 30-day activity log, and a test that saves nothing", "Every lead shows where it came from, and automation rules can act on leads from one source", "Webhooks: choose events one by one or by group (leads, deals, quotes, orders, invoices, tasks, leave) and we send each one, signed, to your address", "Failed deliveries are tried again over the next day, a delivery log shows each answer, and you can test, resend and rotate the secret"],
   },
   {
     date: "2026-10-19", area: "Automation", title: "Automations that follow your process, on a canvas",
@@ -42,14 +37,9 @@ export const ENTRIES: Entry[] = [
     points: ["Pay components and a salary structure for each person, kept as dated versions", "A pay run each month: calculate, approve, mark paid", "Payslip PDFs with your letterhead, emailed to each person", "People see only their own payslips; salary never appears in the people list or to Mei", "An approved run posts one payroll expense to Accounting"],
   },
   {
-    date: "2026-10-15", area: "Finance", title: "See what every project and product earns",
-    text: "Sales now carry the project and the product all the way to the invoice, so revenue lands where it belongs.",
-    points: ["Quotes and orders can name one of the client's projects, and the invoice keeps it", "Add invoice lines straight from the product catalog, with its price, unit and tax", "Revenue reports broken down by product and by product category", "A budget for each project, with budget left, revenue, expenses and profit on the project page, seen only by people with finance access", "An order that has been invoiced is locked until its invoice is voided, so orders and invoices never disagree"],
-  },
-  {
-    date: "2026-10-15", area: "Control", title: "An audit log that names every change",
-    text: "Know who changed what, and when, across the whole business.",
-    points: ["Quotes, orders, products, clients, invoices, credit notes, payments and refunds are all recorded", "Employee changes and role changes, including who was given which role", "Each line names the record, such as \"Quote QT-0007 marked as accepted\"", "Filter the log by the kind of record you are looking for"],
+    date: "2026-10-15", area: "Finance", title: "See what every project earns, and who changed what",
+    text: "Sales carry the project and the product all the way to the invoice, so revenue lands where it belongs, and every change leaves a line in the audit log.",
+    points: ["Quotes and orders can name one of the client's projects, and the invoice keeps it; add invoice lines straight from the product catalog", "Revenue reports broken down by product and by product category", "A budget for each project, with budget left, revenue, expenses and profit on the project page, seen only by people with finance access", "An order that has been invoiced is locked until its invoice is voided, so orders and invoices never disagree", "An audit log that names every change to quotes, orders, products, clients, invoices, payments, employees and roles, such as \"Quote QT-0007 marked as accepted\", and filters by kind of record"],
   },
   {
     date: "2026-10-14", area: "Mei AI Assistant", title: "Mei knows the whole business",
@@ -72,14 +62,9 @@ export const ENTRIES: Entry[] = [
     points: ["Redesigned dashboard, organization profile, account, apps and AI settings pages", "A clearer employee popup with the details people look for first", "Demo environments sign each visitor in with their own email and a new password", "Mei AI assistant, interface styles, a brand colour and installable apps are all part of this release"],
   },
   {
-    date: "2026-10-04", area: "Mei AI Assistant", title: "Pick the right model for the right task",
-    text: "Choose which model answers each chat, right where you type. Use a fast, light model for quick questions and a stronger one for reports, and keep your AI costs down.",
-    points: ["A model menu in the chat box lists the models of every provider you have connected", "Quick lookups on a small model cost a fraction of a full report on a large one", "Models show readable names and a short hint, such as fast, balanced or most capable", "Your choice is remembered on your device, and usage shows which model answered each question"],
-  },
-  {
     date: "2026-10-02", area: "Mei AI Assistant", title: "Mei, the AI assistant, arrives",
     text: "Ask in plain words and get answers, reports and drafts from your own data, with the same permissions you have.",
-    points: ["Reports for finance, attendance, leave, sales and projects, including a monthly attendance report", "Draft clients and invoices you confirm before anything is created", "A tax pack ZIP with only the documents the reports contain", "Your own OpenAI, Claude, Gemini or OpenRouter key; choose who can use it and see usage by person"],
+    points: ["Reports for finance, attendance, leave, sales and projects, including a monthly attendance report", "Draft clients and invoices you confirm before anything is created", "A tax pack ZIP with only the documents the reports contain", "Your own OpenAI, Claude, Gemini or OpenRouter key; choose who can use it and see usage by person", "A model menu in the chat box: a fast, light model for quick questions and a stronger one for reports, remembered on your device, with usage shown by model"],
   },
   {
     date: "2026-09-26", area: "Control", title: "A look of your own for every organization",
