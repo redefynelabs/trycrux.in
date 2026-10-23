@@ -1,0 +1,37 @@
+<template>
+  <style>
+    @font-face { font-family: "Punta"; src: url("assets/fonts/punta-light.otf"); font-weight: 300; }
+    #root { position: absolute; inset: 0; overflow: hidden; }
+    #pf-field { position: absolute; inset: 0; background: #1f5bf0; }
+    .pf-l { position: absolute; left: 160px; font: 600 150px/1 "Punta", sans-serif; letter-spacing: -0.01em; color: #fff; white-space: nowrap; }
+    .pf-l .w { display: inline-block; margin-right: 0.22em; }
+    #pf-l1 { top: 200px; }
+    #pf-l2 { top: 420px; }
+    #pf-l3 { top: 640px; }
+    #pf-n { display: inline-block; }
+  </style>
+  <div id="root" data-composition-id="proof" data-width="1920" data-height="1080">
+    <div id="pf-field"></div>
+    <div class="pf-l" id="pf-l1"><span class="w">Unlimited</span><span class="w">users.</span></div>
+    <div class="pf-l" id="pf-l2"><span class="w">No</span><span class="w">per-user</span><span class="w">price.</span></div>
+    <div class="pf-l" id="pf-l3"><span class="w">Live</span><span class="w">within</span><span class="w"><span id="pf-n">24</span></span><span class="w">hours.</span></div>
+  </div>
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      // A colour flood from the Confirm button the cursor just pressed.
+      tl.fromTo("#pf-field", { clipPath: "circle(0px at 1705px 398px)" }, { clipPath: "circle(2400px at 1705px 398px)", duration: 0.5, ease: "power2.in" }, 0);
+      const words = (sel) => gsap.utils.toArray(sel + " .w");
+      const lineIn = (sel, times) => words(sel).forEach((w, i) => tl.fromTo(w, { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.16, ease: "power2.out" }, times[i]));
+      lineIn("#pf-l1", [0.28, 0.92]);
+      tl.to("#pf-l1", { opacity: 0.42, duration: 0.3, ease: "none" }, 1.5);
+      lineIn("#pf-l2", [1.56, 1.8, 2.44]);
+      tl.to("#pf-l2", { opacity: 0.42, duration: 0.3, ease: "none" }, 2.95);
+      lineIn("#pf-l3", [3.0, 3.32, 3.6, 4.28]);
+      // 24 rolls up as it is said.
+      const n = document.querySelector("#pf-n"), o = { v: 0 };
+      tl.fromTo(o, { v: 1 }, { v: 24, duration: 0.45, ease: "power2.out", onUpdate: () => { n.textContent = Math.round(o.v); } }, 3.62);
+      window.__timelines["proof"] = tl;
+    })();
+  </script>
+</template>

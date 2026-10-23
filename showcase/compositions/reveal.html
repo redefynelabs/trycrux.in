@@ -1,0 +1,51 @@
+<template>
+  <style>
+    @font-face { font-family: "Punta"; src: url("assets/fonts/punta-light.otf"); font-weight: 300; }
+    @font-face { font-family: "Geist"; src: url("assets/fonts/geist-latin.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; font-family: "Geist", sans-serif; color: #0b0d12; overflow: hidden; }
+    #rv-lock { position: absolute; left: 0; right: 0; top: 400px; display: flex; justify-content: center; align-items: center; gap: 44px; }
+    #rv-mark { height: 196px; width: auto; display: block; }
+    #rv-name { font: 600 230px/1 "Punta", sans-serif; position: relative; top: 0.12em; }
+    #rv-tag { position: absolute; left: 0; right: 0; top: 520px; text-align: center; font: 600 88px/1.05 "Punta", sans-serif; letter-spacing: -0.01em; }
+    #rv-tag .w { display: inline-block; margin: 0 0.12em; }
+    #rv-mods { position: absolute; left: 0; right: 0; top: 700px; display: flex; justify-content: center; gap: 64px; font: 500 54px "Geist", sans-serif; color: #5b6472; }
+    #rv-mods span { display: inline-block; }
+  </style>
+  <div id="root" data-composition-id="reveal" data-width="1920" data-height="1080" data-layout-allow-overflow>
+    <div id="rv-lock"><img id="rv-mark" src="assets/img/crux-mark.png" alt="" /><span id="rv-name">Crux</span></div>
+    <div id="rv-tag"><span class="w">Your</span><span class="w">AI-powered</span><span class="w">business</span><span class="w">operating</span><span class="w">system</span></div>
+    <div id="rv-mods"><span>People</span><span>Projects</span><span>Sales</span><span>Finance</span><span>Mei AI</span></div>
+  </div>
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      const name = document.querySelector("#rv-name");
+      const shift = (name.offsetWidth + 44) / 2;
+
+      // "Meet": the point the tools were pulled into lands as the mark, alone in the centre.
+      tl.fromTo("#rv-mark", { x: shift, scale: 0.04, opacity: 0, filter: "blur(10px)" }, { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.55, ease: "expo.out" }, 0.3);
+      // "Crux": the name wipes out of the mark while the mark makes room.
+      tl.fromTo("#rv-name", { clipPath: "inset(0% 100% 0% 0%)", x: shift }, { clipPath: "inset(0% 0% 0% 0%)", x: 0, duration: 0.5, ease: "expo.out" }, 0.66);
+      tl.to("#rv-mark", { x: 0, duration: 0.5, ease: "expo.out" }, 0.66);
+
+      // The lockup lifts and the tagline arrives word by word with the voice.
+      tl.fromTo("#rv-lock", { y: 0, scale: 1 }, { y: -190, scale: 0.6, duration: 0.6, ease: "power2.inOut" }, 1.25);
+      const tag = gsap.utils.toArray("#rv-tag .w");
+      [1.46, 1.7, 2.66, 2.98, 3.54].forEach((t, i) => tl.fromTo(tag[i], { opacity: 0, filter: "blur(6px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.14, ease: "power2.out" }, t));
+
+      // "built to bring everything together": the modules fly in from both sides and close up into one line.
+      const mods = gsap.utils.toArray("#rv-mods span");
+      const from = [-1300, -900, 0, 900, 1300];
+      mods.forEach((m, i) => {
+        tl.fromTo(m, { x: from[i], y: i === 2 ? 120 : 0, opacity: 0, filter: "blur(10px)" }, { x: 0, y: 0, opacity: 1, filter: "blur(0px)", duration: 0.62, ease: "power3.out" }, 4.05 + Math.abs(i - 2) * 0.14);
+        tl.to(m, { color: "#0b0d12", duration: 0.2, ease: "none" }, 5.2);
+      });
+
+      // Out: the words clear and the lockup shrinks into the corner where the app's own logo sits.
+      tl.to(["#rv-tag", "#rv-mods"], { opacity: 0, filter: "blur(8px)", duration: 0.22, ease: "power3.in" }, 5.82);
+      tl.to("#rv-lock", { x: -735, y: -420, scale: 0.15, duration: 0.55, ease: "power3.inOut" }, 5.9);
+
+      window.__timelines["reveal"] = tl;
+    })();
+  </script>
+</template>

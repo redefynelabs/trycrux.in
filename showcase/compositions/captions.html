@@ -1,0 +1,75 @@
+<template>
+  <style>
+    @font-face { font-family: "Geist"; src: url("assets/fonts/geist-latin.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; pointer-events: none; }
+    .cap { position: absolute; left: 0; right: 0; bottom: 92px; text-align: center; font: 500 40px/1.2 "Geist", sans-serif; color: #0b0d12; opacity: 0; visibility: hidden; overflow: visible; }
+  </style>
+  <div id="root" data-composition-id="captions" data-width="1920" data-height="1080" data-layout-allow-caption-zone>
+      <div class="cap" id="cap-0">Yet most teams juggle</div>
+      <div class="cap" id="cap-1">A pile of tools,</div>
+      <div class="cap" id="cap-2">Endless copy and paste,</div>
+      <div class="cap" id="cap-3">And hectic days,</div>
+      <div class="cap" id="cap-4">Just to keep things moving.</div>
+      <div class="cap" id="cap-5">Built to bring everything together.</div>
+      <div class="cap" id="cap-6">Manage your projects,</div>
+      <div class="cap" id="cap-7">Track your team,</div>
+      <div class="cap" id="cap-8">Handle sales and finances,</div>
+      <div class="cap" id="cap-9">And stay on top</div>
+      <div class="cap" id="cap-10">Of your entire business.</div>
+      <div class="cap" id="cap-11">All in one place.</div>
+      <div class="cap" id="cap-12">And with Mei,</div>
+      <div class="cap" id="cap-13">Your AI assistant,</div>
+      <div class="cap" id="cap-14">Hours of manual work</div>
+      <div class="cap" id="cap-15">Take seconds.</div>
+      <div class="cap" id="cap-16">Ask for last month's</div>
+      <div class="cap" id="cap-17">Attendance report,</div>
+      <div class="cap" id="cap-18">Find your top clients,</div>
+      <div class="cap" id="cap-19">Or have an invoice drafted.</div>
+      <div class="cap" id="cap-20">Mei works from your own data,</div>
+      <div class="cap" id="cap-21">And nothing is created</div>
+      <div class="cap" id="cap-22">Until you confirm.</div>
+      <div class="cap" id="cap-23">Crux gives you the clarity</div>
+      <div class="cap" id="cap-24">To run your business,</div>
+      <div class="cap" id="cap-25">And the freedom to grow it.</div>
+  </div>
+  <script>
+    (function () {
+      // Written by tools/build_captions.py from assets/vo/words.json. Each group: [selector, in, out] in film seconds.
+      const tl = gsap.timeline({ paused: true });
+      [
+      [ "#cap-0", 3.7, 5.36 ],
+      [ "#cap-1", 5.38, 6.64 ],
+      [ "#cap-2", 6.66, 8.16 ],
+      [ "#cap-3", 8.18, 9.36 ],
+      [ "#cap-4", 9.38, 11.31 ],
+      [ "#cap-5", 15.856, 18.106 ],
+      [ "#cap-6", 18.677, 19.937 ],
+      [ "#cap-7", 19.957, 20.977 ],
+      [ "#cap-8", 20.997, 22.737 ],
+      [ "#cap-9", 22.757, 23.617 ],
+      [ "#cap-10", 23.637, 25.297 ],
+      [ "#cap-11", 25.317, 26.847 ],
+      [ "#cap-12", 28.801, 29.741 ],
+      [ "#cap-13", 29.761, 31.341 ],
+      [ "#cap-14", 31.361, 32.701 ],
+      [ "#cap-15", 32.721, 33.981 ],
+      [ "#cap-16", 34.001, 35.341 ],
+      [ "#cap-17", 35.361, 36.541 ],
+      [ "#cap-18", 36.561, 38.061 ],
+      [ "#cap-19", 38.081, 40.061 ],
+      [ "#cap-20", 40.081, 41.821 ],
+      [ "#cap-21", 41.841, 43.101 ],
+      [ "#cap-22", 43.121, 44.651 ],
+      [ "#cap-23", 53.405, 54.905 ],
+      [ "#cap-24", 54.925, 55.865 ],
+      [ "#cap-25", 55.885, 57.655 ],
+      ].forEach(([sel, a, b]) => {
+        tl.set(sel, { visibility: "visible" }, a);
+        tl.fromTo(sel, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.12, ease: "power2.out" }, a);
+        tl.to(sel, { opacity: 0, duration: 0.1, ease: "power2.in" }, b - 0.1);
+        tl.set(sel, { opacity: 0, visibility: "hidden" }, b);
+      });
+      window.__timelines["captions"] = tl;
+    })();
+  </script>
+</template>

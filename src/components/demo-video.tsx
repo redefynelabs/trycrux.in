@@ -1,21 +1,15 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useRegion } from "@/components/currency-picker";
 import { useReducedMotion } from "@/components/use-reduced-motion";
 import { track } from "@/lib/analytics";
 import { SITE } from "@/lib/site";
 
 const isFile = (u: string) => /\.(mp4|webm|ogg)(\?|$)/i.test(u);
 
-/** The hero video, made in /video with Remotion: one cut per region, with that region's money and tax (npm run render there writes them). */
-/** Regions whose cut is rendered; any other region (and a missing one) plays the US dollar cut. */
-const RENDERED = ["INR", "USD", "GBP", "EUR", "AED"];
-
-function heroFiles(region: string) {
-  const r = (RENDERED.includes(region) ? region : "USD").toLowerCase();
-  return { webm: `/video/crux-hero-${r}.webm`, mp4: `/video/crux-hero-${r}.mp4`, poster: `/video/crux-hero-${r}-poster.jpg` };
-}
+/** The product showcase, made in /showcase with HyperFrames: one narrated, captioned cut for every region (sample figures in US dollars). */
+const HERO = { webm: "/video/crux-showcase.webm", mp4: "/video/crux-showcase.mp4", poster: "/video/crux-showcase-poster.jpg" };
+const TITLE = "Crux showcase";
 
 /**
  * The product video under the hero. It plays muted and loops, like a moving screenshot, with a button to pause it; for
@@ -40,8 +34,6 @@ export function DemoVideo() {
 function HeroVideo({ src }: { src: string }) {
   const ref = useRef<HTMLVideoElement>(null);
   const reduced = useReducedMotion();
-  const region = useRegion();
-  const HERO = heroFiles(region);
   const [playing, setPlaying] = useState(false);
   const [muted, setMuted] = useState(true);
   // Progress marks already sent this page view; the video loops, so each is sent once.
@@ -56,12 +48,12 @@ function HeroVideo({ src }: { src: string }) {
     for (const m of [25, 50, 75]) {
       if (pct >= m && !marks.current.has(m)) {
         marks.current.add(m);
-        track("video_progress", { video_title: "Crux hero", video_percent: m });
+        track("video_progress", { video_title: TITLE, video_percent: m });
       }
     }
     if (pct >= 97 && !marks.current.has(100)) {
       marks.current.add(100);
-      track("video_complete", { video_title: "Crux hero" });
+      track("video_complete", { video_title: TITLE });
     }
   };
 
@@ -70,7 +62,7 @@ function HeroVideo({ src }: { src: string }) {
     if (!v) return;
     if (reduced) v.pause();
     else v.play().catch(() => setPlaying(false));
-  }, [reduced, region]);
+  }, [reduced]);
 
   // Browsers only autoplay muted video, so sound starts off; turning it on also plays the video.
   const toggleSound = () => {
@@ -79,7 +71,7 @@ function HeroVideo({ src }: { src: string }) {
     acted.current = true;
     v.muted = !v.muted;
     setMuted(v.muted);
-    track(v.muted ? "video_sound_off" : "video_sound_on", { video_title: "Crux hero", video_percent: Math.round((v.currentTime / (v.duration || 1)) * 100) });
+    track(v.muted ? "video_sound_off" : "video_sound_on", { video_title: TITLE, video_percent: Math.round((v.currentTime / (v.duration || 1)) * 100) });
     if (!v.muted && v.paused) void v.play();
   };
 
@@ -90,15 +82,13 @@ function HeroVideo({ src }: { src: string }) {
     if (v.paused) void v.play();
     else {
       v.pause();
-      track("video_pause", { video_title: "Crux hero", video_percent: Math.round((v.currentTime / (v.duration || 1)) * 100) });
+      track("video_pause", { video_title: TITLE, video_percent: Math.round((v.currentTime / (v.duration || 1)) * 100) });
     }
   };
 
   return (
     <>
-      {/* Keyed by region, so a change of region loads that cut. */}
       <video
-        key={region}
         ref={ref}
         muted
         loop
@@ -109,12 +99,12 @@ function HeroVideo({ src }: { src: string }) {
           setPlaying(true);
           if (!marks.current.has(0)) {
             marks.current.add(0);
-            track("video_start", { video_title: "Crux hero", autoplay: !acted.current });
+            track("video_start", { video_title: TITLE, autoplay: !acted.current });
           }
         }}
         onTimeUpdate={onTime}
         onPause={() => setPlaying(false)}
-        aria-label="Crux product tour: the dashboard, people and attendance, quote to invoice, finance reports and Mei, the AI assistant"
+        aria-label="Crux product showcase: projects, people and attendance, quote to invoice, finance and Mei, the AI assistant"
         className="size-full object-cover"
       >
         {src ? (

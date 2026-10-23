@@ -7,3 +7,6 @@ next-env.d.ts
 *.tsbuildinfo
 .DS_Store
 video/out
+showcase/.hyperframes
+showcase/assets/audio
+showcase/assets/vo/all.wav

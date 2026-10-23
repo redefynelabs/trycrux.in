@@ -1,0 +1,996 @@
+[
+{
+"b": 1,
+"text": "Running",
+"start": 0.4,
+"end": 0.88,
+"id": "w0"
+},
+{
+"b": 1,
+"text": "a",
+"start": 0.88,
+"end": 0.96,
+"id": "w1"
+},
+{
+"b": 1,
+"text": "business",
+"start": 0.96,
+"end": 1.28,
+"id": "w2"
+},
+{
+"b": 1,
+"text": "shouldn't",
+"start": 1.28,
+"end": 1.68,
+"id": "w3"
+},
+{
+"b": 1,
+"text": "mean",
+"start": 1.68,
+"end": 1.92,
+"id": "w4"
+},
+{
+"b": 1,
+"text": "spending",
+"start": 1.92,
+"end": 2.32,
+"id": "w5"
+},
+{
+"b": 1,
+"text": "hours",
+"start": 2.32,
+"end": 2.72,
+"id": "w6"
+},
+{
+"b": 1,
+"text": "managing",
+"start": 2.72,
+"end": 3.28,
+"id": "w7"
+},
+{
+"b": 1,
+"text": "it.",
+"start": 3.28,
+"end": 3.76,
+"id": "w8"
+},
+{
+"b": 1,
+"text": "Yet",
+"start": 3.76,
+"end": 4.0,
+"id": "w9"
+},
+{
+"b": 1,
+"text": "most",
+"start": 4.08,
+"end": 4.4,
+"id": "w10"
+},
+{
+"b": 1,
+"text": "teams",
+"start": 4.4,
+"end": 4.8,
+"id": "w11"
+},
+{
+"b": 1,
+"text": "juggle",
+"start": 4.8,
+"end": 5.44,
+"id": "w12"
+},
+{
+"b": 1,
+"text": "a",
+"start": 5.44,
+"end": 5.52,
+"id": "w13"
+},
+{
+"b": 1,
+"text": "pile",
+"start": 5.52,
+"end": 5.84,
+"id": "w14"
+},
+{
+"b": 1,
+"text": "of",
+"start": 5.84,
+"end": 6.0,
+"id": "w15"
+},
+{
+"b": 1,
+"text": "tools,",
+"start": 6.0,
+"end": 6.72,
+"id": "w16"
+},
+{
+"b": 1,
+"text": "endless",
+"start": 6.72,
+"end": 7.2,
+"id": "w17"
+},
+{
+"b": 1,
+"text": "copy",
+"start": 7.2,
+"end": 7.6,
+"id": "w18"
+},
+{
+"b": 1,
+"text": "and",
+"start": 7.6,
+"end": 7.76,
+"id": "w19"
+},
+{
+"b": 1,
+"text": "paste,",
+"start": 7.76,
+"end": 8.24,
+"id": "w20"
+},
+{
+"b": 1,
+"text": "and",
+"start": 8.24,
+"end": 8.4,
+"id": "w21"
+},
+{
+"b": 1,
+"text": "hectic",
+"start": 8.4,
+"end": 8.96,
+"id": "w22"
+},
+{
+"b": 1,
+"text": "days",
+"start": 8.96,
+"end": 9.36,
+"id": "w23"
+},
+{
+"b": 1,
+"text": "just",
+"start": 9.44,
+"end": 9.76,
+"id": "w24"
+},
+{
+"b": 1,
+"text": "to",
+"start": 9.76,
+"end": 9.92,
+"id": "w25"
+},
+{
+"b": 1,
+"text": "keep",
+"start": 9.92,
+"end": 10.16,
+"id": "w26"
+},
+{
+"b": 1,
+"text": "things",
+"start": 10.16,
+"end": 10.48,
+"id": "w27"
+},
+{
+"b": 1,
+"text": "moving.",
+"start": 10.48,
+"end": 10.96,
+"id": "w28"
+},
+{
+"b": 2,
+"text": "Meet",
+"start": 12.236,
+"end": 12.556,
+"id": "w29"
+},
+{
+"b": 2,
+"text": "Crux,",
+"start": 12.556,
+"end": 13.356,
+"id": "w30"
+},
+{
+"b": 2,
+"text": "your",
+"start": 13.356,
+"end": 13.436,
+"id": "w31"
+},
+{
+"b": 2,
+"text": "AI-powered",
+"start": 13.596,
+"end": 14.556,
+"id": "w32"
+},
+{
+"b": 2,
+"text": "business",
+"start": 14.556,
+"end": 14.876,
+"id": "w33"
+},
+{
+"b": 2,
+"text": "operating",
+"start": 14.876,
+"end": 15.436,
+"id": "w34"
+},
+{
+"b": 2,
+"text": "system",
+"start": 15.436,
+"end": 15.596,
+"id": "w35"
+},
+{
+"b": 2,
+"text": "built",
+"start": 15.916,
+"end": 16.316,
+"id": "w36"
+},
+{
+"b": 2,
+"text": "to",
+"start": 16.316,
+"end": 16.476,
+"id": "w37"
+},
+{
+"b": 2,
+"text": "bring",
+"start": 16.476,
+"end": 16.716,
+"id": "w38"
+},
+{
+"b": 2,
+"text": "everything",
+"start": 16.716,
+"end": 17.116,
+"id": "w39"
+},
+{
+"b": 2,
+"text": "together.",
+"start": 17.116,
+"end": 17.756,
+"id": "w40"
+},
+{
+"b": 3,
+"text": "Manage",
+"start": 18.737,
+"end": 19.137,
+"id": "w41"
+},
+{
+"b": 3,
+"text": "your",
+"start": 19.137,
+"end": 19.297,
+"id": "w42"
+},
+{
+"b": 3,
+"text": "projects,",
+"start": 19.297,
+"end": 20.017,
+"id": "w43"
+},
+{
+"b": 3,
+"text": "track",
+"start": 20.017,
+"end": 20.417,
+"id": "w44"
+},
+{
+"b": 3,
+"text": "your",
+"start": 20.417,
+"end": 20.577,
+"id": "w45"
+},
+{
+"b": 3,
+"text": "team,",
+"start": 20.577,
+"end": 21.057,
+"id": "w46"
+},
+{
+"b": 3,
+"text": "handle",
+"start": 21.057,
+"end": 21.537,
+"id": "w47"
+},
+{
+"b": 3,
+"text": "sales",
+"start": 21.537,
+"end": 21.937,
+"id": "w48"
+},
+{
+"b": 3,
+"text": "and",
+"start": 21.937,
+"end": 22.177,
+"id": "w49"
+},
+{
+"b": 3,
+"text": "finances,",
+"start": 22.177,
+"end": 22.817,
+"id": "w50"
+},
+{
+"b": 3,
+"text": "and",
+"start": 22.817,
+"end": 23.057,
+"id": "w51"
+},
+{
+"b": 3,
+"text": "stay",
+"start": 23.057,
+"end": 23.297,
+"id": "w52"
+},
+{
+"b": 3,
+"text": "on",
+"start": 23.297,
+"end": 23.457,
+"id": "w53"
+},
+{
+"b": 3,
+"text": "top",
+"start": 23.457,
+"end": 23.697,
+"id": "w54"
+},
+{
+"b": 3,
+"text": "of",
+"start": 23.697,
+"end": 23.857,
+"id": "w55"
+},
+{
+"b": 3,
+"text": "your",
+"start": 23.857,
+"end": 24.017,
+"id": "w56"
+},
+{
+"b": 3,
+"text": "entire",
+"start": 24.017,
+"end": 24.497,
+"id": "w57"
+},
+{
+"b": 3,
+"text": "business.",
+"start": 24.497,
+"end": 25.377,
+"id": "w58"
+},
+{
+"b": 3,
+"text": "All",
+"start": 25.377,
+"end": 25.697,
+"id": "w59"
+},
+{
+"b": 3,
+"text": "in",
+"start": 25.697,
+"end": 25.937,
+"id": "w60"
+},
+{
+"b": 3,
+"text": "one",
+"start": 25.937,
+"end": 26.097,
+"id": "w61"
+},
+{
+"b": 3,
+"text": "place.",
+"start": 26.097,
+"end": 26.497,
+"id": "w62"
+},
+{
+"b": 4,
+"text": "And",
+"start": 28.861,
+"end": 29.021,
+"id": "w63"
+},
+{
+"b": 4,
+"text": "with",
+"start": 29.021,
+"end": 29.261,
+"id": "w64"
+},
+{
+"b": 4,
+"text": "Mei,",
+"start": 29.261,
+"end": 29.821,
+"id": "w65"
+},
+{
+"b": 4,
+"text": "your",
+"start": 29.821,
+"end": 30.061,
+"id": "w66"
+},
+{
+"b": 4,
+"text": "AI",
+"start": 30.061,
+"end": 30.541,
+"id": "w67"
+},
+{
+"b": 4,
+"text": "assistant,",
+"start": 30.541,
+"end": 31.421,
+"id": "w68"
+},
+{
+"b": 4,
+"text": "hours",
+"start": 31.421,
+"end": 31.821,
+"id": "w69"
+},
+{
+"b": 4,
+"text": "of",
+"start": 31.821,
+"end": 31.981,
+"id": "w70"
+},
+{
+"b": 4,
+"text": "manual",
+"start": 31.981,
+"end": 32.461,
+"id": "w71"
+},
+{
+"b": 4,
+"text": "work",
+"start": 32.461,
+"end": 32.781,
+"id": "w72"
+},
+{
+"b": 4,
+"text": "take",
+"start": 32.781,
+"end": 33.101,
+"id": "w73"
+},
+{
+"b": 4,
+"text": "seconds.",
+"start": 33.101,
+"end": 34.061,
+"id": "w74"
+},
+{
+"b": 4,
+"text": "Ask",
+"start": 34.061,
+"end": 34.461,
+"id": "w75"
+},
+{
+"b": 4,
+"text": "for",
+"start": 34.461,
+"end": 34.701,
+"id": "w76"
+},
+{
+"b": 4,
+"text": "last",
+"start": 34.701,
+"end": 34.941,
+"id": "w77"
+},
+{
+"b": 4,
+"text": "month's",
+"start": 34.941,
+"end": 35.421,
+"id": "w78"
+},
+{
+"b": 4,
+"text": "attendance",
+"start": 35.421,
+"end": 35.981,
+"id": "w79"
+},
+{
+"b": 4,
+"text": "report,",
+"start": 35.981,
+"end": 36.621,
+"id": "w80"
+},
+{
+"b": 4,
+"text": "find",
+"start": 36.621,
+"end": 36.941,
+"id": "w81"
+},
+{
+"b": 4,
+"text": "your",
+"start": 36.941,
+"end": 37.181,
+"id": "w82"
+},
+{
+"b": 4,
+"text": "top",
+"start": 37.181,
+"end": 37.421,
+"id": "w83"
+},
+{
+"b": 4,
+"text": "clients,",
+"start": 37.421,
+"end": 38.141,
+"id": "w84"
+},
+{
+"b": 4,
+"text": "or",
+"start": 38.141,
+"end": 38.381,
+"id": "w85"
+},
+{
+"b": 4,
+"text": "have",
+"start": 38.381,
+"end": 38.541,
+"id": "w86"
+},
+{
+"b": 4,
+"text": "an",
+"start": 38.541,
+"end": 38.701,
+"id": "w87"
+},
+{
+"b": 4,
+"text": "invoice",
+"start": 38.701,
+"end": 39.181,
+"id": "w88"
+},
+{
+"b": 4,
+"text": "drafted.",
+"start": 39.181,
+"end": 40.141,
+"id": "w89"
+},
+{
+"b": 4,
+"text": "Mei",
+"start": 40.141,
+"end": 40.621,
+"id": "w90"
+},
+{
+"b": 4,
+"text": "works",
+"start": 40.701,
+"end": 40.941,
+"id": "w91"
+},
+{
+"b": 4,
+"text": "from",
+"start": 40.941,
+"end": 41.101,
+"id": "w92"
+},
+{
+"b": 4,
+"text": "your",
+"start": 41.101,
+"end": 41.261,
+"id": "w93"
+},
+{
+"b": 4,
+"text": "own",
+"start": 41.261,
+"end": 41.421,
+"id": "w94"
+},
+{
+"b": 4,
+"text": "data,",
+"start": 41.421,
+"end": 41.901,
+"id": "w95"
+},
+{
+"b": 4,
+"text": "and",
+"start": 41.901,
+"end": 42.141,
+"id": "w96"
+},
+{
+"b": 4,
+"text": "nothing",
+"start": 42.141,
+"end": 42.461,
+"id": "w97"
+},
+{
+"b": 4,
+"text": "is",
+"start": 42.461,
+"end": 42.701,
+"id": "w98"
+},
+{
+"b": 4,
+"text": "created",
+"start": 42.701,
+"end": 43.181,
+"id": "w99"
+},
+{
+"b": 4,
+"text": "until",
+"start": 43.181,
+"end": 43.501,
+"id": "w100"
+},
+{
+"b": 4,
+"text": "you",
+"start": 43.501,
+"end": 43.661,
+"id": "w101"
+},
+{
+"b": 4,
+"text": "confirm.",
+"start": 43.661,
+"end": 44.301,
+"id": "w102"
+},
+{
+"b": 5,
+"text": "Unlimited",
+"start": 45.484,
+"end": 46.124,
+"id": "w103"
+},
+{
+"b": 5,
+"text": "users,",
+"start": 46.124,
+"end": 46.764,
+"id": "w104"
+},
+{
+"b": 5,
+"text": "no",
+"start": 46.764,
+"end": 46.924,
+"id": "w105"
+},
+{
+"b": 5,
+"text": "per-user",
+"start": 47.004,
+"end": 47.644,
+"id": "w106"
+},
+{
+"b": 5,
+"text": "price,",
+"start": 47.644,
+"end": 48.204,
+"id": "w107"
+},
+{
+"b": 5,
+"text": "live",
+"start": 48.204,
+"end": 48.524,
+"id": "w108"
+},
+{
+"b": 5,
+"text": "within",
+"start": 48.524,
+"end": 48.844,
+"id": "w109"
+},
+{
+"b": 5,
+"text": "24",
+"start": 48.844,
+"end": 49.484,
+"id": "w110"
+},
+{
+"b": 5,
+"text": "hours,",
+"start": 49.484,
+"end": 49.964,
+"id": "w111"
+},
+{
+"b": 6,
+"text": "less",
+"start": 50.905,
+"end": 51.225,
+"id": "w112"
+},
+{
+"b": 6,
+"text": "busywork,",
+"start": 51.225,
+"end": 52.025,
+"id": "w113"
+},
+{
+"b": 6,
+"text": "more",
+"start": 52.025,
+"end": 52.345,
+"id": "w114"
+},
+{
+"b": 6,
+"text": "meaningful",
+"start": 52.345,
+"end": 52.905,
+"id": "w115"
+},
+{
+"b": 6,
+"text": "work.",
+"start": 52.905,
+"end": 53.465,
+"id": "w116"
+},
+{
+"b": 6,
+"text": "Crux",
+"start": 53.465,
+"end": 53.945,
+"id": "w117"
+},
+{
+"b": 6,
+"text": "gives",
+"start": 54.105,
+"end": 54.265,
+"id": "w118"
+},
+{
+"b": 6,
+"text": "you",
+"start": 54.265,
+"end": 54.425,
+"id": "w119"
+},
+{
+"b": 6,
+"text": "the",
+"start": 54.425,
+"end": 54.505,
+"id": "w120"
+},
+{
+"b": 6,
+"text": "clarity",
+"start": 54.505,
+"end": 54.985,
+"id": "w121"
+},
+{
+"b": 6,
+"text": "to",
+"start": 54.985,
+"end": 55.145,
+"id": "w122"
+},
+{
+"b": 6,
+"text": "run",
+"start": 55.145,
+"end": 55.385,
+"id": "w123"
+},
+{
+"b": 6,
+"text": "your",
+"start": 55.385,
+"end": 55.545,
+"id": "w124"
+},
+{
+"b": 6,
+"text": "business",
+"start": 55.545,
+"end": 55.865,
+"id": "w125"
+},
+{
+"b": 6,
+"text": "and",
+"start": 55.945,
+"end": 56.105,
+"id": "w126"
+},
+{
+"b": 6,
+"text": "the",
+"start": 56.105,
+"end": 56.265,
+"id": "w127"
+},
+{
+"b": 6,
+"text": "freedom",
+"start": 56.265,
+"end": 56.585,
+"id": "w128"
+},
+{
+"b": 6,
+"text": "to",
+"start": 56.585,
+"end": 56.745,
+"id": "w129"
+},
+{
+"b": 6,
+"text": "grow",
+"start": 56.745,
+"end": 56.985,
+"id": "w130"
+},
+{
+"b": 6,
+"text": "it.",
+"start": 56.985,
+"end": 57.305,
+"id": "w131"
+},
+{
+"b": 7,
+"text": "Crux,",
+"start": 58.163,
+"end": 58.723,
+"id": "w132"
+},
+{
+"b": 7,
+"text": "your",
+"start": 58.803,
+"end": 58.883,
+"id": "w133"
+},
+{
+"b": 7,
+"text": "business",
+"start": 58.963,
+"end": 59.283,
+"id": "w134"
+},
+{
+"b": 7,
+"text": "working",
+"start": 59.363,
+"end": 59.763,
+"id": "w135"
+},
+{
+"b": 7,
+"text": "smarter.",
+"start": 59.763,
+"end": 60.403,
+"id": "w136"
+},
+{
+"b": 7,
+"text": "Try",
+"start": 60.403,
+"end": 60.643,
+"id": "w137"
+},
+{
+"b": 7,
+"text": "the",
+"start": 60.643,
+"end": 60.803,
+"id": "w138"
+},
+{
+"b": 7,
+"text": "demo",
+"start": 60.803,
+"end": 61.043,
+"id": "w139"
+},
+{
+"b": 7,
+"text": "at",
+"start": 61.043,
+"end": 61.203,
+"id": "w140"
+},
+{
+"b": 7,
+"text": "trycrux.in",
+"start": 61.203,
+"end": 62.563,
+"id": "w141"
+}
+]

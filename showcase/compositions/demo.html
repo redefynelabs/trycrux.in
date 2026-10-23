@@ -1,0 +1,314 @@
+<template>
+  <style>
+    @font-face { font-family: "Punta"; src: url("assets/fonts/punta-light.otf"); font-weight: 300; }
+    @font-face { font-family: "Geist"; src: url("assets/fonts/geist-latin.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; font-family: "Geist", sans-serif; color: #0b0d12; overflow: hidden; }
+    #dm-app { position: absolute; left: 120px; top: 70px; width: 1680px; height: 840px; background: #fff; border: 1px solid #e3e7ef; }
+    #dm-side { position: absolute; left: 0; top: 0; bottom: 0; width: 300px; border-right: 1px solid #e3e7ef; padding: 30px 20px; }
+    #dm-logo { display: flex; align-items: center; gap: 12px; height: 50px; padding-left: 10px; margin-bottom: 30px; }
+    #dm-logo img { height: 42px; }
+    #dm-logo span { font: 600 44px/1 "Punta", sans-serif; position: relative; top: 0.12em; }
+    .dm-nav { opacity: 0; position: relative; height: 58px; padding-left: 18px; display: flex; align-items: center; font: 500 26px "Geist", sans-serif; color: #5b6472; z-index: 1; }
+    #dm-hi { position: absolute; left: 20px; width: 260px; height: 58px; top: 110px; background: #e8eeff; z-index: 0; opacity: 0; }
+    .dm-nav.on { color: #1f5bf0; font-weight: 600; }
+    #dm-main { position: absolute; left: 300px; top: 0; width: 1378px; height: 838px; }
+    .dm-pane { position: absolute; left: 0; top: 0; width: 1378px; height: 838px; padding: 40px 48px; background: #fff; transform-origin: 0 0; opacity: 0; }
+    .dm-t { font: 600 40px "Geist", sans-serif; letter-spacing: -0.01em; }
+    .dm-s { font: 400 24px "Geist", sans-serif; color: #5b6472; margin-top: 6px; }
+    /* board */
+    .dm-cols { position: absolute; left: 48px; top: 160px; display: flex; gap: 22px; }
+    .dm-col { width: 300px; height: 620px; background: #f6f7fa; padding: 16px; }
+    .dm-col h4 { font: 600 24px "Geist", sans-serif; color: #5b6472; margin: 2px 4px 16px; display: flex; justify-content: space-between; }
+    .dm-card { position: relative; background: #fff; border: 1px solid #e3e7ef; padding: 16px 18px; height: 122px; margin-bottom: 14px; }
+    .dm-card b { display: block; font: 600 25px "Geist", sans-serif; }
+    .dm-card small { display: block; margin-top: 10px; font: 400 20px "Geist", sans-serif; color: #5b6472; }
+    .dm-av { position: absolute; right: 14px; bottom: 14px; width: 34px; height: 34px; border-radius: 50%; color: #fff; font: 600 14px/34px "Geist", sans-serif; text-align: center; }
+    #dm-drag { position: absolute; left: 48px; top: 160px; width: 268px; z-index: 5; }
+    /* attendance */
+    .dm-table { position: absolute; left: 48px; top: 160px; width: 780px; font-size: 26px; }
+    .dm-tr { display: flex; align-items: center; height: 76px; border-bottom: 1px solid #eef0f4; }
+    .dm-tr.h { height: 52px; font: 500 22px "Geist", sans-serif; color: #5b6472; }
+    .dm-tr > :nth-child(1) { width: 360px; display: flex; align-items: center; gap: 14px; }
+    .dm-tr > :nth-child(2) { width: 180px; font-variant-numeric: tabular-nums; }
+    .dm-tr > :nth-child(3) { width: 240px; }
+    .dm-in { opacity: 0; }
+    .dm-st { display: inline-block; padding: 5px 12px; font: 600 21px "Geist", sans-serif; }
+    .ok { background: #e3f6ee; color: #0f9d6a; }
+    .warn { background: #fdf3dc; color: #a86a12; }
+    .dm-dot { width: 38px; height: 38px; border-radius: 50%; color: #fff; font: 600 15px/38px "Geist", sans-serif; text-align: center; flex: none; }
+    #dm-leave { position: absolute; left: 880px; top: 160px; width: 450px; border: 1px solid #e3e7ef; padding: 26px; }
+    #dm-leave h5 { font: 600 26px "Geist", sans-serif; }
+    #dm-leave p { font: 400 23px/1.5 "Geist", sans-serif; color: #5b6472; margin: 10px 0 24px; }
+    .dm-btns { display: flex; gap: 12px; }
+    .dm-btn { padding: 12px 24px; font: 600 23px "Geist", sans-serif; border: 1px solid #e3e7ef; color: #5b6472; background: #fff; position: relative; }
+    .dm-btn.p { background: #1f5bf0; border-color: #1f5bf0; color: #fff; }
+    .dm-btn .done { position: absolute; inset: -1px; background: #0f9d6a; color: #fff; display: flex; align-items: center; justify-content: center; opacity: 0; }
+    /* sales */
+    #dm-steps { position: absolute; left: 48px; top: 150px; display: flex; gap: 0; font: 600 24px "Geist", sans-serif; }
+    #dm-steps span { width: 230px; padding: 14px 0 14px 20px; background: #f6f7fa; color: #8a93a3; margin-right: 4px; }
+    #dm-doc { position: absolute; left: 48px; top: 230px; width: 1282px; border: 1px solid #e3e7ef; padding: 30px 36px; }
+    #dm-doc .hd { display: flex; justify-content: space-between; align-items: flex-start; }
+    #dm-doc .no { font: 600 34px "Geist", sans-serif; position: relative; height: 42px; width: 520px; }
+    #dm-doc .no span { position: absolute; left: 0; top: 0; white-space: nowrap; }
+    #dm-doc .who { font: 400 23px "Geist", sans-serif; color: #5b6472; margin-top: 8px; }
+    #dm-doc .stamp { position: relative; width: 220px; height: 44px; }
+    #dm-doc .stamp span { position: absolute; right: 0; top: 0; }
+    .dm-line { display: flex; justify-content: space-between; font: 400 25px "Geist", sans-serif; padding: 16px 0; border-bottom: 1px solid #eef0f4; font-variant-numeric: tabular-nums; }
+    .dm-line.t { font-weight: 600; border: 0; font-size: 30px; }
+    .dm-line.m { color: #5b6472; }
+    /* finance */
+    #dm-figs { position: absolute; left: 48px; top: 170px; display: flex; gap: 90px; }
+    #dm-figs small { display: block; font: 500 24px "Geist", sans-serif; color: #5b6472; }
+    #dm-figs b { display: block; font: 600 54px "Geist", sans-serif; letter-spacing: -0.02em; margin-top: 6px; font-variant-numeric: tabular-nums; }
+    #dm-chart { position: absolute; left: 48px; top: 360px; width: 1282px; height: 420px; }
+    #dm-chart h5 { font: 500 24px "Geist", sans-serif; color: #5b6472; }
+    .dm-bars { position: absolute; left: 0; right: 0; bottom: 0; height: 340px; display: flex; align-items: flex-end; gap: 60px; padding: 0 20px; }
+    .dm-bars div { flex: 1; position: relative; display: flex; flex-direction: column; justify-content: flex-end; height: 100%; }
+    .dm-bars i { display: block; background: #c9d6fb; transform-origin: 50% 100%; }
+    .dm-bars div:last-child i { background: #1f5bf0; }
+    .dm-bars em { font: 500 21px "Geist", sans-serif; font-style: normal; color: #5b6472; margin-top: 10px; display: flex; justify-content: space-between; }
+    /* dashboard */
+    .dm-panel { position: absolute; border: 1px solid #e3e7ef; padding: 24px 28px; }
+    .dm-panel h5 { font: 600 26px "Geist", sans-serif; margin-bottom: 14px; }
+    .dm-kv { display: flex; gap: 60px; }
+    .dm-kv small { display: block; font: 400 21px "Geist", sans-serif; color: #5b6472; }
+    .dm-kv b { display: block; font: 600 38px "Geist", sans-serif; font-variant-numeric: tabular-nums; margin-top: 4px; }
+    .dm-pl { display: flex; justify-content: space-between; font: 400 22px "Geist", sans-serif; margin-top: 12px; }
+    .dm-plb { height: 8px; background: #eef0f4; margin-top: 6px; }
+    .dm-plb i { display: block; height: 100%; background: #1f5bf0; }
+    #dm-cursor { position: absolute; left: 0; top: 0; width: 56px; height: 56px; z-index: 50; opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="demo" data-width="1920" data-height="1080" data-layout-allow-overflow data-layout-allow-overlap>
+    <div id="dm-app">
+      <div id="dm-side">
+        <div id="dm-logo"><img src="assets/img/crux-mark.png" alt="" /><span>Crux</span></div>
+        <div id="dm-hi"></div>
+        <div class="dm-nav" id="dm-n0">Dashboard</div>
+        <div class="dm-nav" id="dm-n1">Mei AI</div>
+        <div class="dm-nav" id="dm-n2">Projects</div>
+        <div class="dm-nav" id="dm-n3">Tasks</div>
+        <div class="dm-nav" id="dm-n4">Attendance</div>
+        <div class="dm-nav" id="dm-n5">Leave</div>
+        <div class="dm-nav" id="dm-n6">Quotes</div>
+        <div class="dm-nav" id="dm-n7">Invoices</div>
+        <div class="dm-nav" id="dm-n8">Reports</div>
+      </div>
+
+      <div id="dm-main">
+        <!-- P1: the project board -->
+        <div class="dm-pane" id="dm-p1">
+          <div class="dm-t">Website relaunch</div>
+          <div class="dm-s">Acme Builders · 12 tasks · due 30 October</div>
+          <div class="dm-cols">
+            <div class="dm-col"><h4>To do <span>2</span></h4>
+              <div class="dm-card"><b>Write case studies</b><small>BRD-11 · Ben</small><span class="dm-av" style="background:#0ea5e9">BW</span></div>
+              <div class="dm-card"><b>Pricing page copy</b><small>BRD-12 · Nadia</small><span class="dm-av" style="background:#8b5cf6">NH</span></div>
+            </div>
+            <div class="dm-col"><h4>In progress <span>2</span></h4>
+              <div class="dm-card"><b>Connect the data</b><small>BRD-5 · Liam</small><span class="dm-av" style="background:#f97316">LC</span></div>
+              <div class="dm-card"><b>Image library</b><small>BRD-9 · Sam</small><span class="dm-av" style="background:#16a34a">SO</span></div>
+            </div>
+            <div class="dm-col"><h4>In review <span id="dm-rv-n">1</span></h4></div>
+            <div class="dm-col" id="dm-donecol"><h4>Done <span id="dm-dn-n">2</span></h4>
+              <div class="dm-card dm-dn"><b>Wireframes and flows</b><small>BRD-2 · Aiko</small><span class="dm-av" style="background:#e11d48">AT</span></div>
+              <div class="dm-card dm-dn"><b>Brand colours</b><small>BRD-1 · Priya</small><span class="dm-av" style="background:#0f766e">PS</span></div>
+            </div>
+          </div>
+          <div class="dm-card" id="dm-drag" style="left:692px;top:228px"><b>Launch checklist</b><small>BRD-8 · Aiko</small><span class="dm-av" style="background:#e11d48">AT</span></div>
+        </div>
+
+        <!-- P2: today's attendance and a leave request -->
+        <div class="dm-pane" id="dm-p2">
+          <div class="dm-t">Attendance</div>
+          <div class="dm-s">Today · Thursday 15 October · General 09:00–18:00</div>
+          <div class="dm-table">
+            <div class="dm-tr h"><span>Person</span><span>Check in</span><span>Status</span></div>
+            <div class="dm-tr"><span><i class="dm-dot" style="background:#e11d48">AT</i>Aiko Tanaka</span><span class="dm-in">08:52</span><span class="dm-in"><b class="dm-st ok">Present</b></span></div>
+            <div class="dm-tr"><span><i class="dm-dot" style="background:#0ea5e9">BW</i>Ben Walker</span><span class="dm-in">08:57</span><span class="dm-in"><b class="dm-st ok">Present</b></span></div>
+            <div class="dm-tr"><span><i class="dm-dot" style="background:#8b5cf6">NH</i>Nadia Hussain</span><span class="dm-in">09:01</span><span class="dm-in"><b class="dm-st ok">Present</b></span></div>
+            <div class="dm-tr"><span><i class="dm-dot" style="background:#16a34a">SO</i>Sam Okoye</span><span class="dm-in">09:04</span><span class="dm-in"><b class="dm-st ok">Present</b></span></div>
+            <div class="dm-tr"><span><i class="dm-dot" style="background:#0f766e">PS</i>Priya Shah</span><span class="dm-in">08:49</span><span class="dm-in"><b class="dm-st ok">Present</b></span></div>
+            <div class="dm-tr"><span><i class="dm-dot" style="background:#f97316">LC</i>Liam Carter</span><span class="dm-in">–</span><span class="dm-in"><b class="dm-st warn">On leave</b></span></div>
+          </div>
+          <div id="dm-leave">
+            <h5>Leave request</h5>
+            <p>Sam Okoye · Annual leave<br />Monday 19 October · 1 day</p>
+            <div class="dm-btns"><span class="dm-btn">Reject</span><span class="dm-btn p" id="dm-approve">Approve<span class="done" id="dm-approved">Approved</span></span></div>
+          </div>
+        </div>
+
+        <!-- P3: one document from quote to order to invoice -->
+        <div class="dm-pane" id="dm-p3">
+          <div class="dm-t">Acme Builders</div>
+          <div class="dm-s">October services</div>
+          <div id="dm-steps"><span id="dm-st1">Quote</span><span id="dm-st2">Order</span><span id="dm-st3">Invoice</span></div>
+          <div id="dm-doc">
+            <div class="hd">
+              <div><div class="no"><span id="dm-no1">Quote Q-1042</span><span id="dm-no2">Order SO-0318</span><span id="dm-no3">Invoice INV-2207</span></div><div class="who">Acme Builders · 120 Harbour Road</div></div>
+              <div class="stamp"><span class="dm-st ok" id="dm-sg1">Accepted</span><span class="dm-st ok" id="dm-sg2">Fulfilled</span><span class="dm-st" id="dm-sg3" style="background:#e8eeff;color:#1f5bf0">Draft</span></div>
+            </div>
+            <div style="margin-top:26px">
+              <div class="dm-line"><span>Site redesign · 40 h × $150.00</span><span>$6,000.00</span></div>
+              <div class="dm-line"><span>Content migration · 16 h × $150.00</span><span>$2,400.00</span></div>
+              <div class="dm-line m"><span>Subtotal</span><span>$8,400.00</span></div>
+              <div class="dm-line m" id="dm-tax"><span>Sales tax 8%</span><span>$672.00</span></div>
+              <div class="dm-line t" id="dm-total"><span>Total</span><span>$9,072.00</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- P4: finance as it happens -->
+        <div class="dm-pane" id="dm-p4">
+          <div class="dm-t">Finance this period</div>
+          <div class="dm-s">October · updated as invoices and expenses are recorded</div>
+          <div id="dm-figs">
+            <div><small>Revenue</small><b id="dm-f1">$128,400.00</b></div>
+            <div><small>Expenses</small><b id="dm-f2">$74,950.00</b></div>
+            <div><small>Profit</small><b id="dm-f3" style="color:#0f9d6a">$53,450.00</b></div>
+          </div>
+          <div id="dm-chart"><h5>Revenue by month</h5>
+            <div class="dm-bars">
+              <div><i style="height:183px"></i><em><span>Jun</span><span>$78.2K</span></em></div>
+              <div><i style="height:214px"></i><em><span>Jul</span><span>$91.5K</span></em></div>
+              <div><i style="height:239px"></i><em><span>Aug</span><span>$102.3K</span></em></div>
+              <div><i style="height:271px"></i><em><span>Sep</span><span>$115.8K</span></em></div>
+              <div><i style="height:300px"></i><em><span>Oct</span><span>$128.4K</span></em></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- P5: the dashboard -->
+        <div class="dm-pane" id="dm-p5">
+          <div class="dm-t">Good morning, Priya</div>
+          <div class="dm-s">Thursday 15 October · Acme Builders</div>
+          <div class="dm-panel" style="left:48px;top:160px;width:820px;height:250px">
+            <h5>Finance this period</h5>
+            <div class="dm-kv"><div><small>Revenue</small><b>$128,400</b></div><div><small>Expenses</small><b>$74,950</b></div><div><small>Profit</small><b style="color:#0f9d6a">$53,450</b></div></div>
+          </div>
+          <div class="dm-panel" style="left:48px;top:430px;width:820px;height:350px">
+            <h5>Needs your attention</h5>
+            <div class="dm-pl"><span>Invoice INV-2207 to send</span><span style="color:#5b6472">$9,072.00</span></div>
+            <div class="dm-pl"><span>Leave request · Sam Okoye</span><span style="color:#0f9d6a">Approved</span></div>
+            <div class="dm-pl"><span>Launch checklist</span><span style="color:#0f9d6a">Done</span></div>
+            <div class="dm-pl"><span>41 of 48 people checked in</span><span style="color:#5b6472">09:10</span></div>
+          </div>
+          <div class="dm-panel" style="left:892px;top:160px;width:438px;height:250px">
+            <h5>My tasks</h5>
+            <div class="dm-kv"><div><small>Open</small><b>3</b></div><div><small>Overdue</small><b>0</b></div></div>
+          </div>
+          <div class="dm-panel" style="left:892px;top:430px;width:438px;height:350px">
+            <h5>Lead pipeline</h5>
+            <div class="dm-pl"><span>New</span><span>4</span></div><div class="dm-plb"><i style="width:100%"></i></div>
+            <div class="dm-pl"><span>Qualified</span><span>3</span></div><div class="dm-plb"><i style="width:75%"></i></div>
+            <div class="dm-pl"><span>Proposal</span><span>2</span></div><div class="dm-plb"><i style="width:50%"></i></div>
+            <div class="dm-pl"><span>Won</span><span>1</span></div><div class="dm-plb"><i style="width:25%"></i></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <svg id="dm-cursor" viewBox="0 0 24 24"><path d="M4 2 L4 19 L8.6 15 L11.6 22 L14.6 20.7 L11.7 14 L18 14 Z" fill="#0b0d12" stroke="#fff" stroke-width="1.4" stroke-linejoin="round" /></svg>
+  </div>
+  <script>
+    (function () {
+      // Tweens here never pre-apply their start state: several panes are tweened again later (the 2 x 2 view),
+      // and an early fromTo would otherwise be overwritten from frame 0. Entering elements start hidden in CSS.
+      const tl = gsap.timeline({ paused: true, defaults: { immediateRender: false } });
+      const hiY = (i) => 110 + i * 58;
+      const on = (i, t) => {
+        tl.to("#dm-hi", { y: hiY(i) - 110, duration: 0.32, ease: "power3.inOut" }, t);
+        for (let k = 0; k < 9; k++) tl.set("#dm-n" + k, { color: k === i ? "#1f5bf0" : "#5b6472", fontWeight: k === i ? 600 : 500 }, t + 0.16);
+      };
+      const show = (sel, t) => tl.fromTo(sel, { opacity: 0, x: 0, y: 26, scale: 1, filter: "blur(6px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.36, ease: "expo.out", immediateRender: false }, t);
+      const hide = (sel, t) => tl.to(sel, { opacity: 0, y: -18, filter: "blur(6px)", duration: 0.16, ease: "power3.in" }, t);
+      const cursor = (x, y, t, d = 0.5) => tl.to("#dm-cursor", { x, y, duration: d, ease: "power2.inOut" }, t);
+      const press = (t) => tl.fromTo("#dm-cursor", { scale: 1 }, { scale: 0.86, duration: 0.07, yoyo: true, repeat: 1, ease: "power2.out" }, t);
+
+      // The app builds around the logo the reveal left in this corner.
+      tl.fromTo("#dm-app", { opacity: 1 }, { opacity: 1, duration: 0.01 }, 0);
+      tl.fromTo("#dm-app", { clipPath: "inset(0% 82% 92% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.5, ease: "expo.out" }, 0);
+      tl.fromTo(".dm-nav", { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: 0.3, ease: "expo.out", stagger: 0.03 }, 0.12);
+      tl.to("#dm-hi", { opacity: 1, duration: 0.15 }, 0.4);
+
+      // "Manage your projects": the board; Aiko's checklist is dragged from review to done.
+      on(2, 0.4);
+      show("#dm-p1", 0.45);
+      tl.set("#dm-cursor", { x: 1500, y: 820 }, 0);
+      tl.to("#dm-cursor", { opacity: 1, duration: 0.1 }, 0.7);
+      cursor(120 + 300 + 692 + 200, 70 + 228 + 80, 0.7, 0.4);
+      press(1.1);
+      tl.to("#dm-drag", { scale: 1.04, duration: 0.1, ease: "power2.out" }, 1.12);
+      tl.to(".dm-dn", { y: 136, duration: 0.3, ease: "power2.inOut" }, 1.25);
+      tl.to("#dm-drag", { x: 322, y: 0 - 228 + 160 + 16 + 44, duration: 0.42, ease: "power2.inOut" }, 1.18);
+      cursor(120 + 300 + 692 + 322 + 200, 70 + 160 + 60 + 80, 1.18, 0.42);
+      tl.to("#dm-drag", { scale: 1, duration: 0.12, ease: "power2.out" }, 1.6);
+      tl.call(() => { document.querySelector("#dm-rv-n").textContent = "0"; document.querySelector("#dm-dn-n").textContent = "3"; }, null, 1.6);
+      tl.call(() => { document.querySelector("#dm-rv-n").textContent = "1"; document.querySelector("#dm-dn-n").textContent = "2"; }, null, 0.01);
+      tl.to("#dm-cursor", { opacity: 0, duration: 0.12 }, 1.68);
+
+      // "track your team": check-ins land row by row; the cursor approves a leave request.
+      hide("#dm-p1", 1.6);
+      on(4, 1.6);
+      show("#dm-p2", 1.7);
+      tl.fromTo("#dm-p2 .dm-in", { opacity: 0, x: -12 }, { opacity: 1, x: 0, duration: 0.22, ease: "expo.out", stagger: 0.06 }, 1.85);
+      tl.set("#dm-cursor", { x: 120 + 300 + 880 + 120, y: 900 }, 1.7);
+      tl.to("#dm-cursor", { opacity: 1, duration: 0.1 }, 2.0);
+      cursor(120 + 300 + 880 + 26 + 170, 70 + 160 + 200 + 30, 2.0, 0.4);
+      press(2.42);
+      tl.fromTo("#dm-approved", { opacity: 0 }, { opacity: 1, duration: 0.14, ease: "power2.out" }, 2.46);
+      tl.to("#dm-cursor", { opacity: 0, duration: 0.12 }, 2.62);
+
+      // "handle sales": one document goes from accepted quote to fulfilled order to invoice with the tax.
+      hide("#dm-p2", 2.62);
+      on(6, 2.62);
+      show("#dm-p3", 2.7);
+      const steps = ["#dm-st1", "#dm-st2", "#dm-st3"], nos = ["#dm-no1", "#dm-no2", "#dm-no3"], sgs = ["#dm-sg1", "#dm-sg2", "#dm-sg3"];
+      tl.set([...nos, ...sgs].slice(0), { opacity: 0 }, 0);
+      tl.set([nos[0]], { opacity: 1 }, 0);
+      [2.85, 3.15, 3.45].forEach((t, i) => {
+        tl.to(steps[i], { backgroundColor: "#1f5bf0", color: "#ffffff", duration: 0.14, ease: "none" }, t);
+        if (i > 0) tl.to(steps[i - 1], { backgroundColor: "#e8eeff", color: "#1f5bf0", duration: 0.14, ease: "none" }, t);
+        if (i > 0) { tl.to(nos[i - 1], { opacity: 0, y: -14, duration: 0.12, ease: "power3.in" }, t); tl.to(sgs[i - 1], { opacity: 0, duration: 0.1 }, t); }
+        tl.fromTo(nos[i], { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.26, ease: "expo.out" }, t + 0.12);
+        tl.fromTo(sgs[i], { opacity: 0, scale: 1.3 }, { opacity: 1, scale: 1, duration: 0.22, ease: "expo.out" }, t + 0.1);
+      });
+      on(7, 3.45);
+      tl.fromTo(["#dm-tax", "#dm-total"], { backgroundColor: "rgba(31,91,240,0)" }, { backgroundColor: "rgba(31,91,240,0.08)", duration: 0.2, ease: "none" }, 3.5);
+
+      // "and finances": the figures count up and October's bar rises last.
+      hide("#dm-p3", 3.72);
+      on(8, 3.72);
+      show("#dm-p4", 3.8);
+      const money = (v) => "$" + v.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      [["#dm-f1", 128400], ["#dm-f2", 74950], ["#dm-f3", 53450]].forEach(([sel, v], i) => {
+        const el = document.querySelector(sel), o = { v: 0 };
+        tl.fromTo(o, { v: 0 }, { v, duration: 0.7, ease: "power2.out", onUpdate: () => { el.textContent = money(Math.round(o.v)); } }, 3.9 + i * 0.08);
+      });
+      tl.fromTo("#dm-p4 .dm-bars i", { scaleY: 0 }, { scaleY: 1, duration: 0.5, ease: "expo.out", stagger: 0.07 }, 3.95);
+
+      // "stay on top of your entire business": the dashboard.
+      hide("#dm-p4", 4.6);
+      on(0, 4.6);
+      show("#dm-p5", 4.68);
+      tl.fromTo("#dm-p5 .dm-panel", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.4, ease: "expo.out", stagger: 0.07 }, 4.75);
+
+      // "All in one place": the four screens fold into one view of the same app.
+      hide("#dm-p5", 6.9);
+      const quad = [[8, 8], [697, 8], [8, 427], [697, 427]];
+      ["#dm-p1", "#dm-p2", "#dm-p3", "#dm-p4"].forEach((p, i) => {
+        tl.fromTo(p, { opacity: 0, x: quad[i][0] + 120, y: quad[i][1] + 80, scale: 0.42, filter: "blur(8px)" }, { opacity: 1, x: quad[i][0], y: quad[i][1], scale: 0.494, filter: "blur(0px)", duration: 0.5, ease: "expo.out", immediateRender: false }, 7.0 + i * 0.08);
+        tl.set(p, { outline: "2px solid #e3e7ef" }, 7.0);
+      });
+      tl.set("#dm-main", { backgroundColor: "#f3f5fa" }, 6.98);
+
+      // Then the cursor goes to Mei AI and clicks: the next scene opens from that point.
+      tl.set("#dm-cursor", { x: 700, y: 700 }, 8.6);
+      tl.to("#dm-cursor", { opacity: 1, duration: 0.12 }, 8.8);
+      cursor(120 + 20 + 120, 70 + hiY(1) + 30, 8.85, 0.7);
+      press(9.7);
+      on(1, 9.72);
+
+      window.__timelines["demo"] = tl;
+    })();
+  </script>
+</template>

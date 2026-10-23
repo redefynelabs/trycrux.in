@@ -1,0 +1,40 @@
+<template>
+  <style>
+    @font-face { font-family: "Punta"; src: url("assets/fonts/punta-light.otf"); font-weight: 300; }
+    @font-face { font-family: "Geist"; src: url("assets/fonts/geist-latin.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Geist", sans-serif; color: #0b0d12; }
+    #ec-lock { position: absolute; left: 0; right: 0; top: 300px; display: flex; justify-content: center; align-items: center; gap: 36px; }
+    #ec-markbox { position: relative; height: 150px; width: 150px; }
+    #ec-markbox img { position: absolute; left: 0; top: 0; height: 150px; width: 150px; }
+    #ec-base { opacity: 0.14; }
+    #ec-name { font: 600 186px/1 "Punta", sans-serif; position: relative; top: 0.12em; }
+    #ec-tag { position: absolute; left: 0; right: 0; top: 560px; text-align: center; font: 600 76px/1.05 "Punta", sans-serif; letter-spacing: -0.01em; }
+    #ec-tag .w { display: inline-block; margin: 0 0.12em; }
+    #ec-cta { position: absolute; left: 0; right: 0; top: 730px; display: flex; justify-content: center; align-items: center; gap: 40px; }
+    #ec-btn { background: #1f5bf0; color: #fff; font: 600 36px "Geist", sans-serif; padding: 24px 46px; }
+    #ec-url { font: 600 44px "Geist", sans-serif; color: #1f5bf0; }
+  </style>
+  <div id="root" data-composition-id="endcard" data-width="1920" data-height="1080">
+    <div id="ec-lock"><div id="ec-markbox"><img id="ec-base" src="assets/img/crux-mark.png" alt="" /><img id="ec-fill" src="assets/img/crux-mark.png" alt="" /></div><span id="ec-name">Crux</span></div>
+    <div id="ec-tag"><span class="w">Your</span><span class="w">business,</span><span class="w">working</span><span class="w">smarter.</span></div>
+    <div id="ec-cta"><span id="ec-btn">Try the demo</span><span id="ec-url">trycrux.in</span></div>
+  </div>
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      const name = document.querySelector("#ec-name");
+      const shift = (name.offsetWidth + 36) / 2;
+      // "Crux": the mark appears as an outline and fills from the bottom, then the name wipes out of it.
+      tl.fromTo("#ec-markbox", { x: shift, opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.4, ease: "expo.out" }, 0.1);
+      tl.fromTo("#ec-fill", { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.55, ease: "power2.inOut" }, 0.26);
+      tl.fromTo("#ec-name", { clipPath: "inset(0% 100% 0% 0%)", x: shift }, { clipPath: "inset(0% 0% 0% 0%)", x: 0, duration: 0.5, ease: "expo.out" }, 0.72);
+      tl.to("#ec-markbox", { x: 0, duration: 0.5, ease: "expo.out" }, 0.72);
+      const tag = gsap.utils.toArray("#ec-tag .w");
+      [0.9, 1.06, 1.46, 1.86].forEach((t, i) => tl.fromTo(tag[i], { opacity: 0, filter: "blur(6px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.14, ease: "power2.out" }, t));
+      // "Try the demo at trycrux.in": the action, held to the end.
+      tl.fromTo("#ec-btn", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.4, ease: "expo.out" }, 2.5);
+      tl.fromTo("#ec-url", { opacity: 0, filter: "blur(6px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power2.out" }, 3.3);
+      window.__timelines["endcard"] = tl;
+    })();
+  </script>
+</template>

@@ -1,0 +1,68 @@
+<template>
+  <style>
+    @font-face { font-family: "Punta"; src: url("assets/fonts/punta-light.otf"); font-weight: 300; }
+    @font-face { font-family: "Geist"; src: url("assets/fonts/geist-latin.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Geist", sans-serif; color: #0b0d12; }
+    #st-field { position: absolute; inset: 0; background: #f3f5fa; }
+    #st-lines { position: absolute; left: 160px; top: 250px; transform-origin: 0 0; }
+    .st-l { font: 600 176px/1.04 "Punta", sans-serif; letter-spacing: -0.01em; white-space: nowrap; }
+    .st-l .w { display: inline-block; margin-right: 0.2em; }
+    #st-dash { position: absolute; left: 160px; top: 380px; width: 1600px; height: 520px; display: flex; gap: 24px; }
+    .st-p { background: #fff; border: 1px solid #e3e7ef; padding: 34px 40px; }
+    .st-p h5 { font: 600 30px "Geist", sans-serif; }
+    .st-ok { display: flex; align-items: center; gap: 18px; margin-top: 26px; font: 500 34px "Geist", sans-serif; }
+    .st-ok i { width: 54px; height: 54px; border-radius: 50%; background: #e3f6ee; display: grid; place-items: center; flex: none; }
+    .st-row { display: flex; justify-content: space-between; font: 400 26px "Geist", sans-serif; padding: 16px 0; border-bottom: 1px solid #eef0f4; }
+    .st-row span:last-child { color: #0f9d6a; font-weight: 600; }
+    .st-bars { display: flex; align-items: flex-end; gap: 36px; height: 330px; margin-top: 30px; }
+    .st-bars div { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; height: 100%; }
+    .st-bars i { display: block; background: #c9d6fb; transform-origin: 50% 100%; }
+    .st-bars div:last-child i { background: #1f5bf0; }
+    .st-bars em { font: 500 22px "Geist", sans-serif; font-style: normal; color: #5b6472; margin-top: 10px; display: flex; justify-content: space-between; }
+  </style>
+  <div id="root" data-composition-id="statement" data-width="1920" data-height="1080" data-layout-allow-overflow>
+    <div id="st-field"></div>
+    <div id="st-lines">
+      <div class="st-l" id="st-l1"><span class="w">Less</span><span class="w">busywork.</span></div>
+      <div class="st-l" id="st-l2"><span class="w">More</span><span class="w">meaningful</span><span class="w">work.</span></div>
+    </div>
+    <div id="st-dash">
+      <div class="st-p" style="width:700px">
+        <h5>Needs your attention</h5>
+        <div class="st-ok"><i><svg viewBox="0 0 24 24" width="30" height="30"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="#0f9d6a" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" /></svg></i>You are all caught up.</div>
+        <div style="margin-top:28px">
+          <div class="st-row"><span>Invoices sent this week</span><span>14</span></div>
+          <div class="st-row"><span>Leave requests waiting</span><span>0</span></div>
+          <div class="st-row"><span>Overdue tasks</span><span>0</span></div>
+        </div>
+      </div>
+      <div class="st-p" style="flex:1">
+        <h5>Revenue by month</h5>
+        <div class="st-bars">
+          <div><i style="height:183px"></i><em><span>Jun</span><span>$78.2K</span></em></div>
+          <div><i style="height:214px"></i><em><span>Jul</span><span>$91.5K</span></em></div>
+          <div><i style="height:239px"></i><em><span>Aug</span><span>$102.3K</span></em></div>
+          <div><i style="height:271px"></i><em><span>Sep</span><span>$115.8K</span></em></div>
+          <div><i style="height:300px"></i><em><span>Oct</span><span>$128.4K</span></em></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      // The light ground floods back over the blue from the centre.
+      tl.fromTo("#st-field", { clipPath: "circle(0px at 960px 540px)" }, { clipPath: "circle(1200px at 960px 540px)", duration: 0.45, ease: "power2.in" }, 0);
+      const w1 = gsap.utils.toArray("#st-l1 .w"), w2 = gsap.utils.toArray("#st-l2 .w");
+      [0.3, 0.62].forEach((t, i) => tl.fromTo(w1[i], { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.16, ease: "power2.out" }, t));
+      [1.42, 1.74, 2.3].forEach((t, i) => tl.fromTo(w2[i], { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.16, ease: "power2.out" }, t));
+      // "Crux gives you the clarity": the lines step up and the calm dashboard rises under them.
+      tl.to("#st-lines", { scale: 0.42, y: -120, duration: 0.6, ease: "power2.inOut" }, 2.84);
+      tl.fromTo("#st-dash", { opacity: 0, y: 160 }, { opacity: 1, y: 0, duration: 0.6, ease: "expo.out" }, 2.98);
+      // "the freedom to grow it": the months grow.
+      tl.fromTo("#st-dash .st-bars i", { scaleY: 0.25 }, { scaleY: 1, duration: 0.7, ease: "expo.out", stagger: 0.08 }, 5.6);
+      tl.to(["#st-lines", "#st-dash"], { opacity: 0, filter: "blur(8px)", duration: 0.2, ease: "power3.in" }, 7.05);
+      window.__timelines["statement"] = tl;
+    })();
+  </script>
+</template>

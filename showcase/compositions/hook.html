@@ -1,0 +1,252 @@
+<template>
+  <style>
+    @font-face { font-family: "Punta"; src: url("assets/fonts/punta-light.otf"); font-weight: 300; }
+    @font-face { font-family: "Geist"; src: url("assets/fonts/geist-latin.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; font-family: "Geist", sans-serif; color: #0b0d12; overflow: hidden; }
+    #hook-h1 { position: absolute; left: 160px; top: 100px; width: 1700px; font: 600 96px/1.04 "Punta", sans-serif; letter-spacing: -0.01em; }
+    /* The workday: a clock and a 09:00-18:00 strip that admin eats while the line is spoken. */
+    #hk-day { position: absolute; left: 160px; top: 360px; width: 1600px; height: 560px; }
+    #hk-clock-l { position: absolute; left: 0; top: 0; font: 500 30px "Geist", sans-serif; color: #5b6472; }
+    #hk-clock { position: absolute; left: -6px; top: 36px; font: 600 150px/1 "Geist", sans-serif; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+    #hk-strip { position: absolute; left: 0; top: 250px; width: 1600px; height: 240px; background: #fff; border: 1px solid #e3e7ef; }
+    #hk-blocks { position: absolute; inset: 0; }
+    .hk-blk { position: absolute; top: 0; bottom: 0; background: #e4e8ef; border-right: 3px solid #fff; padding: 22px 18px; overflow: hidden; }
+    .hk-blk b { display: block; font: 600 25px/1.15 "Geist", sans-serif; }
+    .hk-blk small { display: block; margin-top: 8px; font: 400 21px "Geist", sans-serif; color: #5b6472; font-variant-numeric: tabular-nums; }
+    #hk-work { position: absolute; top: 0; bottom: 0; right: 0; width: 59px; background: #1f5bf0; }
+    #hk-work-l { position: absolute; right: 0; top: -54px; font: 600 30px "Geist", sans-serif; color: #1f5bf0; white-space: nowrap; }
+    #hk-head { position: absolute; top: -14px; bottom: -14px; left: 0; width: 4px; background: #0b0d12; }
+    .hk-hr { position: absolute; top: 510px; font: 500 22px "Geist", sans-serif; color: #8a93a3; font-variant-numeric: tabular-nums; }
+    #hook-h1 .w { display: inline-block; color: #cdd3de; margin-right: 0.22em; }
+    .hk-win { position: absolute; background: #fff; border: 1px solid #e3e7ef; overflow: visible; }
+    .hk-bar { height: 46px; display: flex; align-items: center; gap: 8px; padding: 0 16px; border-bottom: 1px solid #e3e7ef; background: #f7f8fb; font: 500 20px "Geist", sans-serif; color: #5b6472; white-space: nowrap; }
+    .hk-bar i { width: 11px; height: 11px; border-radius: 50%; background: #d9dde6; flex: none; }
+    .hk-bar span { margin-left: 8px; }
+    .hk-body { padding: 14px 18px; font-size: 20px; color: #2a2f3a; }
+    .hk-grid { display: grid; border-left: 1px solid #e9ecf2; border-top: 1px solid #e9ecf2; font-variant-numeric: tabular-nums; }
+    .hk-grid div { border-right: 1px solid #e9ecf2; border-bottom: 1px solid #e9ecf2; padding: 6px 10px; height: 38px; white-space: nowrap; overflow: hidden; }
+    .hk-grid .h { background: #f7f8fb; color: #8a93a3; }
+    .hk-row { display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px solid #f0f2f6; white-space: nowrap; overflow: hidden; }
+    .hk-row b { font-weight: 600; width: 120px; flex: none; }
+    .hk-row u { text-decoration: none; color: #8a93a3; }
+    .hk-msg { background: #f3f5fa; padding: 10px 14px; margin: 8px 0; width: fit-content; max-width: 90%; }
+    .hk-msg.me { margin-left: auto; background: #e8eeff; }
+    .hk-badge { position: absolute; top: -16px; right: -16px; min-width: 44px; height: 44px; padding: 0 10px; border-radius: 22px; background: #d23f3f; color: #fff; font: 600 22px/44px "Geist", sans-serif; text-align: center; font-variant-numeric: tabular-nums; }
+    #hk-cell { outline: 3px solid #1f5bf0; outline-offset: -3px; background: #e8eeff; }
+    #hk-ghost { position: absolute; left: 0; top: 0; padding: 6px 12px; background: #1f5bf0; color: #fff; font: 600 22px "Geist", sans-serif; opacity: 0; }
+    #hk-paste { display: inline-block; min-width: 170px; border-bottom: 2px solid #c9cfdb; color: #0b0d12; font-weight: 600; }
+    .hk-field { display: flex; justify-content: space-between; padding: 9px 0; border-bottom: 1px solid #f0f2f6; }
+  </style>
+  <div id="root" data-composition-id="hook" data-width="1920" data-height="1080" data-layout-allow-overlap data-layout-allow-overflow>
+    <h1 id="hook-h1">
+      <span class="w">Running</span><span class="w">a</span><span class="w">business</span><span class="w">shouldn't</span><br /><span class="w">mean</span><span class="w">spending</span><span class="w">hours</span><span class="w">managing</span><span class="w">it.</span>
+    </h1>
+
+    <div id="hk-day">
+      <div id="hk-clock-l">Your workday</div>
+      <div id="hk-clock">09:00</div>
+      <div id="hk-strip">
+        <div id="hk-blocks">
+          <div class="hk-blk" style="left:0;width:267px"><b>Inbox, follow-ups</b><small>09:00–10:30</small></div>
+          <div class="hk-blk" style="left:267px;width:222px"><b>Chasing invoices</b><small>10:30–11:45</small></div>
+          <div class="hk-blk" style="left:489px;width:222px"><b>Fixing timesheets</b><small>11:45–13:00</small></div>
+          <div class="hk-blk" style="left:711px;width:267px"><b>Copying figures</b><small>13:00–14:30</small></div>
+          <div class="hk-blk" style="left:978px;width:133px"><b>Leave</b><small>14:30</small></div>
+          <div class="hk-blk" style="left:1111px;width:222px"><b>Payroll checks</b><small>15:15–16:30</small></div>
+          <div class="hk-blk" style="left:1333px;width:208px"><b>Status reports</b><small>16:30–17:40</small></div>
+        </div>
+        <div id="hk-work"></div>
+        <div id="hk-work-l">Your actual work</div>
+        <div id="hk-head"></div>
+      </div>
+      <span class="hk-hr" style="left:0">09:00</span><span class="hk-hr" style="left:356px">11:00</span><span class="hk-hr" style="left:711px">13:00</span><span class="hk-hr" style="left:1067px">15:00</span><span class="hk-hr" style="left:1422px">17:00</span><span class="hk-hr" style="left:1600px;transform:translateX(-100%)">18:00</span>
+    </div>
+
+    <div class="hk-win" id="hk-w1" style="left:120px;top:110px;width:640px;height:370px">
+      <div class="hk-bar"><i></i><i></i><i></i><span>Q3 numbers FINAL (2).xlsx</span></div>
+      <div class="hk-body">
+        <div class="hk-grid" style="grid-template-columns: 150px 140px 140px 160px">
+          <div class="h">Client</div><div class="h">Quoted</div><div class="h">Invoiced</div><div class="h">Paid?</div>
+          <div>Acme</div><div>$9,800.00</div><div id="hk-cell">$12,480.00</div><div>check</div>
+          <div>Granite</div><div>$6,200.00</div><div>$6,200.00</div><div>yes??</div>
+          <div>Nova Retail</div><div>$4,150.00</div><div>#REF!</div><div></div>
+          <div>Harbor</div><div>$3,900.00</div><div>$3,900.00</div><div>ask Sam</div>
+          <div>Pinewood</div><div>$2,640.00</div><div></div><div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hk-win" id="hk-w2" style="left:1190px;top:90px;width:600px;height:390px">
+      <div class="hk-bar"><i></i><i></i><i></i><span>Inbox</span></div>
+      <div class="hk-body">
+        <div class="hk-row"><b>Sam</b><span>Re: Re: Re: invoice?</span></div>
+        <div class="hk-row"><b>Priya</b><span>Timesheet reminder</span></div>
+        <div class="hk-row"><b>Accounts</b><span>Can you resend the quote</span></div>
+        <div class="hk-row"><b>Liam</b><span>Leave request, Friday</span></div>
+        <div class="hk-row"><b>Payroll</b><span>URGENT: hours missing</span></div>
+        <div class="hk-row"><b>Nadia</b><span>Which sheet is the latest?</span></div>
+      </div>
+      <div class="hk-badge" id="hk-b2">48</div>
+    </div>
+
+    <div class="hk-win" id="hk-w6" style="left:560px;top:60px;width:520px;height:300px">
+      <div class="hk-bar"><i></i><i></i><i></i><span>Leads – old.csv</span></div>
+      <div class="hk-body">
+        <div class="hk-grid" style="grid-template-columns: 170px 150px 160px">
+          <div class="h">Name</div><div class="h">Stage</div><div class="h">Next step</div>
+          <div>Granite Co</div><div>proposal</div><div>call back?</div>
+          <div>Harbor Ltd</div><div>new</div><div></div>
+          <div>Pinewood</div><div>lost?</div><div>email Liam</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hk-win" id="hk-w5" style="left:110px;top:530px;width:610px;height:350px">
+      <div class="hk-bar"><i></i><i></i><i></i><span>Timesheet week 42.xlsx</span></div>
+      <div class="hk-body">
+        <div class="hk-grid" style="grid-template-columns: 170px 110px 110px 110px 70px">
+          <div class="h">Person</div><div class="h">Mon</div><div class="h">Tue</div><div class="h">Wed</div><div class="h">Σ</div>
+          <div>Aiko</div><div>8:00</div><div>7:45</div><div>?</div><div></div>
+          <div>Ben</div><div>8:30</div><div></div><div>8:00</div><div></div>
+          <div>Liam</div><div>leave</div><div>leave</div><div>7:30</div><div></div>
+          <div>Nadia</div><div>8:00</div><div>8:15</div><div>8:00</div><div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hk-win" id="hk-w3" style="left:770px;top:300px;width:460px;height:560px">
+      <div class="hk-bar"><i></i><i></i><i></i><span>Invoice_0931_v3.pdf</span></div>
+      <div class="hk-body" style="padding:22px 26px">
+        <div style="font:600 30px 'Geist';margin-bottom:6px">Invoice 0931</div>
+        <div style="color:#8a93a3;margin-bottom:18px">Acme Builders</div>
+        <div class="hk-field"><span>Services, October</span><span>…</span></div>
+        <div class="hk-field"><span>Hours</span><span>see sheet</span></div>
+        <div class="hk-field"><span>Tax</span><span>?</span></div>
+        <div class="hk-field" style="border:0;margin-top:14px;font-size:22px"><span>Amount</span><span id="hk-paste">&nbsp;</span></div>
+      </div>
+    </div>
+
+    <div class="hk-win" id="hk-w8" style="left:300px;top:390px;width:500px;height:320px">
+      <div class="hk-bar"><i></i><i></i><i></i><span>Payroll Oct.xlsx</span></div>
+      <div class="hk-body">
+        <div class="hk-grid" style="grid-template-columns: 160px 140px 150px">
+          <div class="h">Employee</div><div class="h">Hours</div><div class="h">Gross</div>
+          <div>Aiko</div><div>copy from TS</div><div></div>
+          <div>Ben</div><div>132:45</div><div>$4,980.00</div>
+          <div>Liam</div><div>??</div><div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hk-win" id="hk-w4" style="left:1320px;top:500px;width:480px;height:380px">
+      <div class="hk-bar"><i></i><i></i><i></i><span>Team chat</span></div>
+      <div class="hk-body">
+        <div class="hk-msg">who has the latest sheet?</div>
+        <div class="hk-msg">is Acme paid??</div>
+        <div class="hk-msg me">checking, give me 10 min</div>
+        <div class="hk-msg">sending it again</div>
+      </div>
+      <div class="hk-badge" id="hk-b4">3</div>
+    </div>
+
+    <div class="hk-win" id="hk-w9" style="left:1450px;top:250px;width:410px;height:330px">
+      <div class="hk-bar"><i></i><i></i><i></i><span>To-do (shared).docx</span></div>
+      <div class="hk-body" style="line-height:1.9">
+        <div>☐ chase Acme payment</div>
+        <div>☐ fix timesheet totals</div>
+        <div>☐ approve Liam's leave</div>
+        <div>☐ resend Granite quote</div>
+      </div>
+      <div class="hk-badge" id="hk-b9">5</div>
+    </div>
+
+    <div class="hk-win" id="hk-w7" style="left:990px;top:590px;width:440px;height:300px">
+      <div class="hk-bar"><i></i><i></i><i></i><span>Leave requests.docx</span></div>
+      <div class="hk-body" style="line-height:1.8">
+        <div>Liam Carter · Fri · pending</div>
+        <div>Priya Shah · 2 days · pending</div>
+        <div>Sam Okoye · Mon · ask HR</div>
+      </div>
+    </div>
+
+    <div class="hk-win" id="hk-w10" style="left:40px;top:290px;width:380px;height:280px">
+      <div class="hk-bar"><i></i><i></i><i></i><span>Calendar</span></div>
+      <div class="hk-body" style="line-height:1.9">
+        <div>09:00 Payroll check</div>
+        <div>10:30 Client call</div>
+        <div>11:00 Invoice run</div>
+        <div>11:00 Team sync</div>
+      </div>
+    </div>
+
+    <div id="hk-ghost">$12,480.00</div>
+  </div>
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      const words = gsap.utils.toArray("#hook-h1 .w");
+      const at = [0.4, 0.88, 0.96, 1.28, 1.68, 1.92, 2.32, 2.72, 3.28];
+
+      // The headline sits in light grey and each word turns to ink as it is spoken.
+      // On screen from the first frame (the thumbnail), in grey.
+      words.forEach((w, i) => tl.to(w, { color: "#0b0d12", duration: 0.12, ease: "none" }, at[i]));
+      // "spending hours managing it": the clock races through the day while admin fills it from the left,
+      // and what is left at the end is a sliver of the work itself.
+      const PX_PER_MIN = 1600 / 540, END = 520; // the strip is 09:00-18:00; admin runs to 17:40
+      const clock = document.querySelector("#hk-clock"), day = { m: 0 };
+      const hhmm = (m) => { const t = 540 + Math.round(m / 5) * 5; return String(Math.floor(t / 60)).padStart(2, "0") + ":" + String(t % 60).padStart(2, "0"); };
+      tl.fromTo(day, { m: 0 }, { m: END, duration: 1.45, ease: "power1.inOut", onUpdate: () => { clock.textContent = hhmm(day.m); } }, 1.85);
+      tl.fromTo("#hk-head", { x: 0 }, { x: END * PX_PER_MIN, duration: 1.45, ease: "power1.inOut" }, 1.85);
+      tl.fromTo("#hk-blocks", { clipPath: "inset(0% 100% 0% 0%)" }, { clipPath: "inset(0% 3.7% 0% 0%)", duration: 1.45, ease: "power1.inOut" }, 1.85);
+      tl.fromTo("#hk-work", { scaleX: 0, transformOrigin: "0% 50%" }, { scaleX: 1, duration: 0.25, ease: "expo.out" }, 3.3);
+      tl.fromTo("#hk-work-l", { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.22, ease: "expo.out" }, 3.34);
+      tl.to("#hk-head", { opacity: 0, duration: 0.1 }, 3.3);
+
+      tl.to(words, { opacity: 0, filter: "blur(8px)", duration: 0.2, ease: "power3.in", stagger: 0.02 }, 3.62);
+      tl.to("#hk-day", { opacity: 0, y: -20, filter: "blur(8px)", duration: 0.22, ease: "power3.in" }, 3.64);
+
+      // On "Yet" the tools pile in, each on its word.
+      const wins = [
+        ["#hk-w1", 3.8, -2], ["#hk-w2", 4.4, 1.5], ["#hk-w6", 4.8, -3], ["#hk-w5", 5.45, 1],
+        ["#hk-w3", 6.0, -1], ["#hk-w8", 6.2, 2.5], ["#hk-w4", 6.72, 2], ["#hk-w9", 7.0, -1.5],
+        ["#hk-w7", 8.4, -2], ["#hk-w10", 8.96, 3],
+      ];
+      wins.forEach(([sel, t, r], i) => {
+        gsap.set(sel, { zIndex: 10 + i });
+        tl.fromTo(sel, { opacity: 0, scale: 0.9, rotation: r * 2, y: 40 }, { opacity: 1, scale: 1, rotation: r, y: 0, duration: 0.42, ease: "expo.out" }, t);
+      });
+
+      // Copy and paste: the invoiced cell is copied and carried into the PDF by hand.
+      gsap.set("#hk-ghost", { zIndex: 40 });
+      // The cell sits at the third column of the first data row (window left + padding + two columns).
+      tl.set("#hk-ghost", { x: 120 + 18 + 290, y: 110 + 46 + 14 + 38 }, 0);
+      tl.fromTo("#hk-ghost", { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.12, ease: "power2.out" }, 7.2);
+      tl.to("#hk-ghost", { x: 1034, y: 596, duration: 0.5, ease: "power2.inOut" }, 7.36);
+      tl.to("#hk-ghost", { opacity: 0, duration: 0.1, ease: "power2.in" }, 7.86);
+      const paste = document.querySelector("#hk-paste");
+      tl.call(() => { paste.textContent = " "; }, null, 0);
+      tl.call(() => { paste.textContent = "$12,480.00"; }, null, 7.9);
+      tl.fromTo("#hk-paste", { color: "#1f5bf0" }, { color: "#0b0d12", duration: 0.6, ease: "none" }, 7.9);
+
+      // Hectic days: the unread counts climb.
+      const climb = (sel, from, to, t0, t1) => {
+        const el = document.querySelector(sel), o = { v: from };
+        tl.fromTo(o, { v: from }, { v: to, duration: t1 - t0, ease: "power1.in", onUpdate: () => { el.textContent = Math.round(o.v); } }, t0);
+      };
+      climb("#hk-b2", 48, 63, 8.4, 10.6);
+      climb("#hk-b4", 3, 17, 8.6, 10.6);
+      climb("#hk-b9", 5, 12, 8.96, 10.6);
+      ["#hk-b2", "#hk-b4", "#hk-b9"].forEach((b, i) => tl.fromTo(b, { scale: 1 }, { scale: 1.18, duration: 0.12, yoyo: true, repeat: 3, ease: "power2.out" }, 8.4 + i * 0.25));
+
+      // Everything is pulled to one point at the centre: the next scene makes it the mark.
+      wins.forEach(([sel], i) => {
+        const el = document.querySelector(sel);
+        const cx = 960 - (el.offsetLeft + el.offsetWidth / 2), cy = 540 - (el.offsetTop + el.offsetHeight / 2);
+        tl.to(sel, { x: cx, y: cy, scale: 0.03, rotation: 0, filter: "blur(6px)", duration: 0.62, ease: "power3.in" }, 11.02 + (wins.length - i) * 0.025);
+        tl.to(sel, { opacity: 0, duration: 0.08 }, 11.62 + (wins.length - i) * 0.025);
+      });
+
+      window.__timelines["hook"] = tl;
+    })();
+  </script>
+</template>
