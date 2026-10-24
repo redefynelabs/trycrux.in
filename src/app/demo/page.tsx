@@ -7,21 +7,22 @@ import { CheckIcon, CrmIcon, FinanceIcon, InventoryIcon, PayrollIcon, PeopleIcon
 import { Reveal } from "@/components/reveal";
 import { GENERAL_FAQ } from "@/content/faq";
 
-export const metadata: Metadata = pageMeta("/demo", "Try Crux free", "Your own private copy of Crux with a sample company, ready in seconds: HR and payroll, projects, CRM, sales, inventory and finance with real-looking data, and Mei the AI assistant. No card, no installation.");
+export const metadata: Metadata = pageMeta("/demo", "Try Crux free", "Your own private copy of Crux with a sample company, ready in seconds: the Services or Goods edition with real-looking data: HR and payroll, CRM, accounting, and projects or inventory, and Mei the AI assistant. No card, no installation.");
 
 const INSIDE = [
   { Icon: PeopleIcon, title: "People & HR", stat: "12 people", items: ["A month of attendance", "Shifts, holidays and leave", "Payroll and payslips"] },
   { Icon: ProjectsIcon, title: "Projects & Tasks", stat: "4 projects", items: ["Task boards with owners", "Timesheets against tasks", "Files on each project"] },
-  { Icon: CrmIcon, title: "CRM & Sales", stat: "10 leads, 8 clients", items: ["A pipeline in motion", "Follow-ups and meetings", "Leads that became clients"] },
-  { Icon: FinanceIcon, title: "Finance & Billing", stat: "14 invoices", items: ["Payments, receipts and overdue invoices", "Tax on every document, including GST for India", "Expenses and bank accounts"] },
+  { Icon: CrmIcon, title: "CRM", stat: "10 leads, 8 clients", items: ["Leads moving through their stages", "Follow-ups and meetings", "Leads that became clients"] },
+  { Icon: FinanceIcon, title: "Accounting", stat: "14 invoices", items: ["Estimates, payments, receipts and overdue invoices", "Tax on every document, including GST for India", "Expenses and bank accounts"] },
   { Icon: PayrollIcon, title: "Payroll & Payslips", stat: "12 payslips", items: ["Last month's pay run, approved and paid", "A payslip PDF for every person", "Pay components and salary structures"] },
-  { Icon: InventoryIcon, title: "Inventory & Purchasing", stat: "3 items, 2 warehouses", items: ["Stock levels and every movement", "A purchase order to a vendor", "Low-stock alerts"] },
+  { Icon: InventoryIcon, title: "Inventory & Orders", stat: "3 items, 2 warehouses", items: ["Products, orders and stock levels", "A purchase order to a vendor", "Low-stock alerts"] },
   { Icon: SparkIcon, title: "Mei AI Assistant", stat: "15 free questions", items: ["Reports from your own data", "Drafts you confirm or edit", "Answers in seconds"] },
 ] as const;
 
 const INCLUDED = ["No card and no installation", "Lasts one hour, then it is deleted", "Signed in as the administrator", "Mei answers up to 15 questions, on us"];
 
-export default function DemoPage() {
+export default async function DemoPage({ searchParams }: { searchParams: Promise<{ edition?: string }> }) {
+  const { edition } = await searchParams;
   return (
     <div className="px-4 pt-16 sm:px-6 sm:pt-20">
       <div className="mx-auto grid max-w-[84rem] items-start gap-12 lg:grid-cols-12 lg:gap-16">
@@ -38,7 +39,7 @@ export default function DemoPage() {
         </div>
 
         <div className="lg:col-span-6">
-          <DemoForm />
+          <DemoForm defaultEdition={edition === "goods" ? "goods" : "services"} />
           <p className="mt-6 text-sm text-muted">Prefer a guided tour? <Link href="/contact" className="font-medium text-brand underline">Talk to our team</Link>.</p>
         </div>
       </div>

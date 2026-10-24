@@ -1,0 +1,252 @@
+[
+  {
+    "id": "agency",
+    "name": "Agency and services",
+    "summary": "Clients, projects and timesheets. The words and defaults the product starts with, plus a review step for projects.",
+    "edition": "services",
+    "apps": [
+      "crm",
+      "pms",
+      "hr",
+      "accounting"
+    ],
+    "features": [
+      "clients.documents",
+      "crm.contacts",
+      "crm.leads",
+      "crm.followups",
+      "crm.meetings",
+      "pms.tasks",
+      "hr.attendance",
+      "hr.leave",
+      "hr.timesheets",
+      "accounting.estimates",
+      "accounting.invoices",
+      "accounting.recurring",
+      "accounting.receipts",
+      "accounting.expenses",
+      "accounting.reports"
+    ],
+    "labels": {
+      "client": {
+        "singular": "Client",
+        "plural": "Clients",
+        "slug": ""
+      },
+      "lead": {
+        "singular": "Lead",
+        "plural": "Leads",
+        "slug": ""
+      },
+      "order": {
+        "singular": "Order",
+        "plural": "Orders",
+        "slug": ""
+      },
+      "project": {
+        "singular": "Project",
+        "plural": "Projects",
+        "slug": ""
+      },
+      "quote": {
+        "singular": "Estimate",
+        "plural": "Estimates",
+        "slug": ""
+      },
+      "task": {
+        "singular": "Task",
+        "plural": "Tasks",
+        "slug": ""
+      }
+    },
+    "fields": 2,
+    "statuses": 1
+  },
+  {
+    "id": "clinic",
+    "name": "Clinic",
+    "summary": "Patients and cases. Patient details that only managers see, and a visit flow for cases.",
+    "edition": "services",
+    "apps": [
+      "crm",
+      "pms",
+      "hr",
+      "payroll",
+      "accounting"
+    ],
+    "features": [
+      "clients.documents",
+      "crm.contacts",
+      "crm.leads",
+      "crm.followups",
+      "crm.meetings",
+      "pms.tasks",
+      "hr.attendance",
+      "hr.shifts",
+      "hr.leave",
+      "accounting.invoices",
+      "accounting.receipts",
+      "accounting.expenses",
+      "accounting.reports"
+    ],
+    "labels": {
+      "client": {
+        "singular": "Patient",
+        "plural": "Patients",
+        "slug": ""
+      },
+      "lead": {
+        "singular": "Enquiry",
+        "plural": "Enquiries",
+        "slug": ""
+      },
+      "order": {
+        "singular": "Order",
+        "plural": "Orders",
+        "slug": ""
+      },
+      "project": {
+        "singular": "Case",
+        "plural": "Cases",
+        "slug": ""
+      },
+      "quote": {
+        "singular": "Estimate",
+        "plural": "Estimates",
+        "slug": ""
+      },
+      "task": {
+        "singular": "Task",
+        "plural": "Tasks",
+        "slug": ""
+      }
+    },
+    "fields": 7,
+    "statuses": 7
+  },
+  {
+    "id": "trades",
+    "name": "Trades and field service",
+    "summary": "Customers and jobs. Site details on customers and jobs, and a job flow from booking to invoice.",
+    "edition": "services",
+    "apps": [
+      "crm",
+      "pms",
+      "hr",
+      "payroll",
+      "accounting"
+    ],
+    "features": [
+      "clients.documents",
+      "crm.contacts",
+      "crm.leads",
+      "crm.followups",
+      "pms.tasks",
+      "hr.shifts",
+      "hr.timesheets",
+      "accounting.estimates",
+      "accounting.invoices",
+      "accounting.recurring",
+      "accounting.receipts",
+      "accounting.expenses",
+      "accounting.reports"
+    ],
+    "labels": {
+      "client": {
+        "singular": "Customer",
+        "plural": "Customers",
+        "slug": ""
+      },
+      "lead": {
+        "singular": "Enquiry",
+        "plural": "Enquiries",
+        "slug": ""
+      },
+      "order": {
+        "singular": "Work order",
+        "plural": "Work orders",
+        "slug": ""
+      },
+      "project": {
+        "singular": "Job",
+        "plural": "Jobs",
+        "slug": ""
+      },
+      "quote": {
+        "singular": "Quote",
+        "plural": "Quotes",
+        "slug": ""
+      },
+      "task": {
+        "singular": "Task",
+        "plural": "Tasks",
+        "slug": ""
+      }
+    },
+    "fields": 6,
+    "statuses": 7
+  },
+  {
+    "id": "wholesale",
+    "name": "Trading and distribution",
+    "summary": "Customers, products and orders. Stock in warehouses, purchasing from vendors, and customer terms on each account.",
+    "edition": "goods",
+    "apps": [
+      "crm",
+      "inventory",
+      "hr",
+      "accounting"
+    ],
+    "features": [
+      "clients.documents",
+      "crm.contacts",
+      "crm.leads",
+      "crm.followups",
+      "inventory.products",
+      "inventory.orders",
+      "inventory.stock",
+      "inventory.purchasing",
+      "hr.attendance",
+      "hr.leave",
+      "accounting.estimates",
+      "accounting.invoices",
+      "accounting.receipts",
+      "accounting.expenses",
+      "accounting.reports"
+    ],
+    "labels": {
+      "client": {
+        "singular": "Customer",
+        "plural": "Customers",
+        "slug": ""
+      },
+      "lead": {
+        "singular": "Enquiry",
+        "plural": "Enquiries",
+        "slug": ""
+      },
+      "order": {
+        "singular": "Sales order",
+        "plural": "Sales orders",
+        "slug": ""
+      },
+      "project": {
+        "singular": "Project",
+        "plural": "Projects",
+        "slug": ""
+      },
+      "quote": {
+        "singular": "Quotation",
+        "plural": "Quotations",
+        "slug": ""
+      },
+      "task": {
+        "singular": "Task",
+        "plural": "Tasks",
+        "slug": ""
+      }
+    },
+    "fields": 3,
+    "statuses": 2
+  }
+]

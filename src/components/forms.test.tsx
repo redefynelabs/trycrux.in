@@ -39,13 +39,13 @@ describe("the demo form", () => {
     const user = userEvent.setup();
     const spy = reply(201, { data: { url: "https://a.b", login_email: "e", login_password: "p", expires_at: new Date(Date.now() + 3600_000).toISOString() } });
     render(<DemoForm />);
-    expect(screen.queryByRole("radio")).toBeNull();
+    expect(screen.getByRole("radio", { name: /Services edition/ })).toBeChecked();
     await user.type(screen.getByLabelText("Your name"), "Asha");
     await user.type(screen.getByLabelText("Work email"), "asha@rao.example");
     await user.type(screen.getByLabelText("Phone number"), "+91 98765 43210");
     await user.click(screen.getByRole("button", { name: "Start my demo" }));
     await waitFor(() => expect(spy).toHaveBeenCalled());
-    expect(JSON.parse(spy.mock.calls[0][1]?.body as string)).toMatchObject({ name: "Asha", email: "asha@rao.example", modules: ["sales", "finance"] });
+    expect(JSON.parse(spy.mock.calls[0][1]?.body as string)).toMatchObject({ name: "Asha", email: "asha@rao.example", modules: ["sales", "finance"], edition: "services" });
     expect(await screen.findByText("Try these first")).toBeInTheDocument();
   });
 
@@ -66,6 +66,22 @@ describe("the demo form", () => {
     expect(screen.getByRole("tab", { name: "Mei AI" })).toBeInTheDocument();
   });
 
+  it("sends one edition, dropping the other one's apps", async () => {
+    const user = userEvent.setup();
+    const spy = reply(201, { data: { url: "https://a.b", login_email: "e", login_password: "p", expires_at: new Date(Date.now() + 3600_000).toISOString() } });
+    render(<DemoForm />);
+    await user.type(screen.getByLabelText("Your name"), "Asha");
+    await user.type(screen.getByLabelText("Work email"), "asha@rao.example");
+    await user.type(screen.getByLabelText("Phone number"), "+91 98765 43210");
+    await user.click(screen.getByRole("checkbox", { name: /^Projects/ }));
+    await user.click(screen.getByRole("radio", { name: /Goods edition/ }));
+    expect(screen.queryByRole("checkbox", { name: /^Projects/ })).toBeNull();
+    await user.click(screen.getByRole("checkbox", { name: /^Inventory/ }));
+    await user.click(screen.getByRole("button", { name: "Start my demo" }));
+    await waitFor(() => expect(spy).toHaveBeenCalled());
+    expect(JSON.parse(spy.mock.calls[0][1]?.body as string)).toMatchObject({ modules: ["sales", "finance", "inventory"], edition: "goods" });
+  });
+
   it("does not start a demo with no app picked", async () => {
     const user = userEvent.setup();
     const spy = reply(201, {});
@@ -73,8 +89,8 @@ describe("the demo form", () => {
     await user.type(screen.getByLabelText("Your name"), "Asha");
     await user.type(screen.getByLabelText("Work email"), "asha@rao.example");
     await user.type(screen.getByLabelText("Phone number"), "+91 98765 43210");
-    await user.click(screen.getByRole("checkbox", { name: /CRM & Sales/ }));
-    await user.click(screen.getByRole("checkbox", { name: /Invoices & expenses/ }));
+    await user.click(screen.getByRole("checkbox", { name: /^CRM/ }));
+    await user.click(screen.getByRole("checkbox", { name: /^Accounting/ }));
     await user.click(screen.getByRole("button", { name: "Start my demo" }));
     expect(await screen.findByRole("alert")).toHaveTextContent("Choose at least one app");
     expect(spy).not.toHaveBeenCalled();

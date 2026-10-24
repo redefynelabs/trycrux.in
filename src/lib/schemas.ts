@@ -6,6 +6,7 @@ const text = (max: number) => z.string().trim().max(max);
 export const TEAM_SIZES = ["1-10", "11-25", "26-100", "101-300", "300+"] as const;
 export const FOCUSES = ["people", "projects", "crm", "finance", "mei"] as const;
 export const MODULES = ["sales", "finance", "projects", "people", "payroll", "inventory"] as const;
+export const EDITION_IDS = ["services", "goods"] as const;
 export const TIMELINES = ["now", "month", "quarter", "exploring"] as const;
 
 export const demoSchema = z.object({
@@ -19,6 +20,8 @@ export const demoSchema = z.object({
   focus: z.enum(FOCUSES).or(z.literal("")).optional().default(""),
   // The app groups the visitor wants in the demo; only the demo form sends them.
   modules: z.array(z.enum(MODULES)).min(1, "Choose at least one app").max(6),
+  // The product the demo shows; the control plane drops the other edition's apps.
+  edition: z.enum(EDITION_IDS).optional().default("services"),
   website: z.string().max(200).optional().default(""), // honeypot
   captcha_token: z.string().max(4096).optional().default(""),
   attribution: z.record(z.string().max(60), z.string().max(300)).optional().default({}),
@@ -30,7 +33,7 @@ export const INTERESTS = [
 ] as const;
 
 // The control plane rejects fields it does not know, so the demo form's "focus" is left out here.
-export const contactSchema = demoSchema.omit({ focus: true, modules: true }).extend({
+export const contactSchema = demoSchema.omit({ focus: true, modules: true, edition: true }).extend({
   interest: z.enum(["cloud", "on_prem", "other"]).optional().default("other"),
   plan: z.enum(["start", "grow", "complete", "small", "business", "larger"]).or(z.literal("")).optional().default(""),
   timeline: z.enum(TIMELINES).or(z.literal("")).optional().default(""),

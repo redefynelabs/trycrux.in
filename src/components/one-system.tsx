@@ -60,9 +60,9 @@ function Beams({ n, flip }: { n: number; flip?: boolean }) {
 const MODULES = [
   { name: "People & HR", Icon: PeopleIcon, from: 55, to: 92 },
   { name: "Projects & Tasks", Icon: ProjectsIcon, from: 35, to: 78 },
-  { name: "CRM & Sales", Icon: CrmIcon, from: 48, to: 86 },
-  { name: "Finance & Billing", Icon: FinanceIcon, from: 62, to: 96 },
-  { name: "Inventory & Purchasing", Icon: InventoryIcon, from: 40, to: 84 },
+  { name: "CRM", Icon: CrmIcon, from: 48, to: 86 },
+  { name: "Accounting", Icon: FinanceIcon, from: 62, to: 96 },
+  { name: "Inventory & Orders", Icon: InventoryIcon, from: 40, to: 84 },
   { name: "Payroll & Payslips", Icon: PayrollIcon, from: 52, to: 90 },
 ];
 

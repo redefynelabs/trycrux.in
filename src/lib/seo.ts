@@ -27,7 +27,8 @@ export const KEYWORDS = [
   "attendance and leave management",
   "project management and timesheets",
   "CRM software",
-  "quotes and sales orders",
+  "estimates and invoicing",
+  "inventory and order management",
   "GST invoicing software",
   "finance reports",
   "AI assistant for business",
@@ -74,7 +75,7 @@ export function siteGraph() {
         applicationSubCategory: "ERP",
         operatingSystem: "Web browser; self-hosted on Linux",
         publisher: { "@id": org["@id"] },
-        featureList: ["People and HR", "Attendance, shifts and leave", "Projects, tasks and timesheets", "CRM, leads and follow-ups", "Quotes, sales orders and product catalog", "Inventory and purchasing", "Payroll and payslips", "Invoicing with GST", "Payments, expenses and finance reports", "Mei AI assistant", "Roles, permissions and audit log"],
+        featureList: ["People and HR", "Attendance, shifts and leave", "Projects, tasks and timesheets", "CRM, leads and follow-ups", "Estimates and invoices", "Products, orders, inventory and purchasing", "Payroll and payslips", "Invoicing with GST", "Payments, expenses and finance reports", "Mei AI assistant", "Roles, permissions and audit log"],
         offers: [
           ...CURRENCY_CODES.flatMap((c) => [
             ...cloud.flatMap((t) => TERMS.map((l) => ({ "@type": "Offer", name: `${t.name} ${l.name.toLowerCase()}`, price: licencePrice(t.id, l.id, c), priceCurrency: c, description: `${t.for}. ${l.note} Runs on your own server.` }))),

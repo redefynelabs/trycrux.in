@@ -9,7 +9,7 @@ import { FOCUS, TRY_FIRST } from "@/content/lead";
 import { track } from "@/lib/analytics";
 import { postJson, readAttribution } from "@/lib/client";
 import { AppPicker } from "@/components/app-picker";
-import { withNeeds, type GroupId } from "@/content/pricing";
+import { withNeeds, type Edition, type GroupId } from "@/content/pricing";
 import type { FieldErrors } from "@/lib/schemas";
 import { cn } from "@/lib/utils";
 import { Field, Honeypot, TextInput } from "./field";
@@ -210,9 +210,11 @@ function Result({ ready, focus, modules }: { ready: Ready; focus: string; module
   );
 }
 
-export function DemoForm() {
+/** `defaultEdition` comes from an industry page's link (`/demo?edition=goods`); it starts from that edition's usual apps. */
+export function DemoForm({ defaultEdition = "services" }: { defaultEdition?: Edition }) {
   const [values, setValues] = useState({ name: "", email: "", phone: "", website: "" });
-  const [modules, setModules] = useState<GroupId[]>(["sales", "finance"]);
+  const [edition, setEdition] = useState<Edition>(defaultEdition);
+  const [modules, setModules] = useState<GroupId[]>(defaultEdition === "goods" ? ["sales", "finance", "inventory"] : ["sales", "finance"]);
   const [token, setToken] = useState("");
   const [reset, setReset] = useState(0);
   const [errors, setErrors] = useState<FieldErrors>({});
@@ -222,7 +224,7 @@ export function DemoForm() {
   const [queued, setQueued] = useState<Queued | null>(null);
   const [started, setStarted] = useState(false);
   // Which choices were made, never what was typed.
-  const choices = { form_name: "demo", modules: withNeeds(modules).join(",") };
+  const choices = { form_name: "demo", edition, modules: withNeeds(modules).join(",") };
 
   const set = (k: keyof typeof values) => (e: { target: { value: string } }) => setValues((v) => ({ ...v, [k]: e.target.value }));
 
@@ -242,7 +244,7 @@ export function DemoForm() {
     }
     setBusy(true);
     track("form_submit", choices);
-    const out = await postJson<Ready | Queued>("/api/demo", { ...values, modules: withNeeds(modules), captcha_token: token, attribution: readAttribution() });
+    const out = await postJson<Ready | Queued>("/api/demo", { ...values, edition, modules: withNeeds(modules), captcha_token: token, attribution: readAttribution() });
     setBusy(false);
     if (out.ok) {
       track("generate_lead", { ...choices, lead_type: "demo" });
@@ -296,7 +298,7 @@ export function DemoForm() {
 
         <fieldset>
           <legend className="mb-3 text-base font-semibold">Which apps do you want to try?</legend>
-          <AppPicker value={modules} onChange={setModules} presetsLabel="Quick picks" groupsLabel="Your demo will have only these" meiText="Always in your demo, with 15 free questions. It answers from the apps you pick." />
+          <AppPicker edition={edition} onEditionChange={setEdition} value={modules} onChange={setModules} presetsLabel="Quick picks" groupsLabel="Your demo will have only these" meiText="Always in your demo, with 15 free questions. It answers from the apps you pick." />
           {errors.modules && <span role="alert" className="mt-2 block text-sm text-bad">{errors.modules}</span>}
         </fieldset>
 

@@ -8,7 +8,7 @@ import { INDUSTRIES } from "@/content/industries";
 import { PRODUCT_PAGES } from "@/content/product";
 import { HIGHLIGHTS, MODULES } from "@/content/features";
 import { CAPABILITIES, TRUST } from "@/content/mei";
-import { AMC_TEXT, APP_GROUPS, CLOUD, OWN_SERVER, LICENCE_INCLUDED, TERMS, amcPrice, licencePrice, money } from "@/content/pricing";
+import { AMC_TEXT, APP_GROUPS, CLOUD, EDITIONS, OWN_SERVER, LICENCE_INCLUDED, TERMS, amcPrice, licencePrice, money } from "@/content/pricing";
 import { CURRENCY_CODES, type CurrencyCode } from "@/lib/currency";
 import { COMPANY, DESCRIPTION } from "@/lib/seo";
 import { SITE } from "@/lib/site";
@@ -26,7 +26,7 @@ function pricing(): string {
   return [
     "## Pricing",
     "",
-    `Plans are chosen by how many of six app groups a company picks, never per user: ${APP_GROUPS.map((g) => g.name).join("; ")}. Start takes any two, Grow any four and Complete all six, so a team that needs only sales, inventory and HR pays for just those. Every plan has unlimited users and Mei the AI assistant, which is not one of the six. Crux is sold as a licence for one year, two years or for good, installed on the customer's own server. Prices are set in Indian rupees, US dollars, British pounds, euros and UAE dirhams (the site shows the one for the visitor's country) and exclude taxes such as GST or VAT. AI usage is billed by the AI provider whose key the customer connects.`,
+    `Crux comes in two editions: ${EDITIONS.map((e) => `${e.name} (${e.for}): ${e.text}`).join(" ")} A company has one edition. Plans are chosen by how many of the five app groups of its edition a company picks, never per user: ${APP_GROUPS.map((g) => `${g.name}${g.edition ? ` (${g.edition} edition only)` : ""}`).join("; ")}. Start takes any two, Grow any four and Complete all five, so a team that needs only CRM, accounting and HR pays for just those. Every plan has unlimited users and Mei the AI assistant, which is not one of the groups. Crux is sold as a licence for one year, two years or for good, installed on the customer's own server. Prices are set in Indian rupees, US dollars, British pounds, euros and UAE dirhams (the site shows the one for the visitor's country) and exclude taxes such as GST or VAT. AI usage is billed by the AI provider whose key the customer connects.`,
     "",
     "",
     `Own server (installed on the customer's server; the customer owns the database). Every licence: ${LICENCE_INCLUDED.join("; ").toLowerCase()}.`,
@@ -66,6 +66,23 @@ function mei(): string {
   return ["## Mei, the AI assistant", "", ...CAPABILITIES.map((c) => `- ${c.title}: ${c.text}`), ...TRUST.map((c) => `- ${c.title}: ${c.text}`)].join("\n");
 }
 
+function industries(): string {
+  const renamed = (i: (typeof INDUSTRIES)[number]) => (i.words ?? []).filter((w) => w.used.toLowerCase() !== `${w.generic.toLowerCase()}s`);
+  const edition = (id: string) => EDITIONS.find((e) => e.id === id)?.name ?? id;
+  return [
+    "## Industries",
+    "",
+    ...INDUSTRIES.flatMap((i) => [
+      `### [${i.name}](${u(`/industries/${i.slug}`)})`,
+      "",
+      `${i.short} Runs on the ${edition(i.edition)}. Apps: ${i.apps.join(", ")}.${renamed(i).length ? ` Words: ${renamed(i).map((w) => `${w.used} for ${w.generic.toLowerCase()}s`).join(", ")}.` : ""}`,
+      "",
+      ...i.flow.map((f, n) => `${n + 1}. ${f}`),
+      "",
+    ]),
+  ].join("\n");
+}
+
 function pages(): string {
   return [
     "## Pages",
@@ -95,5 +112,5 @@ export function llmsFullTxt(): string {
     return items.length ? [`### ${g.label}`, "", ...items.flatMap((i) => [`**${i.q}**`, "", i.a, ""])] : [];
   });
   const changes = sortedEntries(ENTRIES).slice(0, 8).map((e) => `- ${longDay(e.date)}, ${e.area}: ${e.title}. ${e.text}`);
-  return [intro(), modules(true), mei(), pricing(), ["## Questions and answers", "", ...faq].join("\n"), ["## Recent changes", "", ...changes].join("\n"), pages()].join("\n\n") + "\n";
+  return [intro(), modules(true), mei(), pricing(), ["## Questions and answers", "", ...faq].join("\n"), industries(), ["## Recent changes", "", ...changes].join("\n"), pages()].join("\n\n") + "\n";
 }

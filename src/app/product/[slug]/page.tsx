@@ -43,7 +43,7 @@ export default async function ProductPage({ params }: PageProps<"/product/[slug]
               <Link href="/demo" className={buttonClass("primary", "lg")}>Start a free demo</Link>
               <Link href="/pricing" className={buttonClass("outline", "lg")}>See pricing</Link>
             </div>
-            <p className="mt-4 text-sm text-muted">{p.plan === "all" ? "In every plan." : "One of the app groups you can pick in any plan."}{p.optional ? " Optional: switched on only when you need it." : ""} <Link href="/pricing#builder" className="font-medium text-brand underline">Build your plan</Link></p>
+            <p className="mt-4 text-sm text-muted">{p.plan === "all" ? "In every plan." : "One of the app groups you can pick in any plan."}{p.edition === "services" ? " Part of the Services edition." : p.edition === "goods" ? " Part of the Goods edition." : " In both editions."} <Link href="/pricing#builder" className="font-medium text-brand underline">Build your plan</Link></p>
           </div>
           {p.visual && <AppWindow nav={p.nav} visual={p.visual} toasts={p.toasts} />}
         </div>

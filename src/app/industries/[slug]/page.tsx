@@ -10,7 +10,9 @@ import { WorkflowScene } from "@/components/workflow-scene";
 import { Reveal } from "@/components/reveal";
 import { INDUSTRIES, industryBySlug } from "@/content/industries";
 import { productBySlug } from "@/content/product";
-import { pageMeta } from "@/lib/seo";
+import { EDITIONS } from "@/content/pricing";
+import { jsonLd, pageMeta } from "@/lib/seo";
+import { SITE } from "@/lib/site";
 
 export function generateStaticParams() {
   return INDUSTRIES.map((i) => ({ slug: i.slug }));
@@ -29,8 +31,19 @@ export default async function IndustryPage({ params }: PageProps<"/industries/[s
   if (!i) notFound();
   const others = INDUSTRIES.filter((x) => x.slug !== i.slug);
   const modules = i.modules.flatMap((m) => productBySlug(m) ?? []);
+  const ld = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    url: `${SITE.url}/industries/${i.slug}`,
+    name: `Crux for ${i.name.toLowerCase()}`,
+    description: i.intro,
+    isPartOf: { "@id": `${SITE.url}/#website` },
+    about: { "@id": `${SITE.url}/#software` },
+    audience: { "@type": "BusinessAudience", name: i.name },
+  };
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(ld) }} />
       <section className="relative mx-auto grid max-w-[84rem] items-center gap-12 px-4 pt-16 sm:px-6 sm:pt-24 lg:grid-cols-[1fr_1.15fr]">
         <div aria-hidden="true" className="hero-glow pointer-events-none absolute inset-x-0 top-0 -z-10 h-96" />
         <div>
@@ -38,10 +51,10 @@ export default async function IndustryPage({ params }: PageProps<"/industries/[s
           <h1 className="mt-3 text-4xl font-semibold tracking-tighter sm:text-6xl">{i.headline}</h1>
           <p className="mt-5 text-lg text-muted">{i.intro}</p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <Link href="/demo" className={buttonClass("primary", "lg")}>Start a free demo</Link>
+            <Link href={`/demo?edition=${i.edition}`} className={buttonClass("primary", "lg")}>Start a free demo</Link>
             <Link href="/contact" className={buttonClass("outline", "lg")}>Talk to sales</Link>
           </div>
-          <p className="mt-6 text-sm text-muted">Usually the <Link href="/pricing" className="font-semibold text-brand underline">{i.plan.id}</Link> plan. {i.plan.why}</p>
+          <p className="mt-6 text-sm text-muted">Runs on the {EDITIONS.find((e) => e.id === i.edition)?.name}. Usually the <Link href="/pricing" className="font-semibold text-brand underline">{i.plan.id}</Link> plan. {i.plan.why}</p>
           <ul className="mt-4 flex flex-wrap gap-2" aria-label="Apps switched on to begin with">
             {i.apps.map((a) => <li key={a} className="rounded-full bg-brand-soft px-3.5 py-1 text-sm font-medium text-brand ring-1 ring-line">{a}</li>)}
           </ul>

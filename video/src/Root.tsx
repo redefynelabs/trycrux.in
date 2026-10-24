@@ -7,6 +7,7 @@ import { OneSystem } from "./scenes/one-system";
 import { People } from "./scenes/people";
 import { Problem } from "./scenes/problem";
 import { Sales } from "./scenes/sales";
+import { Ad30, AD30_FRAMES } from "./ad30";
 import { RegionContext } from "./region";
 import { FPS } from "./theme";
 import type { CurrencyCode } from "../../src/lib/currency";
@@ -50,5 +51,10 @@ function Hero({ region }: { region: CurrencyCode }) {
 }
 
 export function Root() {
-  return <Composition id="Hero" component={Hero} defaultProps={{ region: "INR" as CurrencyCode }} durationInFrames={TOTAL} fps={FPS} width={1920} height={1080} />;
+  return (
+    <>
+      <Composition id="Hero" component={Hero} defaultProps={{ region: "INR" as CurrencyCode }} durationInFrames={TOTAL} fps={FPS} width={1920} height={1080} />
+      <Composition id="Ad30" component={Ad30} durationInFrames={AD30_FRAMES} fps={FPS} width={1080} height={1920} />
+    </>
+  );
 }

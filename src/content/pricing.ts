@@ -37,7 +37,8 @@ export interface Plan {
  * returns, but nothing on the site shows them. CLOUD.tiers also holds each plan's name, app limit and bullets, which
  * the licence cards use.
  *
- * A company picks the app groups it needs (up to 2 on Start, 4 on Grow, all 6 on Complete), and each plan carries the
+ * A company picks its edition (services or goods) and the app groups it needs from the five of that edition (up to 2 on
+ * Start, 4 on Grow, all 5 on Complete), and each plan carries the
  * capacity that many apps want. Users are never counted.
  * The same three plans exist on the cloud and as a licence for your own server, so a buyer compares like with like and
  * the licence key says which plan it is. A tenant is a server + web container pair with its own database on a shared
@@ -48,19 +49,19 @@ export const CLOUD = {
   tiers: [
     {
       id: "start", name: "Start", for: "Two app groups of your choice", team: "Up to about 15 people", groups: 2,
-      apps: ["Any 2 of the 6 app groups", "Unlimited users, roles and audit log"],
+      apps: ["Any 2 of the 5 app groups in your edition", "Unlimited users, roles and audit log"],
       adds: [],
       vcpu: 1, ramGb: 1, filesGb: 25, backups: "Daily, 14 days", perMonth: 3999,
     },
     {
       id: "grow", name: "Grow", for: "Four app groups of your choice", team: "About 15 to 50 people", groups: 4,
-      apps: ["Any 4 of the 6 app groups", "Unlimited users, roles and audit log"],
+      apps: ["Any 4 of the 5 app groups in your edition", "Unlimited users, roles and audit log"],
       adds: [],
       vcpu: 2, ramGb: 2, filesGb: 100, backups: "Daily, 30 days", perMonth: 7999, popular: true,
     },
     {
-      id: "complete", name: "Complete", for: "Every app group, with priority support", team: "About 50 to 150 people", groups: 6,
-      apps: ["All 6 app groups", "Unlimited users, roles and audit log", "Priority support"],
+      id: "complete", name: "Complete", for: "Every app group, with priority support", team: "About 50 to 150 people", groups: 5,
+      apps: ["All 5 app groups in your edition", "Unlimited users, roles and audit log", "Priority support"],
       adds: ["Priority support"],
       vcpu: 4, ramGb: 8, filesGb: 250, backups: "Daily, 60 days", perMonth: 12999,
     },
@@ -105,6 +106,17 @@ export function runningCost(id: keyof typeof RUNNING_COST.perPlan): number {
   return Object.values(RUNNING_COST.perPlan[id]).reduce((a, b) => a + b, 0);
 }
 
+/**
+ * The two products. A company has one: a services firm runs projects, a business that sells products runs inventory.
+ * The ERP and the licence key hold the same split, so one installation never shows both.
+ */
+export type Edition = "services" | "goods";
+export const EDITIONS: { id: Edition; name: string; for: string; text: string }[] = [
+  { id: "services", name: "Services edition", for: "Agencies, consultancies, clinics and trades", text: "Clients, projects and timesheets, people and payroll, estimates and invoices." },
+  { id: "goods", name: "Goods edition", for: "Traders, distributors and wholesalers", text: "Customers, products and orders, stock and purchasing, people and payroll, estimates and invoices." },
+];
+
+/** The ids are the keys the control plane switches the product on with ("sales" is CRM, "finance" is Accounting). */
 export type GroupId = "sales" | "finance" | "projects" | "people" | "payroll" | "inventory";
 
 export interface AppGroup {
@@ -113,25 +125,40 @@ export interface AppGroup {
   text: string;
   /** Groups that must come with it, so choosing it brings them. */
   needs?: GroupId[];
+  /** The one edition it belongs to; the others are in both. */
+  edition?: Edition;
 }
 
 /** The app groups a company picks from. These are the same groups the product is switched on with, one for one. */
 export const APP_GROUPS: AppGroup[] = [
-  { id: "sales", name: "CRM & Sales", text: "Contacts, leads, deals, follow-ups and meetings, plus the product catalog, quotes and orders." },
-  { id: "finance", name: "Invoices & expenses", text: "Invoices, recurring invoices, receipts, expenses, banking and reports." },
-  { id: "projects", name: "Projects & tasks", text: "Projects, boards and task tracking." },
+  { id: "sales", name: "CRM", text: "Contacts, leads, follow-ups and meetings, with every client in one place." },
+  { id: "finance", name: "Accounting", text: "Estimates, invoices, recurring invoices, receipts, expenses, banking and reports." },
+  { id: "projects", name: "Projects & tasks", text: "Projects, boards, task tracking and project money.", edition: "services" },
+  { id: "inventory", name: "Inventory & orders", text: "Products, orders, stock in warehouses, counts and purchase orders.", edition: "goods" },
   { id: "people", name: "People & HR", text: "Employee records, attendance, leave, shifts and timesheets." },
   { id: "payroll", name: "Payroll", text: "Salary structures, pay runs with approval, and payslips.", needs: ["people"] },
-  { id: "inventory", name: "Inventory & purchasing", text: "Stock in warehouses, movements, counts and purchase orders." },
 ];
 
-/** Starting points for the plan builder: sets of groups that real teams ask for. */
-export const PRESETS: { name: string; groups: GroupId[] }[] = [
-  { name: "Sales and stock", groups: ["sales", "inventory"] },
-  { name: "Sales, stock and people", groups: ["sales", "inventory", "people"] },
-  { name: "Services firm", groups: ["sales", "finance", "projects"] },
-  { name: "People and payroll", groups: ["people", "payroll"] },
-  { name: "Everything", groups: ["sales", "finance", "projects", "people", "payroll", "inventory"] },
+/** The groups of an edition, in the order they are offered. */
+export function groupsOf(edition: Edition): AppGroup[] {
+  return APP_GROUPS.filter((g) => !g.edition || g.edition === edition);
+}
+
+/** The picks that belong to an edition, so switching edition never keeps the other one's group. */
+export function inEdition(picked: GroupId[], edition: Edition): GroupId[] {
+  return picked.filter((id) => groupsOf(edition).some((g) => g.id === id));
+}
+
+/** Starting points for the plan builder: sets of groups that real teams ask for, by edition. */
+export const PRESETS: { name: string; edition: Edition; groups: GroupId[] }[] = [
+  { name: "Agency or consultancy", edition: "services", groups: ["sales", "finance", "projects"] },
+  { name: "Services with a team", edition: "services", groups: ["sales", "finance", "projects", "people"] },
+  { name: "Sales and stock", edition: "goods", groups: ["sales", "inventory"] },
+  { name: "Trading with invoices", edition: "goods", groups: ["sales", "finance", "inventory"] },
+  { name: "People and payroll", edition: "services", groups: ["people", "payroll"] },
+  { name: "People and payroll", edition: "goods", groups: ["people", "payroll"] },
+  { name: "Everything", edition: "services", groups: ["sales", "finance", "projects", "people", "payroll"] },
+  { name: "Everything", edition: "goods", groups: ["sales", "finance", "inventory", "people", "payroll"] },
 ];
 
 /** A picked set with what it needs added (payroll brings People & HR). */
@@ -271,7 +298,8 @@ export function inr(n: number): string {
 
 /** How the price is put together, shown on the pricing page. No figure here: the prices above are the only ones. */
 export const HOW_PRICING_WORKS = [
-  { title: "Pick your app groups", text: "Choose the groups your team needs from six, such as CRM & Sales, Inventory and People & HR. Mei, the AI assistant, comes with every plan and is not one of the six. Start takes any two, Grow any four, Complete all seven. Nobody is counted, so adding a person never costs more." },
+  { title: "Pick your edition", text: "The Services edition runs clients and projects; the Goods edition runs products, orders and stock. Both have CRM, Accounting, People & HR and Payroll. Your system shows only your edition, so nobody wades through screens they never use." },
+  { title: "Pick your app groups", text: "Choose the groups your team needs from the five in your edition. Mei, the AI assistant, comes with every plan and is not one of them. Start takes any two, Grow any four, Complete all five. Nobody is counted, so adding a person never costs more." },
   { title: "One year, two years or for good", text: "Buy a licence for one year, two years or for good and run it on your own server. The plans and what is in them are the same for every term, and a longer term costs less a year." },
   { title: "Change your mix whenever you like", text: "Swap a group or add one, and move up a plan if you go past its limit. It is one change for us. Your records are shared, so nothing is retyped or moved, and on your own server you pay only the difference." },
   { title: "Updates and support", text: "The licence key carries its expiry and the date your updates run to. The yearly support plan keeps a lifetime licence current, and the software never stops working." },
@@ -279,7 +307,7 @@ export const HOW_PRICING_WORKS = [
 
 /** The plan comparison: what differs between the plans, row by row. */
 export const PLAN_MATRIX: { name: string; start: string; grow: string; complete: string }[] = [
-  { name: "App groups you choose", start: "Any 2", grow: "Any 4", complete: "All 6" },
+  { name: "App groups you choose, from your edition", start: "Any 2", grow: "Any 4", complete: "All 5" },
   { name: "Mei AI assistant, included in every plan", start: "Yes", grow: "Yes", complete: "Yes" },
   { name: "Unlimited users", start: "Yes", grow: "Yes", complete: "Yes" },
   { name: "Roles, permissions and audit log", start: "Yes", grow: "Yes", complete: "Yes" },

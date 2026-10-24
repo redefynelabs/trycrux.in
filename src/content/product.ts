@@ -2,6 +2,7 @@
  * One page per product module: /product/<slug>. The text comes from features.ts so a page and the home page never
  * disagree; this file adds what a module page needs on top (its picture, its steps, who uses it).
  */
+import type { Edition } from "@/content/pricing";
 import { MODULES, type Feature } from "@/content/features";
 import type { VisualKind } from "@/components/module-grid";
 
@@ -26,8 +27,8 @@ export interface ProductPage {
   toasts: string[];
   /** The first plan that has it. */
   plan: "Start" | "Grow" | "Complete" | "all";
-  /** Whether it is off unless asked for. */
-  optional?: boolean;
+  /** The one edition it belongs to; the others are in both. */
+  edition?: Edition;
 }
 
 const mod = (id: string) => MODULES.find((m) => m.id === id)!;
@@ -62,7 +63,7 @@ export const PRODUCT_PAGES: ProductPage[] = [
     features: PAYROLL, visual: "payroll",
     nav: ["Pay runs", "Salary structures", "Pay components", "My payslips"],
     steps: ["Set up pay components once", "Give each person a salary structure", "Create and calculate the month's run", "Someone else approves it", "Mark it paid; payslips go out by email"],
-    facts: ["You enter tax and statutory deductions as components; the product does not work them out for you", "Unpaid leave, absence, joiners and leavers are prorated automatically", "An approved run posts one payroll expense to Finance"],
+    facts: ["You enter tax and statutory deductions as components; the product does not work them out for you", "Unpaid leave, absence, joiners and leavers are prorated automatically", "An approved run posts one payroll expense to Accounting"],
     industries: ["clinics", "software-and-it", "trades-and-field-service"],
   },
   {
@@ -73,41 +74,41 @@ export const PRODUCT_PAGES: ProductPage[] = [
     features: mod("work").features, visual: "tasks",
     nav: ["Projects", "Board", "My tasks", "Timesheets", "Files"],
     steps: ["Open a project for a client", "Break it into tasks and assign them", "Move work across the board", "People log time against tasks", "Compare hours with the budget"],
-    facts: ["Project budgets and profit are visible only to people with finance access", "A won lead becomes a client and a project without retyping", "Statuses are yours to define"],
-    industries: ["agencies", "software-and-it", "professional-services"],
+    facts: ["Part of the Services edition", "Project budgets and profit are visible only to people with finance access", "A won lead becomes a client and a project without retyping", "Statuses are yours to define"],
+    industries: ["agencies", "software-and-it", "professional-services"], edition: "services",
   },
   {
-    toasts: ["Quote QT-0021 emailed to Granite Builders", "Lead moved to Qualified", "Follow-up due today, 3 calls"],
+    toasts: ["Lead moved to Qualified", "Meeting booked with Granite Builders", "Follow-up due today, 3 calls"],
     plan: "Start",
-    slug: "crm-sales", name: "CRM & Sales", tagline: mod("crm").tagline,
-    intro: "Leads, follow-ups and meetings, then quotes and orders that turn into invoices. Nothing a sale needs is typed twice.",
+    slug: "crm-sales", name: "CRM", tagline: mod("crm").tagline,
+    intro: "Leads, follow-ups and meetings, and one record for every client. A won lead becomes a client without retyping, ready for an estimate in Accounting.",
     features: mod("crm").features, visual: "pipeline",
-    nav: ["Leads", "Clients", "Follow-ups", "Quotes", "Orders", "Products"],
-    steps: ["Capture a lead and follow it up", "Move it through your stages", "Send a quote as a branded PDF", "An accepted quote becomes an order", "A fulfilled order drafts its invoice"],
-    facts: ["Quotes are emailed from your own address", "Import leads from a spreadsheet with a preview first", "Meetings sync to Google or Microsoft calendars"],
+    nav: ["Leads", "Clients", "Follow-ups", "Meetings"],
+    steps: ["Capture a lead and follow it up", "Move it through your stages", "Meet them and log what was agreed", "Mark it won", "It becomes a client, ready to bill"],
+    facts: ["In both editions", "Import leads from a spreadsheet with a preview first", "Meetings sync to Google or Microsoft calendars"],
     industries: ["agencies", "clinics", "distribution-and-retail"],
   },
   {
     toasts: ["Invoice INV-0044 issued", "Payment of 84,200 recorded, receipt RC-0044 sent", "Expense claim approved"],
     plan: "Start",
-    slug: "finance-billing", name: "Finance & Billing", tagline: mod("finance").tagline,
-    intro: "Invoices with the right tax, a receipt for every payment, expenses and bank reconciliation, with reports you can hand to your accountant.",
+    slug: "finance-billing", name: "Accounting", tagline: mod("finance").tagline,
+    intro: "Estimates, invoices with the right tax, a receipt for every payment, expenses and bank reconciliation, with reports you can hand to your accountant.",
     features: mod("finance").features, visual: "invoices",
-    nav: ["Invoices", "Receipts", "Payments", "Expenses", "Banking", "Reports"],
-    steps: ["Raise an invoice from a quote or order", "Email it as a PDF", "Record the payment", "A receipt is issued with the invoice number on it", "Reconcile and report"],
-    facts: ["Invoice and receipt are separate documents", "GST with CGST, SGST and IGST, VAT or sales tax", "Bill in other currencies with the rate kept"],
+    nav: ["Estimates", "Invoices", "Recurring invoices", "Receipts", "Expenses", "Banking", "Reports"],
+    steps: ["Send an estimate as a branded PDF", "The client accepts it", "It becomes an invoice in one step", "Record the payment; a receipt goes out", "Reconcile and report"],
+    facts: ["In both editions", "Invoice and receipt are separate documents", "GST with CGST, SGST and IGST, VAT or sales tax", "Bill in other currencies with the rate kept"],
     industries: ["professional-services", "distribution-and-retail", "agencies"],
   },
   {
-    toasts: ["Low stock: Switch 24-port", "PO-0042 received into Main warehouse", "Stock out on invoice INV-0058"],
+    toasts: ["Order SO-0031 confirmed", "PO-0042 received into Main warehouse", "Low stock: Switch 24-port"],
     plan: "Complete",
-    slug: "inventory-purchasing", name: "Inventory & Purchasing", tagline: mod("inventory").tagline,
-    intro: "Stock across warehouses, purchase orders to vendors and goods receipt. An optional app: switch it on only if you sell or use goods.",
+    slug: "inventory-purchasing", name: "Inventory & Orders", tagline: mod("inventory").tagline,
+    intro: "Products and orders, stock across warehouses, purchase orders to vendors and goods receipt. The heart of the Goods edition, for businesses that sell products.",
     features: mod("inventory").features, visual: "stock",
-    nav: ["Stock", "Warehouses", "Movements", "Purchase orders", "Vendors"],
-    steps: ["Add items and warehouses", "Order from a vendor", "Receive goods into stock", "Stock goes out on invoice or delivery", "Reorder when an alert arrives"],
-    facts: ["Not included: manufacturing, point of sale, serial or batch numbers and delivery notes", "Cost is a weighted average", "Quantities can be fractions, such as 1.5 kg"],
-    industries: ["distribution-and-retail", "trades-and-field-service"], optional: true,
+    nav: ["Products", "Orders", "Stock", "Warehouses", "Purchase orders", "Vendors"],
+    steps: ["Add products and warehouses", "Take an order from an accepted estimate", "Fulfil it from stock", "It drafts its invoice", "Reorder from a vendor when an alert arrives"],
+    facts: ["Part of the Goods edition", "Not included: manufacturing, point of sale, serial or batch numbers and delivery notes", "Cost is a weighted average", "Quantities can be fractions, such as 1.5 kg"],
+    industries: ["distribution-and-retail"], edition: "goods",
   },
   {
     toasts: [],

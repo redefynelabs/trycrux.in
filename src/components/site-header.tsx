@@ -15,9 +15,9 @@ import { cn } from "@/lib/utils";
 const MODULES = [
   { href: "/product/people-hr", label: "People & HR", text: "Attendance, leave, payroll", Icon: NavPeopleIcon },
   { href: "/product/projects-tasks", label: "Projects & Tasks", text: "Boards and timesheets", Icon: NavProjectsIcon },
-  { href: "/product/crm-sales", label: "CRM & Sales", text: "Leads and follow-ups", Icon: NavCrmIcon },
-  { href: "/product/finance-billing", label: "Finance & Billing", text: "Invoices, receipts, expenses", Icon: NavFinanceIcon },
-  { href: "/product/inventory-purchasing", label: "Inventory", text: "Stock and purchase orders", Icon: NavInventoryIcon },
+  { href: "/product/crm-sales", label: "CRM", text: "Leads and follow-ups", Icon: NavCrmIcon },
+  { href: "/product/finance-billing", label: "Accounting", text: "Estimates, invoices, expenses", Icon: NavFinanceIcon },
+  { href: "/product/inventory-purchasing", label: "Inventory", text: "Products, orders and stock", Icon: NavInventoryIcon },
   { href: "/product/payroll", label: "Payroll", text: "Pay runs and payslips", Icon: NavPayrollIcon },
 ] as const;
 

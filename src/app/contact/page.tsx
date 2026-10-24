@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { pageMeta } from "@/lib/seo";
 import Link from "next/link";
-import { APP_GROUPS } from "@/content/pricing";
+import { APP_GROUPS, EDITIONS } from "@/content/pricing";
 import { ContactForm } from "@/components/contact-form";
 import { TalkOptions } from "@/components/talk-options";
 import { SITE } from "@/lib/site";
@@ -10,8 +10,9 @@ export const metadata: Metadata = pageMeta("/contact", "Contact sales", "Talk to
 
 type Interest = "cloud" | "on_prem" | "other";
 
-export default async function ContactPage({ searchParams }: { searchParams: Promise<{ interest?: string; plan?: string; apps?: string; term?: string; server?: string }> }) {
-  const { interest, plan, apps, term, server } = await searchParams;
+export default async function ContactPage({ searchParams }: { searchParams: Promise<{ interest?: string; plan?: string; edition?: string; apps?: string; term?: string; server?: string }> }) {
+  const { interest, plan, edition, apps, term, server } = await searchParams;
+  const editionName = EDITIONS.find((e) => e.id === edition)?.name;
   const wanted = (apps ?? "").split(",").flatMap((a) => APP_GROUPS.find((g) => g.id === a)?.name ?? []);
   const initialPlan = plan === "start" || plan === "grow" || plan === "complete" ? plan : "";
   const initial: Interest = interest === "other" ? interest : "on_prem";
@@ -34,7 +35,7 @@ export default async function ContactPage({ searchParams }: { searchParams: Prom
         </div>
 
         <div className="min-w-0 lg:col-span-7">
-          <ContactForm defaultInterest={initial} defaultPlan={initialPlan} defaultMessage={[wanted.length ? `I would like: ${wanted.join(", ")}.` : "", term === "term1" ? "A 1-year licence." : term === "term2" ? "A 2-year licence." : term === "lifetime" ? "A lifetime licence." : "", server === "own" ? "I already have a server." : term === "lifetime" ? "I would like the first year of the server included." : ""].filter(Boolean).join(" ")} />
+          <ContactForm defaultInterest={initial} defaultPlan={initialPlan} defaultMessage={[wanted.length ? `I would like${editionName ? ` the ${editionName}` : ""}: ${wanted.join(", ")}.` : "", term === "term1" ? "A 1-year licence." : term === "term2" ? "A 2-year licence." : term === "lifetime" ? "A lifetime licence." : "", server === "own" ? "I already have a server." : term === "lifetime" ? "I would like the first year of the server included." : ""].filter(Boolean).join(" ")} />
         </div>
       </div>
     </div>

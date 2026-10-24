@@ -1,14 +1,15 @@
 "use client";
 
 import { CheckIcon, SparkIcon } from "@/components/icons";
-import { APP_GROUPS, PRESETS, withNeeds, type GroupId } from "@/content/pricing";
+import { APP_GROUPS, EDITIONS, PRESETS, groupsOf, inEdition, withNeeds, type Edition, type GroupId } from "@/content/pricing";
 import { cn } from "@/lib/utils";
 
 /**
- * Pick app groups: starting points for common teams, Mei shown as always included, and one card per group. Payroll
- * brings People & HR with it, and taking People & HR away takes Payroll too. Used by the plan builder and the demo form.
+ * Pick the edition, then app groups: starting points for common teams, Mei shown as always included, and one card per
+ * group of the edition. Payroll brings People & HR with it, and taking People & HR away takes Payroll too. Switching
+ * edition drops the other one's group. Used by the plan builder and the demo form.
  */
-export function AppPicker({ value, onChange, presetsLabel = "Start from a team like yours", groupsLabel = "Pick your app groups", meiText }: { value: GroupId[]; onChange: (v: GroupId[]) => void; presetsLabel?: string; groupsLabel?: string; meiText: string }) {
+export function AppPicker({ edition, onEditionChange, value, onChange, presetsLabel = "Start from a team like yours", groupsLabel = "Pick your app groups", meiText }: { edition: Edition; onEditionChange: (e: Edition) => void; value: GroupId[]; onChange: (v: GroupId[]) => void; presetsLabel?: string; groupsLabel?: string; meiText: string }) {
   const all = withNeeds(value);
   const toggle = (id: GroupId) => {
     if (value.includes(id)) {
@@ -21,9 +22,31 @@ export function AppPicker({ value, onChange, presetsLabel = "Start from a team l
   };
   return (
     <div>
-      <p className="text-sm font-semibold text-muted">{presetsLabel}</p>
+      <p className="text-sm font-semibold text-muted">What do you sell?</p>
+      <div role="radiogroup" aria-label="Edition" className="mt-3 grid gap-2 sm:grid-cols-2">
+        {EDITIONS.map((e) => {
+          const on = e.id === edition;
+          return (
+            <button
+              key={e.id}
+              type="button"
+              role="radio"
+              aria-checked={on}
+              onClick={() => {
+                onEditionChange(e.id);
+                onChange(inEdition(value, e.id));
+              }}
+              className={cn("p-3.5 text-left ring-1 transition-colors", on ? "bg-brand-soft ring-brand/40" : "bg-bg ring-line hover:bg-soft")}
+            >
+              <span className="block text-sm font-semibold">{e.name}</span>
+              <span className="block text-xs leading-relaxed text-muted">{e.for}</span>
+            </button>
+          );
+        })}
+      </div>
+      <p className="mt-6 text-sm font-semibold text-muted">{presetsLabel}</p>
       <ul className="mt-3 flex flex-wrap gap-2">
-        {PRESETS.map((p) => {
+        {PRESETS.filter((p) => p.edition === edition).map((p) => {
           const on = p.groups.length === all.length && p.groups.every((g) => all.includes(g));
           return (
             <li key={p.name}>
@@ -41,7 +64,7 @@ export function AppPicker({ value, onChange, presetsLabel = "Start from a team l
       </div>
       <p className="mt-6 text-sm font-semibold text-muted">{groupsLabel}</p>
       <ul className="mt-3 grid gap-2 sm:grid-cols-2">
-        {APP_GROUPS.map((g) => {
+        {groupsOf(edition).map((g) => {
           const on = all.includes(g.id);
           const forced = on && !value.includes(g.id);
           return (

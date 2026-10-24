@@ -28,12 +28,13 @@ function HowPricingWorks() {
           </li>
         ))}
       </ol>
-      <h3 className="mt-14 text-center text-xl font-semibold">The six app groups, and Mei with all of them</h3>
-      <ul className="mt-6 grid gap-px bg-line ring-1 ring-line sm:grid-cols-2 lg:grid-cols-4">
+      <h3 className="mt-14 text-center text-xl font-semibold">The app groups of both editions, and Mei with all of them</h3>
+      <ul className="mt-6 grid gap-px bg-line ring-1 ring-line sm:grid-cols-2 lg:grid-cols-3">
         {APP_GROUPS.map((g) => (
           <li key={g.id} className="bg-bg p-5">
             <p className="font-semibold">{g.name}</p>
             <p className="mt-1 text-sm text-muted">{g.text}{g.needs ? " Comes with People & HR." : ""}</p>
+            <p className="mt-2 text-xs font-medium text-brand">{g.edition === "services" ? "Services edition" : g.edition === "goods" ? "Goods edition" : "Both editions"}</p>
           </li>
         ))}
       </ul>

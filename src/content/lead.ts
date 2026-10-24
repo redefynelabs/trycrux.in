@@ -9,10 +9,10 @@ export const TIMELINE_LABELS: Record<string, string> = { now: "As soon as possib
 export const FOCUS = [
   { value: "people", label: "People & HR", text: "Attendance, leave, shifts", Icon: PeopleIcon },
   { value: "projects", label: "Projects", text: "Tasks and timesheets", Icon: ProjectsIcon },
-  { value: "crm", label: "CRM & Sales", text: "Leads and follow-ups", Icon: CrmIcon },
-  { value: "finance", label: "Finance", text: "Invoices, receipts, expenses", Icon: FinanceIcon },
+  { value: "crm", label: "CRM", text: "Leads and follow-ups", Icon: CrmIcon },
+  { value: "finance", label: "Accounting", text: "Estimates, invoices, receipts", Icon: FinanceIcon },
   { value: "payroll", label: "Payroll", text: "Pay runs and payslips", Icon: PayrollIcon },
-  { value: "inventory", label: "Inventory", text: "Stock and purchase orders", Icon: InventoryIcon },
+  { value: "inventory", label: "Inventory", text: "Products, orders and stock", Icon: InventoryIcon },
   { value: "mei", label: "Mei AI", text: "Ask your data anything", Icon: SparkIcon },
 ] as const;
 
@@ -29,13 +29,13 @@ export const TRY_FIRST: Record<string, { title: string; steps: string[]; mei: st
     mei: ["Give me a status report for each active project", "How many hours were logged per project this month?"],
   },
   crm: {
-    title: "CRM & Sales",
-    steps: ["Open Leads and move one through the pipeline", "Add a follow-up and see it appear for the owner", "Turn a won lead into a client"],
+    title: "CRM",
+    steps: ["Open Leads and move one to the next stage", "Add a follow-up and see it appear for the owner", "Turn a won lead into a client"],
     mei: ["Which follow-ups are overdue and who owns them?", "Draft a new client called Lakeview Hotels, with a contact"],
   },
   finance: {
-    title: "Finance",
-    steps: ["Open Invoices and look at what is overdue", "Record a payment against an invoice", "Open Reports and look at profit and loss"],
+    title: "Accounting",
+    steps: ["Open Estimates, accept one and turn it into an invoice", "Record a payment against an invoice", "Open Reports and look at profit and loss"],
     mei: ["Which invoices are overdue and who owes the most?", "Draft an invoice for Anita Desai: a monthly retainer and 12 extra hours"],
   },
   payroll: {
@@ -45,8 +45,8 @@ export const TRY_FIRST: Record<string, { title: string; steps: string[]; mei: st
     note: "Pay and payslips are private: only people with payroll access see them, and Mei never reads them.",
   },
   inventory: {
-    title: "Inventory & Purchasing",
-    steps: ["Open Stock and look at levels by warehouse", "Open the purchase order and receive the goods", "Adjust a count and see the movement it leaves behind"],
+    title: "Inventory & Orders",
+    steps: ["Open Orders and fulfil a confirmed one", "Open Stock and look at levels by warehouse", "Open the purchase order and receive the goods"],
     mei: [],
     note: "Everything here is sample data, so receive, adjust and transfer as much as you like.",
   },

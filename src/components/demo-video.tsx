@@ -104,7 +104,7 @@ function HeroVideo({ src }: { src: string }) {
         }}
         onTimeUpdate={onTime}
         onPause={() => setPlaying(false)}
-        aria-label="Crux product showcase: projects, people and attendance, quote to invoice, finance and Mei, the AI assistant"
+        aria-label="Crux product showcase: projects, people and attendance, estimate to invoice, accounting and Mei, the AI assistant"
         className="size-full object-cover"
       >
         {src ? (

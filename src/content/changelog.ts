@@ -17,6 +17,11 @@ export interface Entry {
 
 export const ENTRIES: Entry[] = [
   {
+    date: "2026-10-24", area: "Product", title: "Two editions, and apps that match how you work",
+    text: "Crux now comes as a Services edition for firms that sell time and a Goods edition for firms that sell stock. Each installation runs one, and the apps are regrouped so each does one job.",
+    points: ["Services edition: CRM, Projects & Tasks, People & HR, Payroll and Accounting", "Goods edition: CRM, Inventory & Orders, People & HR, Payroll and Accounting", "Accounting now holds estimates (formerly quotes), invoices, recurring invoices, receipts, expenses, banking and reports", "An accepted estimate becomes an invoice in one step, or with Inventory a sales order that is invoiced when it ships, never both", "Deals and deal pipelines are gone: a won lead becomes a client directly", "A new Wholesale starting template for the Goods edition; the Trades template now runs on Services"],
+  },
+  {
     date: "2026-10-21", area: "Control", title: "Style every document your business prints",
     text: "One place to choose how invoices, receipts, credit notes, quotes and payslips look, with a live preview before you save.",
     points: ["A Document styling tab in Organization, moved out of Finance, with a style for each document", "Pick a design and your brand colour, show or hide the logo and move it, set your own title and a footer line", "Choose what the page includes: notes, terms, the tax column and tax summary, a signature line, page numbers and the date format", "A preview drawn by the same engine that prints the real document, using your letterhead and made-up figures", "Issued invoices and credit notes keep the style they were issued with, so changing it never alters what a client already has"],

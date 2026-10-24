@@ -7,7 +7,7 @@ import { Cta } from "@/components/cta";
 import { CheckIcon } from "@/components/icons";
 import { ENTRIES, dayLabel, longDay, sortedEntries } from "@/content/changelog";
 
-export const metadata: Metadata = pageMeta("/changelog", "Changelog", "What shipped in Crux and when: quotes, orders and a product catalog, modules you can pick, people, projects, CRM, finance, integrations and the Mei AI assistant.");
+export const metadata: Metadata = pageMeta("/changelog", "Changelog", "What shipped in Crux and when: two editions, estimates and invoices, orders and a product catalog, modules you can pick, people, projects, CRM, finance, integrations and the Mei AI assistant.");
 
 const LIST = sortedEntries(ENTRIES);
 
