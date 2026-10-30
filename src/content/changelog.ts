@@ -17,6 +17,18 @@ export interface Entry {
 
 export const ENTRIES: Entry[] = [
   {
+    date: "2026-10-30", area: "Accounting", title: "A general ledger an accountant can run the books on",
+    text: "The ledger now covers the whole cycle: reports built from the journals, approval before posting, month and year-end locks, foreign currency, and screens that explain each term in plain words.",
+    points: [
+      "Profit and loss, balance sheet, trial balance, cash flow, general ledger and day book, with comparison, drill-down, CSV, PDF and print",
+      "Lock a month, close a year into retained earnings, and reopen with a reason that is kept",
+      "Manual journals as drafts with an optional approval rule, attachments, project and department on each line, recurring and reversing journals",
+      "Chart of accounts with groups, CSV import and export, and account merge that keeps history",
+      "Foreign amounts on journal lines and month-end revaluation of foreign balances",
+      "A reconciliation of ledger profit with the document reports, and a link from each document to its journal",
+    ],
+  },
+  {
     date: "2026-10-30", area: "People & HR", title: "HR self service, and payroll that follows the law of each country",
     text: "People now have one place to read announcements, sign policies, ask HR, find colleagues and see what they hold. Payroll learned the statutory rules of India, the UAE, the US and the UK, and how to close a pay period for someone who leaves.",
     points: [
