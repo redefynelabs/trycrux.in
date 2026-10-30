@@ -17,6 +17,24 @@ export interface Entry {
 
 export const ENTRIES: Entry[] = [
   {
+    date: "2026-10-30", area: "People & HR", title: "HR self service, and payroll that follows the law of each country",
+    text: "People now have one place to read announcements, sign policies, ask HR, find colleagues and see what they hold. Payroll learned the statutory rules of India, the UAE, the US and the UK, and how to close a pay period for someone who leaves.",
+    points: [
+      "Announcements and policies: HR posts, people acknowledge each version of a policy, and a daily reminder goes to those who have not",
+      "Letters from templates, a helpdesk with queues and internal notes, and a directory with skills, about-me, pronouns, a live status dot, an org chart and birthday and work-anniversary wishes",
+      "Company assets issued and returned, kit still held by leavers, training courses and mandatory training with due dates, and reminders before a licence or document expires",
+      "Payroll by region: statutory rates are data with dates, not code. Apply the India, UAE, US or UK pack, and rules can change without a release",
+      "Pay cycles (monthly, twice a month, biweekly or weekly), pay held back, overtime and comp-off, and loans and advances recovered from pay",
+      "Final settlement for people who leave: last pay, unused leave, gratuity, notice shortfall and loans, with a statement PDF",
+      "Six payroll reports as screen, CSV or PDF, and bank files for CSV, UAE WPS and UK BACS. Salary stays out of people lists and out of Mei",
+      "Verified check-in: office locations, networks, a selfie and a QR code, with doubtful check-ins flagged for review, a phone check-in that works offline, and hybrid work with weekly patterns",
+      "Rosters with a team planner, repeating patterns and shift swaps that both people agree to, and leave with accrual, waiting months and a policy preview",
+      "A friendlier check-in: streaks, 18 badges you can share, and a daily nudge for the team, in a tone each organization chooses",
+      "Emails only for what needs attention, each as a designed message you can edit as text or HTML with a live preview",
+      "A dashboard and finance reports with charts: revenue against expenses, cash in and out, who owes you and for how long, and payroll cost",
+    ],
+  },
+  {
     date: "2026-10-24", area: "Product", title: "Two editions, and apps that match how you work",
     text: "Crux now comes as a Services edition for firms that sell time and a Goods edition for firms that sell stock. Each installation runs one, and the apps are regrouped so each does one job.",
     points: ["Services edition: CRM, Projects & Tasks, People & HR, Payroll and Accounting", "Goods edition: CRM, Inventory & Orders, People & HR, Payroll and Accounting", "Accounting now holds estimates (formerly quotes), invoices, recurring invoices, receipts, expenses, banking and reports", "An accepted estimate becomes an invoice in one step, or with Inventory a sales order that is invoiced when it ships, never both", "Deals and deal pipelines are gone: a won lead becomes a client directly", "A new Wholesale starting template for the Goods edition; the Trades template now runs on Services"],

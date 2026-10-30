@@ -10,8 +10,8 @@ export interface Announcement {
 }
 
 export const ANNOUNCEMENT: Announcement | null = {
-  id: "2026-10-mei",
-  text: "Meet Mei, the AI inside Crux: ask your business anything and get answers, reports and drafts from your own data.",
-  href: "/#mei",
-  cta: "Meet Mei",
+  id: "2026-10-30-hr",
+  text: "New: HR self service, and payroll for India, the UAE, the US and the UK. See what shipped.",
+  href: "/changelog",
+  cta: "What is new",
 };

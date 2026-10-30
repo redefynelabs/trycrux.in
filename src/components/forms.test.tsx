@@ -9,16 +9,18 @@ afterEach(() => vi.restoreAllMocks());
 const reply = (status: number, body: unknown) => vi.spyOn(globalThis, "fetch").mockResolvedValue(new Response(JSON.stringify(body), { status }));
 
 describe("the demo form", () => {
-  it("shows where to open the demo and the login once it is ready", async () => {
+  it("sends the login by email only and shows neither address nor password", async () => {
     const user = userEvent.setup();
-    reply(201, { data: { url: "https://abc.demo.example.com", login_email: "admin@demo.test", login_password: "Demo-Password-2026!", expires_at: new Date(Date.now() + 3600_000).toISOString() } });
+    reply(201, { data: { sent: true, email_hint: "a***@raotraders.in", expires_at: new Date(Date.now() + 3600_000).toISOString() } });
     render(<DemoForm />);
     await user.type(screen.getByLabelText("Your name"), "Asha Rao");
-    await user.type(screen.getByLabelText("Work email"), "asha@rao.example");
-    await user.type(screen.getByLabelText("Phone number"), "+91 98765 43210");
+    await user.type(screen.getByLabelText("Work email"), "asha@raotraders.in");
+    await user.type(screen.getByLabelText("Phone number"), "+91 94123 70582");
     await user.click(screen.getByRole("button", { name: "Start my demo" }));
-    expect(await screen.findByRole("link", { name: "Open your demo" })).toHaveAttribute("href", "https://abc.demo.example.com");
-    expect(screen.getByText("admin@demo.test")).toBeInTheDocument();
+    expect(await screen.findByText("Check your inbox")).toBeInTheDocument();
+    expect(screen.getByText("asha@raotraders.in")).toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "Open your demo" })).toBeNull();
+    expect(screen.queryByText("Password")).toBeNull();
     expect(screen.getByText(/ends in about/)).toBeInTheDocument();
   });
 
@@ -27,35 +29,35 @@ describe("the demo form", () => {
     reply(202, { data: { status: "queued", queued: true, position: 3 } });
     render(<DemoForm />);
     await user.type(screen.getByLabelText("Your name"), "Asha Rao");
-    await user.type(screen.getByLabelText("Work email"), "asha@rao.example");
-    await user.type(screen.getByLabelText("Phone number"), "+91 98765 43210");
+    await user.type(screen.getByLabelText("Work email"), "asha@raotraders.in");
+    await user.type(screen.getByLabelText("Phone number"), "+91 94123 70582");
     await user.click(screen.getByRole("button", { name: "Start my demo" }));
     expect(await screen.findByText("Place 3")).toBeInTheDocument();
-    expect(screen.getByText("asha@rao.example")).toBeInTheDocument();
+    expect(screen.getByText("asha@raotraders.in")).toBeInTheDocument();
     expect(screen.queryByRole("link", { name: "Open your demo" })).toBeNull();
   });
 
   it("asks for just a name, an email and a phone number", async () => {
     const user = userEvent.setup();
-    const spy = reply(201, { data: { url: "https://a.b", login_email: "e", login_password: "p", expires_at: new Date(Date.now() + 3600_000).toISOString() } });
+    const spy = reply(201, { data: { sent: true, email_hint: "a***@b.in", expires_at: new Date(Date.now() + 3600_000).toISOString() } });
     render(<DemoForm />);
     expect(screen.getByRole("radio", { name: /Services edition/ })).toBeChecked();
     await user.type(screen.getByLabelText("Your name"), "Asha");
-    await user.type(screen.getByLabelText("Work email"), "asha@rao.example");
-    await user.type(screen.getByLabelText("Phone number"), "+91 98765 43210");
+    await user.type(screen.getByLabelText("Work email"), "asha@raotraders.in");
+    await user.type(screen.getByLabelText("Phone number"), "+91 94123 70582");
     await user.click(screen.getByRole("button", { name: "Start my demo" }));
     await waitFor(() => expect(spy).toHaveBeenCalled());
-    expect(JSON.parse(spy.mock.calls[0][1]?.body as string)).toMatchObject({ name: "Asha", email: "asha@rao.example", modules: ["sales", "finance"], edition: "services" });
+    expect(JSON.parse(spy.mock.calls[0][1]?.body as string)).toMatchObject({ name: "Asha", email: "asha@raotraders.in", modules: ["sales", "finance"], edition: "services" });
     expect(await screen.findByText("Try these first")).toBeInTheDocument();
   });
 
   it("sends the apps the visitor picked, with payroll bringing People & HR", async () => {
     const user = userEvent.setup();
-    const spy = reply(201, { data: { url: "https://a.b", login_email: "e", login_password: "p", expires_at: new Date(Date.now() + 3600_000).toISOString() } });
+    const spy = reply(201, { data: { sent: true, email_hint: "a***@b.in", expires_at: new Date(Date.now() + 3600_000).toISOString() } });
     render(<DemoForm />);
     await user.type(screen.getByLabelText("Your name"), "Asha");
-    await user.type(screen.getByLabelText("Work email"), "asha@rao.example");
-    await user.type(screen.getByLabelText("Phone number"), "+91 98765 43210");
+    await user.type(screen.getByLabelText("Work email"), "asha@raotraders.in");
+    await user.type(screen.getByLabelText("Phone number"), "+91 94123 70582");
     await user.click(screen.getByRole("button", { name: "People and payroll" }));
     await user.click(screen.getByRole("button", { name: "Start my demo" }));
     await waitFor(() => expect(spy).toHaveBeenCalled());
@@ -68,11 +70,11 @@ describe("the demo form", () => {
 
   it("sends one edition, dropping the other one's apps", async () => {
     const user = userEvent.setup();
-    const spy = reply(201, { data: { url: "https://a.b", login_email: "e", login_password: "p", expires_at: new Date(Date.now() + 3600_000).toISOString() } });
+    const spy = reply(201, { data: { sent: true, email_hint: "a***@b.in", expires_at: new Date(Date.now() + 3600_000).toISOString() } });
     render(<DemoForm />);
     await user.type(screen.getByLabelText("Your name"), "Asha");
-    await user.type(screen.getByLabelText("Work email"), "asha@rao.example");
-    await user.type(screen.getByLabelText("Phone number"), "+91 98765 43210");
+    await user.type(screen.getByLabelText("Work email"), "asha@raotraders.in");
+    await user.type(screen.getByLabelText("Phone number"), "+91 94123 70582");
     await user.click(screen.getByRole("checkbox", { name: /^Projects/ }));
     await user.click(screen.getByRole("radio", { name: /Goods edition/ }));
     expect(screen.queryByRole("checkbox", { name: /^Projects/ })).toBeNull();
@@ -87,8 +89,8 @@ describe("the demo form", () => {
     const spy = reply(201, {});
     render(<DemoForm />);
     await user.type(screen.getByLabelText("Your name"), "Asha");
-    await user.type(screen.getByLabelText("Work email"), "asha@rao.example");
-    await user.type(screen.getByLabelText("Phone number"), "+91 98765 43210");
+    await user.type(screen.getByLabelText("Work email"), "asha@raotraders.in");
+    await user.type(screen.getByLabelText("Phone number"), "+91 94123 70582");
     await user.click(screen.getByRole("checkbox", { name: /^CRM/ }));
     await user.click(screen.getByRole("checkbox", { name: /^Accounting/ }));
     await user.click(screen.getByRole("button", { name: "Start my demo" }));
@@ -102,7 +104,7 @@ describe("the demo form", () => {
     render(<DemoForm />);
     await user.type(screen.getByLabelText("Your name"), "Asha");
     await user.type(screen.getByLabelText("Work email"), "x@y.z");
-    await user.type(screen.getByLabelText("Phone number"), "+91 98765 43210");
+    await user.type(screen.getByLabelText("Phone number"), "+91 94123 70582");
     await user.click(screen.getByRole("button", { name: "Start my demo" }));
     expect(await screen.findByRole("alert")).toHaveTextContent("Enter a valid email address");
   });
@@ -112,8 +114,8 @@ describe("the demo form", () => {
     reply(429, { error: { code: "rate_limited", message: "You have asked for a demo recently." } });
     render(<DemoForm />);
     await user.type(screen.getByLabelText("Your name"), "Asha");
-    await user.type(screen.getByLabelText("Work email"), "asha@rao.example");
-    await user.type(screen.getByLabelText("Phone number"), "+91 98765 43210");
+    await user.type(screen.getByLabelText("Work email"), "asha@raotraders.in");
+    await user.type(screen.getByLabelText("Phone number"), "+91 94123 70582");
     await user.click(screen.getByRole("button", { name: "Start my demo" }));
     expect(await screen.findByRole("alert")).toHaveTextContent("asked for a demo recently");
     expect(screen.getByRole("button", { name: "Start my demo" })).toBeEnabled();
@@ -122,11 +124,11 @@ describe("the demo form", () => {
   it("sends the honeypot empty and the attribution it remembered", async () => {
     const user = userEvent.setup();
     window.sessionStorage.setItem("erp.attribution", JSON.stringify({ utm_source: "google", landing: "/pricing" }));
-    const spy = reply(201, { data: { url: "https://a.b", login_email: "e", login_password: "p", expires_at: new Date(Date.now() + 3600_000).toISOString() } });
+    const spy = reply(201, { data: { sent: true, email_hint: "a***@b.in", expires_at: new Date(Date.now() + 3600_000).toISOString() } });
     render(<DemoForm />);
     await user.type(screen.getByLabelText("Your name"), "Asha");
-    await user.type(screen.getByLabelText("Work email"), "asha@rao.example");
-    await user.type(screen.getByLabelText("Phone number"), "+91 98765 43210");
+    await user.type(screen.getByLabelText("Work email"), "asha@raotraders.in");
+    await user.type(screen.getByLabelText("Phone number"), "+91 94123 70582");
     await user.click(screen.getByRole("button", { name: "Start my demo" }));
     await waitFor(() => expect(spy).toHaveBeenCalled());
     const sent = JSON.parse(spy.mock.calls[0][1]?.body as string);
@@ -141,12 +143,12 @@ describe("the contact form", () => {
     reply(201, { data: { status: "received" } });
     render(<ContactForm />);
     await user.type(screen.getByLabelText("Your name"), "Ravi");
-    await user.type(screen.getByLabelText("Work email"), "ravi@kumar.example");
-    await user.type(screen.getByLabelText("Phone number"), "+91 98765 43210");
+    await user.type(screen.getByLabelText("Work email"), "ravi@kumar.in");
+    await user.type(screen.getByLabelText("Phone number"), "+91 94123 70582");
     await user.type(screen.getByLabelText("Your message"), "Price for 80 people?");
     await user.click(screen.getByRole("button", { name: "Send message" }));
     expect(await screen.findByText(/thank you, ravi\. we have your message/i)).toBeInTheDocument();
-    expect(screen.getByText(/reply to ravi@kumar\.example within one working day/i)).toBeInTheDocument();
+    expect(screen.getByText(/reply to ravi@kumar\.in within one working day/i)).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /book a time now/i })).toHaveAttribute("href", expect.stringContaining("cal.com"));
   });
 
@@ -156,8 +158,8 @@ describe("the contact form", () => {
     render(<ContactForm defaultPlan="grow" defaultMessage="I would like a lifetime licence." />);
     expect(screen.getByText(/looking at the Grow plan/)).toBeInTheDocument();
     await user.type(screen.getByLabelText("Your name"), "Ravi");
-    await user.type(screen.getByLabelText("Work email"), "ravi@kumar.example");
-    await user.type(screen.getByLabelText("Phone number"), "+91 98765 43210");
+    await user.type(screen.getByLabelText("Work email"), "ravi@kumar.in");
+    await user.type(screen.getByLabelText("Phone number"), "+91 94123 70582");
     expect(screen.getByLabelText("Your message")).toHaveValue("I would like a lifetime licence.");
     await user.click(screen.getByRole("button", { name: "Send message" }));
     await waitFor(() => expect(spy).toHaveBeenCalled());

@@ -15,10 +15,10 @@ import { cn } from "@/lib/utils";
 import { Field, Honeypot, TextInput } from "./field";
 import { captchaEnabled, Turnstile } from "./turnstile";
 
+/** The answer once the login has been emailed. It holds no address and no password: those are in the visitor's inbox only. */
 interface Ready {
-  url: string;
-  login_email: string;
-  login_password: string;
+  sent: true;
+  email_hint: string;
   expires_at: string;
 }
 
@@ -123,7 +123,7 @@ function InLine({ position, email }: { position: number; email: string }) {
 /** The tab of things to try that belongs to each app group the visitor can pick. */
 const TAB_OF: Record<GroupId, string> = { sales: "crm", finance: "finance", projects: "projects", people: "people", payroll: "payroll", inventory: "inventory" };
 
-function Result({ ready, focus, modules }: { ready: Ready; focus: string; modules: GroupId[] }) {
+function Result({ ready, email, focus, modules }: { ready: Ready; email: string; focus: string; modules: GroupId[] }) {
   const [now, setNow] = useState(() => Date.now());
   // The demo has only the apps the visitor picked, so the things to try are those, and Mei.
   const tabs = FOCUS.filter((f) => f.value === "mei" || modules.map((m) => TAB_OF[m]).includes(f.value));
@@ -140,7 +140,7 @@ function Result({ ready, focus, modules }: { ready: Ready; focus: string; module
       <div className="flex flex-wrap items-center justify-between gap-4 bg-ok-soft px-6 py-5 sm:px-8">
         <div>
           <p className="flex items-center gap-2 text-sm font-semibold text-ok"><span className="grid size-5 place-items-center bg-ok text-white"><CheckIcon className="size-3" /></span>Your demo is ready</p>
-          <h2 className="mt-1 text-2xl font-semibold tracking-tight">Northwind Traders, just for you</h2>
+          <h2 className="mt-1 text-2xl font-semibold tracking-tight">Check your inbox</h2>
         </div>
         <div className="text-right">
           <p className="text-3xl font-semibold tracking-tight tabular-nums">{left > 0 ? clock(left) : "00:00"}</p>
@@ -150,21 +150,20 @@ function Result({ ready, focus, modules }: { ready: Ready; focus: string; module
       <div className="h-1 bg-line"><div className="h-full bg-ok transition-[width] duration-1000" style={{ width: `${Math.max(0, Math.min(100, (left / TOTAL_MS) * 100))}%` }} /></div>
 
       <div className="space-y-6 p-6 sm:p-8">
-        <a href={ready.url} target="_blank" rel="noopener noreferrer" data-track="demo_open" className={buttonClass("brand", "lg", "w-full")}>
-          Open your demo
-        </a>
-
-        <dl className="grid gap-px bg-line ring-1 ring-line sm:grid-cols-2">
-          {[["Email", ready.login_email, "email"], ["Password", ready.login_password, "password"]].map(([k, v, l]) => (
-            <div key={k} className="flex items-center justify-between gap-3 bg-bg px-4 py-3">
-              <div className="min-w-0">
-                <dt className="text-xs text-muted">{k}</dt>
-                <dd className="truncate font-mono text-sm">{v}</dd>
-              </div>
-              <Copy text={v} label={l} />
-            </div>
-          ))}
-        </dl>
+        <div>
+          <p>
+            We sent the link and your login to <strong className="break-all">{email || ready.email_hint}</strong>. Your private copy of Northwind Traders is already running.
+          </p>
+          <ol className="mt-4 space-y-2.5 text-sm">
+            {["Open the email titled \u201cYour demo is ready\u201d", "Click the link in it, then sign in with the email and password it holds", "Look around: the tour below tells you what to try first"].map((t, i) => (
+              <li key={t} className="flex gap-3"><span className="grid size-6 shrink-0 place-items-center bg-brand-soft text-xs font-semibold text-brand">{i + 1}</span><span className="pt-0.5">{t}</span></li>
+            ))}
+          </ol>
+          <p className="mt-4 bg-soft px-3 py-2 text-sm text-muted ring-1 ring-line">
+            Nothing yet? Check your spam folder. The login is sent only by email, so it works only for the address you gave. If it does not arrive in a few minutes,{" "}
+            <Link className="font-medium text-accent underline" href="/contact">tell us</Link>.
+          </p>
+        </div>
 
         <div>
           <p className="text-sm font-semibold">Try these first</p>
@@ -265,7 +264,7 @@ export function DemoForm({ defaultEdition = "services" }: { defaultEdition?: Edi
   }
 
   if (queued) return <InLine position={queued.position} email={values.email.trim()} />;
-  if (ready) return <Result ready={ready} focus="" modules={withNeeds(modules)} />;
+  if (ready) return <Result ready={ready} email={values.email.trim()} focus="" modules={withNeeds(modules)} />;
   if (busy) return <Building />;
 
   return (
@@ -289,11 +288,11 @@ export function DemoForm({ defaultEdition = "services" }: { defaultEdition?: Edi
         <Field label="Your name" error={errors.name}>
           <TextInput name="name" autoComplete="name" placeholder="Asha Rao" value={values.name} onChange={set("name")} invalid={!!errors.name} required />
         </Field>
-        <Field label="Work email" error={errors.email} hint="We send nothing but your demo, and one follow-up.">
-          <TextInput name="email" type="email" autoComplete="email" placeholder="asha@company.com" value={values.email} onChange={set("email")} invalid={!!errors.email} required />
+        <Field label="Work email" error={errors.email} hint="Your demo login is emailed here, so use an address you can open now.">
+          <TextInput name="email" type="email" autoComplete="email" placeholder="asha@yourfirm.in" value={values.email} onChange={set("email")} invalid={!!errors.email} required />
         </Field>
         <Field label="Phone number" error={errors.phone}>
-          <TextInput name="phone" type="tel" autoComplete="tel" required placeholder="+91 98765 43210" value={values.phone} onChange={set("phone")} invalid={!!errors.phone} />
+          <TextInput name="phone" type="tel" autoComplete="tel" required placeholder="Your mobile, with country code" value={values.phone} onChange={set("phone")} invalid={!!errors.phone} />
         </Field>
 
         <fieldset>

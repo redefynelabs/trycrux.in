@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { fakeEmail, fakePhone } from "./fake";
 
 const text = (max: number) => z.string().trim().max(max);
 
@@ -11,10 +12,17 @@ export const TIMELINES = ["now", "month", "quarter", "exploring"] as const;
 
 export const demoSchema = z.object({
   name: text(120).min(1, "Enter your name"),
-  email: text(254).min(1, "Enter your email address").email("Enter a valid email address"),
+  email: text(254)
+    .min(1, "Enter your email address")
+    .email("Enter a valid email address")
+    .superRefine((v, ctx) => {
+      const why = fakeEmail(v);
+      if (why) ctx.addIssue({ code: "custom", message: why });
+    }),
   phone: text(40)
     .min(1, "Enter a contact number")
-    .refine((v) => /^[+(]?[0-9][0-9\s().-]{6,}$/.test(v) && v.replace(/\D/g, "").length >= 7 && v.replace(/\D/g, "").length <= 15, "Enter a valid phone number"),
+    .refine((v) => /^[+(]?[0-9][0-9\s().-]{6,}$/.test(v) && v.replace(/\D/g, "").length >= 7 && v.replace(/\D/g, "").length <= 15, "Enter a valid phone number")
+    .refine((v) => !fakePhone(v), "Enter your real phone number"),
   company: text(160).optional().default(""),
   team_size: z.enum(TEAM_SIZES).or(z.literal("")).optional().default(""),
   focus: z.enum(FOCUSES).or(z.literal("")).optional().default(""),
