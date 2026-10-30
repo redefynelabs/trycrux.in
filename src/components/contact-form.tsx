@@ -10,6 +10,7 @@ import { postJson, readAttribution } from "@/lib/client";
 import { SITE } from "@/lib/site";
 import type { FieldErrors } from "@/lib/schemas";
 import { Field, Honeypot, TextArea, TextInput } from "./field";
+import { PhoneField } from "./phone-field";
 import { captchaEnabled, Turnstile } from "./turnstile";
 
 type Interest = "cloud" | "on_prem" | "other";
@@ -121,9 +122,7 @@ export function ContactForm({ defaultInterest = "on_prem", defaultPlan = "", def
           <Field label="Work email" error={errors.email}>
             <TextInput name="email" type="email" autoComplete="email" placeholder="ravi@company.com" value={values.email} onChange={set("email")} invalid={!!errors.email} required />
           </Field>
-          <Field label="Phone number" error={errors.phone}>
-            <TextInput name="phone" type="tel" autoComplete="tel" required placeholder="+91 98765 43210" value={values.phone} onChange={set("phone")} invalid={!!errors.phone} />
-          </Field>
+          <PhoneField label="Phone number" required value={values.phone} onChange={(v) => setValues((x) => ({ ...x, phone: v }))} error={errors.phone} />
           <Field label="Company (optional)" error={errors.company}>
             <TextInput name="company" autoComplete="organization" value={values.company} onChange={set("company")} invalid={!!errors.company} />
           </Field>

@@ -1,3 +1,4 @@
+import { isValidPhoneNumber } from "libphonenumber-js/min";
 import { z } from "zod";
 import { fakeEmail, fakePhone } from "./fake";
 
@@ -21,7 +22,7 @@ export const demoSchema = z.object({
     }),
   phone: text(40)
     .min(1, "Enter a contact number")
-    .refine((v) => /^[+(]?[0-9][0-9\s().-]{6,}$/.test(v) && v.replace(/\D/g, "").length >= 7 && v.replace(/\D/g, "").length <= 15, "Enter a valid phone number")
+    .refine((v) => isValidPhoneNumber(v, "IN"), "Enter a valid phone number for the country")
     .refine((v) => !fakePhone(v), "Enter your real phone number"),
   company: text(160).optional().default(""),
   team_size: z.enum(TEAM_SIZES).or(z.literal("")).optional().default(""),

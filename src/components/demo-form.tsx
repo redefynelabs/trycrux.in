@@ -13,6 +13,7 @@ import { withNeeds, type Edition, type GroupId } from "@/content/pricing";
 import type { FieldErrors } from "@/lib/schemas";
 import { cn } from "@/lib/utils";
 import { Field, Honeypot, TextInput } from "./field";
+import { PhoneField } from "./phone-field";
 import { captchaEnabled, Turnstile } from "./turnstile";
 
 /** The answer once the login has been emailed. It holds no address and no password: those are in the visitor's inbox only. */
@@ -291,9 +292,7 @@ export function DemoForm({ defaultEdition = "services" }: { defaultEdition?: Edi
         <Field label="Work email" error={errors.email} hint="Your demo login is emailed here, so use an address you can open now.">
           <TextInput name="email" type="email" autoComplete="email" placeholder="asha@yourfirm.in" value={values.email} onChange={set("email")} invalid={!!errors.email} required />
         </Field>
-        <Field label="Phone number" error={errors.phone}>
-          <TextInput name="phone" type="tel" autoComplete="tel" required placeholder="Your mobile, with country code" value={values.phone} onChange={set("phone")} invalid={!!errors.phone} />
-        </Field>
+        <PhoneField label="Phone number" required value={values.phone} onChange={(v) => setValues((x) => ({ ...x, phone: v }))} error={errors.phone} />
 
         <fieldset>
           <legend className="mb-3 text-base font-semibold">Which apps do you want to try?</legend>
