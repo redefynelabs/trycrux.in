@@ -17,6 +17,19 @@ export interface Entry {
 
 export const ENTRIES: Entry[] = [
   {
+    date: "2026-11-12", area: "CRM", title: "From a lead to an estimate, and a clearer view of what sells",
+    text: "CRM now takes a lead further: several people on a lead, an estimate before anyone is converted, owners chosen by rules, repeatable follow-up routines, duplicate cleanup, bulk changes and export, and reports on what converts and why leads are lost.",
+    points: [
+      "Several contacts on a lead with a role and a primary one, carried over to the client when the lead is converted",
+      "Start an estimate from any lead, see its estimates on the lead, and get a prompt to convert when one is accepted",
+      "Assignment rules: new leads go to a fixed person, take turns, or the person with the fewest open leads, skipping people on leave",
+      "Cadences: a routine of follow-ups where each step appears when the one before it is done; nothing is sent for you",
+      "Find duplicate leads and clients and merge them without losing any history, with a preview first",
+      "Select leads or clients in bulk to change status, owner or priority, add to a cadence, archive or delete, and export to CSV",
+      "Reports: funnel and conversion, sources and campaigns, lost reasons, owners, ageing and stale leads, forecast by close month and weekly activity, as CSV or PDF",
+    ],
+  },
+  {
     date: "2026-10-30", area: "Accounting", title: "A general ledger an accountant can run the books on",
     text: "The ledger now covers the whole cycle: reports built from the journals, approval before posting, month and year-end locks, foreign currency, and screens that explain each term in plain words.",
     points: [
