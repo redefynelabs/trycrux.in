@@ -17,15 +17,26 @@ export interface Entry {
 
 export const ENTRIES: Entry[] = [
   {
+    date: "2026-11-13", area: "Projects", title: "Tasks you can discuss, break down and plan on a timeline",
+    text: "A task is now a place to work together: talk about it, share it between people, split it up, say what it waits for, and see the plan over time, with weekends and holidays taken into account.",
+    points: [
+      "Comments on a task with @mentions, edit and delete, and a line in the thread for every change",
+      "Several people on a task, watching, and notices that reach the right people once",
+      "Subtasks and checklists with progress, and files on a task",
+      "Start dates and blockers, a warning when a task would start before what it waits for, and moving the tasks that depend on one with a single choice",
+      "A Timeline view next to the Board and List: drag to reschedule, shaded non-working days and holidays, keyboard moves",
+      "A task opens in a large dialog or on a page of its own",
+    ],
+  },
+  {
     date: "2026-11-12", area: "CRM", title: "From a lead to an estimate, and a clearer view of what sells",
-    text: "CRM now takes a lead further: several people on a lead, an estimate before anyone is converted, owners chosen by rules, repeatable follow-up routines, duplicate cleanup, bulk changes and export, and reports on what converts and why leads are lost.",
+    text: "CRM now takes a lead further: several people on a lead, an estimate before anyone is converted, owners chosen by rules, duplicate cleanup, bulk changes and export, and reports on what converts and why leads are lost.",
     points: [
       "Several contacts on a lead with a role and a primary one, carried over to the client when the lead is converted",
       "Start an estimate from any lead, see its estimates on the lead, and get a prompt to convert when one is accepted",
       "Assignment rules: new leads go to a fixed person, take turns, or the person with the fewest open leads, skipping people on leave",
-      "Cadences: a routine of follow-ups where each step appears when the one before it is done; nothing is sent for you",
       "Find duplicate leads and clients and merge them without losing any history, with a preview first",
-      "Select leads or clients in bulk to change status, owner or priority, add to a cadence, archive or delete, and export to CSV",
+      "Select leads or clients in bulk to change status, owner or priority, archive or delete, and export to CSV",
       "Reports: funnel and conversion, sources and campaigns, lost reasons, owners, ageing and stale leads, forecast by close month and weekly activity, as CSV or PDF",
     ],
   },
