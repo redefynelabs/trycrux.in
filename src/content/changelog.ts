@@ -17,6 +17,18 @@ export interface Entry {
 
 export const ENTRIES: Entry[] = [
   {
+    date: "2026-11-14", area: "Home page", title: "A dashboard section for every app you use",
+    text: "The home page now shows something worth looking at for each app your company has switched on, not only Accounting. Each section has its headline numbers with how they moved, two charts, and a first step when nothing is recorded yet.",
+    points: [
+      "CRM: new leads, pipeline value, win rate and overdue follow-ups, with leads per week and the pipeline by status",
+      "Projects: active projects, open and overdue tasks and how many projects are on track, with tasks by status and open work per person",
+      "People: headcount, who is present and on leave today and what waits for approval, with attendance over 30 days and headcount by department",
+      "Payroll: the last run, the next run, runs awaiting approval and held pay, with cost by month and by department",
+      "Inventory: stock value, low-stock items, open orders and purchase orders, with a stock trend and the top products by movement",
+      "With three or more apps a chip bar switches between them; sections follow your edition, and money figures show only to people who may see them",
+    ],
+  },
+  {
     date: "2026-11-13", area: "Projects", title: "Tasks you can discuss, break down and plan on a timeline",
     text: "A task is now a place to work together: talk about it, share it between people, split it up, say what it waits for, and see the plan over time, with weekends and holidays taken into account.",
     points: [
