@@ -42,7 +42,7 @@ function Toggle({ label, text, checked, onChange, locked }: { label: string; tex
 
 /**
  * The cookie banner and settings. Visitors where consent is required first see the banner until they choose; everyone can
- * reopen it from "Cookie settings" in the footer. Accept and reject are equally easy, and a choice lasts six months.
+ * reopen it from "Privacy choices" in the footer. Accept and reject are equally easy, and a choice lasts six months.
  */
 /** Whether this visitor still has to choose: consent-first region and nothing saved. The server says no. */
 function useNeedsChoice(): boolean {
@@ -65,8 +65,9 @@ export function ConsentBanner() {
   useEffect(() => {
     // Apply what is in force on this page view (the boot script already told Google; this tells Clarity).
     const now = currentConsent();
-    applyConsent(now);
+    // Clarity first, so its queue exists when the consent signal is sent (a call before the stub is dropped).
     if (now.recordings) loadClarity();
+    applyConsent(now);
     const reopen = () => {
       setChoice(currentConsent());
       setCustom(true);
@@ -80,7 +81,10 @@ export function ConsentBanner() {
 
   function decide(c: Choice, how: string) {
     saveConsent(c);
-    if (c.recordings) loadClarity();
+    if (c.recordings) {
+      loadClarity();
+      applyConsent(c); // saveConsent ran before the Clarity queue existed; send the signal again
+    }
     setChoice(c);
     setReopened(false);
     setCustom(false);
@@ -91,16 +95,16 @@ export function ConsentBanner() {
   return (
     <div role="dialog" aria-modal="false" aria-labelledby="consent-title" className="fixed inset-x-3 bottom-3 z-50 sm:inset-x-auto sm:right-5 sm:bottom-5 sm:w-104">
       <div className="rounded-3xl bg-bg p-5 shadow-[0_24px_60px_-20px_rgba(30,50,120,0.45)] ring-1 ring-line sm:p-6">
-        <p id="consent-title" className="font-display text-lg font-semibold">Cookies on {SITE.name}</p>
+        <p id="consent-title" className="font-display text-lg font-semibold">Your privacy on {SITE.name}</p>
         <p className="mt-2 text-sm leading-relaxed text-muted">
-          We would like to use cookies to understand how the site is used (Google Analytics) and to see where pages are confusing (Microsoft Clarity recordings). They are off until you allow them. See our{" "}
+          To improve the site we count visits (Google Analytics) and record how pages are used: your clicks, scrolls and mouse movement, as a replay we can watch (Microsoft Clarity). Anything you type into a form is hidden. Both stay off until you allow them. See our{" "}
           <Link href="/legal/privacy" className="font-medium text-fg underline underline-offset-2">privacy notice</Link>.
         </p>
         {custom && (
           <div className="mt-4 space-y-2">
             <Toggle label="Strictly necessary" text="The bot check on our forms and remembering this choice. Always on." checked locked />
             <Toggle label="Analytics" text="Google Analytics: visits, pages and which buttons are used. No form contents." checked={choice.analytics} onChange={(v) => setChoice((c) => ({ ...c, analytics: v }))} />
-            <Toggle label="Session recordings" text="Microsoft Clarity: heatmaps and recordings of clicks and scrolls, with typed text hidden." checked={choice.recordings} onChange={(v) => setChoice((c) => ({ ...c, recordings: v }))} />
+            <Toggle label="Session recordings" text="Microsoft Clarity: replays of your visit (clicks, scrolls, mouse movement) and heatmaps. Typed text is hidden." checked={choice.recordings} onChange={(v) => setChoice((c) => ({ ...c, recordings: v }))} />
           </div>
         )}
         <div className="mt-5 grid grid-cols-2 gap-2">
@@ -117,11 +121,11 @@ export function ConsentBanner() {
   );
 }
 
-/** "Cookie settings" in the footer: reopens the choices. */
+/** "Privacy choices" in the footer: reopens the choices. */
 export function CookieSettingsLink({ className }: { className?: string }) {
   return (
     <button type="button" onClick={() => window.dispatchEvent(new Event(OPEN_EVENT))} className={className}>
-      Cookie settings
+      Privacy choices
     </button>
   );
 }

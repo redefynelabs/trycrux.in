@@ -27,7 +27,7 @@ recordings** (Clarity); the bot check and remembering the choice are strictly ne
 
 - **EU and EEA, UK, Switzerland** (`src/proxy.ts` reads Vercel's `x-vercel-ip-country` and sets `crux_region=strict`):
   both are off until the visitor chooses in the banner (Accept all, Reject all, or Customize).
-- **Everywhere else:** both are on, with no banner; "Cookie settings" in the footer lets anyone change it.
+- **Everywhere else:** both are on, with no banner; "Privacy choices" in the footer lets anyone change it.
 - **Google Consent Mode v2:** defaults are set before GA4 and GTM load. In the strict regions `analytics_storage` starts
   `denied` (by our cookie and by Google's own region list, so it holds even without the cookie), and ads storage is always
   denied. While denied, GA4 sends only cookieless pings, which GA4 uses for modelled data.

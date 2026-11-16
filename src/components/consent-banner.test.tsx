@@ -30,7 +30,7 @@ describe("consent banner", () => {
     region("strict");
     const user = userEvent.setup();
     render(<ConsentBanner />);
-    expect(screen.getByRole("dialog", { name: /cookies on crux/i })).toBeInTheDocument();
+    expect(screen.getByRole("dialog", { name: /your privacy on crux/i })).toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: "Reject all" }));
     expect(saved()).toMatchObject({ analytics: false, recordings: false, v: 1 });
     expect(lastUpdate()).toMatchObject({ analytics_storage: "denied", ad_storage: "denied" });
@@ -47,7 +47,7 @@ describe("consent banner", () => {
     expect(window.dataLayer).toContainEqual(expect.objectContaining({ event: "consent_update", consent_method: "accept_all" }));
   });
 
-  it("does not interrupt visitors elsewhere, and Cookie settings lets them choose each kind", async () => {
+  it("does not interrupt visitors elsewhere, and Privacy choices lets them choose each kind", async () => {
     region("open");
     const user = userEvent.setup();
     render(
@@ -57,7 +57,7 @@ describe("consent banner", () => {
       </>,
     );
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
-    await user.click(screen.getByRole("button", { name: "Cookie settings" }));
+    await user.click(screen.getByRole("button", { name: "Privacy choices" }));
     const recordings = screen.getByRole("checkbox", { name: /session recordings/i });
     expect(recordings).toBeChecked();
     await user.click(recordings);

@@ -3,7 +3,7 @@
  * What is strictly necessary (the bot check on forms, remembering this choice) needs no consent.
  *
  * Where the law requires consent first (the EU and EEA, the UK and Switzerland) both start off and the banner asks;
- * elsewhere both start on, and anyone can change it from "Cookie settings" in the footer. The visitor's region comes from
+ * elsewhere both start on, and anyone can change it from "Privacy choices" in the footer. The visitor's region comes from
  * the crux_region cookie set by src/proxy.ts; Google's Consent Mode also denies analytics by default in those regions on
  * its own, so a missing cookie never means tracking without consent there.
  *

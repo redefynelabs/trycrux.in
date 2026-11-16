@@ -17,6 +17,16 @@ export interface Entry {
 
 export const ENTRIES: Entry[] = [
   {
+    date: "2026-11-15", area: "Accounting", title: "Payments that record TDS and bank charges, and clearer privacy choices",
+    text: "A customer who pays less than the invoice because they held back tax or the bank took a fee no longer leaves you with a wrong balance. The payment records what was settled and what never arrived, and the books follow.",
+    points: [
+      "Add deductions to a payment: TDS, bank charges or other short payments, with a note; adding TDS to a payment already recorded settles more of the invoice and corrects the ledger",
+      "The bank shows only the cash received; the ledger posts TDS receivable, bank charges and short payments on their own lines",
+      "Refunds are limited to the cash actually received; the receipt shows the deductions, and a corrected receipt can be sent with an apology for the earlier one",
+      "On this website, the cookie banner is now \"Your privacy\" with a \"Privacy choices\" link in the footer, and it says plainly that session recordings are made, with typed text hidden, and stay off until you allow them",
+    ],
+  },
+  {
     date: "2026-11-14", area: "Home page", title: "A dashboard section for every app you use",
     text: "The home page now shows something worth looking at for each app your company has switched on, not only Accounting. Each section has its headline numbers with how they moved, two charts, and a first step when nothing is recorded yet.",
     points: [
